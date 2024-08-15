@@ -14,7 +14,7 @@ const createContext = async (req: NextRequest) => {
     headers: req.headers,
   });
 };
-export const maxDuration = 300;
+export const maxDuration = 60;
 const handler = (req: NextRequest) =>
   fetchRequestHandler({
     endpoint: "/api/trpc",
