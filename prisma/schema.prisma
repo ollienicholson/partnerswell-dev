@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url = "postgres://default:uhCaRzK91vYq@ep-raspy-morning-a7vc0cka-pooler.ap-southeast-2.aws.neon.tech:5432/verceldb?sslmode=require&pgbouncer=true&connect_timeout=15" // uses connection pooling
+  directUrl = "postgres://default:uhCaRzK91vYq@ep-raspy-morning-a7vc0cka.ap-southeast-2.aws.neon.tech:5432/verceldb?sslmode=require" // uses a direct connection
+}
+enum Role {
+    ADMIN
+    GUEST
+}
+
+model userRoles {
+    clerkId String @unique
+    role    Role
+}
+
+model Post {
+    id        Int      @id @default(autoincrement())
+    name      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([name])
+}
+
+
