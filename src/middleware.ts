@@ -10,6 +10,8 @@ export default authMiddleware({
     "/sign-in/[[...index]]",
     "/sign-up/[[...index]]",
   ],
+  ignoredRoutes: ["/((?!api|trpc))(_next.*|.+\.[\w]+$)", "/"],
+  debug: false,
 });
 
 export const config = {
