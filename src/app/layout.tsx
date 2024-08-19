@@ -5,7 +5,7 @@ import { cn } from "~/lib/utils";
 import { ClerkProvider, UserButton } from "@clerk/nextjs";
 
 import { TRPCReactProvider } from "~/trpc/react";
-import { MainNav } from "./_components/nav";
+import { MainNav } from "./components/nav";
 import { Toaster } from "react-hot-toast";
 
 const inter = Inter({

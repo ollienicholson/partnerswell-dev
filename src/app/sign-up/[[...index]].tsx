@@ -1,4 +1,4 @@
-import { AuthBackground } from "../_components/AuthBackground";
+import { AuthBackground } from "../components/AuthBackground";
 
 const SignUpPage = () => <AuthBackground />;
 
