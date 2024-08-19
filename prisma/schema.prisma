@@ -6,11 +6,18 @@ generator client {
     previewFeatures = ["driverAdapters"]
 }
 
+// datasource db {
+//     provider  = "postgresql"
+//     url       = "postgres://default:uhCaRzK91vYq@ep-raspy-morning-a7vc0cka-pooler.ap-southeast-2.aws.neon.tech:5432/verceldb?sslmode=require&pgbouncer=true&connect_timeout=15" // uses connection pooling
+//     directUrl = "postgres://default:uhCaRzK91vYq@ep-raspy-morning-a7vc0cka.ap-southeast-2.aws.neon.tech:5432/verceldb?sslmode=require" // uses a direct connection
+// }
+
 datasource db {
-  provider = "postgresql"
-  url = "postgres://default:uhCaRzK91vYq@ep-raspy-morning-a7vc0cka-pooler.ap-southeast-2.aws.neon.tech:5432/verceldb?sslmode=require&pgbouncer=true&connect_timeout=15" // uses connection pooling
-  directUrl = "postgres://default:uhCaRzK91vYq@ep-raspy-morning-a7vc0cka.ap-southeast-2.aws.neon.tech:5432/verceldb?sslmode=require" // uses a direct connection
+    provider  = "postgresql"
+    url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+    directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
+
 enum Role {
     ADMIN
     GUEST
@@ -21,13 +28,99 @@ model userRoles {
     role    Role
 }
 
-model Post {
+model User {
     id        Int      @id @default(autoincrement())
-    name      String
+    firstName String
+    lastName  String
+    email     String   @unique
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    role      Role     @default(GUEST)
 
-    @@index([name])
+    @@index([id])
 }
 
+model PartnerAccount {
+    partnerAccountId Int                  @id @default(autoincrement())
+    accountName      String
+    createdAt        DateTime             @default(now())
+    updatedAt        DateTime             @updatedAt
+    contact          Contact[]
+    CallTranscript   CallTranscriptData[]
 
+    @@index([partnerAccountId])
+}
+
+model Contact {
+    contactId      Int                  @id @default(autoincrement())
+    firstName      String
+    lastName       String
+    contactEmail   String?              @unique
+    createdAt      DateTime             @default(now())
+    updatedAt      DateTime             @updatedAt
+    partnerAccount PartnerAccount       @relation(fields: [accountId], references: [partnerAccountId])
+    accountId      Int                  @unique
+    CallTranscript CallTranscriptData[]
+
+    @@index([contactId])
+}
+
+model CallTranscriptData {
+    callTranscriptId          Int                        @id @default(autoincrement())
+    callTranscriptTitle       String
+    createdAt                 DateTime                   @default(now())
+    updatedAt                 DateTime                   @updatedAt
+    partnerAccount            PartnerAccount             @relation(fields: [accountId], references: [partnerAccountId])
+    accountId                 Int                        @unique
+    contact                   Contact                    @relation(fields: [contactId], references: [contactId])
+    contactId                 Int                        @unique
+    CallTranscriptDefaultText CallTranscriptDefaultText?
+    CallTranscriptSnippet     CallTranscriptSnippet[]
+
+    @@index([callTranscriptId])
+}
+
+model CallTranscriptDefaultText {
+    callTranscriptDefaultTextId Int                @id @default(autoincrement())
+    callTranscript              CallTranscriptData @relation(fields: [callTranscriptId], references: [callTranscriptId])
+    callTranscriptId            Int                @unique
+    transcriptText              String
+
+    @@index([callTranscriptDefaultTextId])
+}
+
+// do they all need to be foreign keys or can they be relations?
+
+model CallTranscriptSnippet {
+    callTranscriptSnippetId Int                @id @default(autoincrement())
+    callTranscript          CallTranscriptData @relation(fields: [callTranscriptId], references: [callTranscriptId])
+    callTranscriptId        Int                @unique
+    snippetText             String
+    InInPhaseLabels         InInPhaseLabel[]
+    MaMaPhaseLabels         MaMaPhaseLabel[]
+
+    @@index([callTranscriptSnippetId])
+}
+
+model CallTranscriptCategory {
+    callTranscriptCategoryId   Int    @id @default(autoincrement())
+    callTranscriptCategoryName String
+}
+
+model InInPhaseLabel {
+    inInPhaseLabelId Int                   @id @default(autoincrement())
+    labelName        String
+    callTranscript   CallTranscriptSnippet @relation(fields: [callTranscriptId], references: [callTranscriptSnippetId])
+    callTranscriptId Int                   @unique
+
+    @@index([inInPhaseLabelId])
+}
+
+model MaMaPhaseLabel {
+    mamaPhaseLabelId Int                   @id @default(autoincrement())
+    labelName        Int
+    callTranscript   CallTranscriptSnippet @relation(fields: [callTranscriptId], references: [callTranscriptSnippetId])
+    callTranscriptId Int                   @unique
+
+    @@index([mamaPhaseLabelId])
+}
