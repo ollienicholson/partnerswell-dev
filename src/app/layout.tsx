@@ -1,6 +1,7 @@
 import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
+import { cn } from "~/lib/utils";
 import { ClerkProvider, UserButton } from "@clerk/nextjs";
 
 import { TRPCReactProvider } from "~/trpc/react";
@@ -25,8 +26,8 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body className={`font-sans ${inter.variable}`}>
+      <html lang="en" suppressHydrationWarning>
+        <body className={cn(`font-sans ${inter.variable}`)}>
           <div className="border-b">
             <div className="flex h-16 items-center px-4">
               <MainNav className="mx-6" />

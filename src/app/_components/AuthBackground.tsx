@@ -13,7 +13,7 @@ export const AuthBackground = ({ signIn }: { signIn?: boolean }) => (
       <div className="relative h-24 w-[180px]">
         <Image
           src="/logo.png"
-          alt="Masters Logo"
+          alt="Partnerswell logo"
           fill
           className="object-contain"
         />

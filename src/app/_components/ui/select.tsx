@@ -8,7 +8,7 @@ import {
   CheckIcon,
   ChevronsUpDown,
 } from "lucide-react";
-import { cn } from "~/utils/utils";
+import { cn } from "~/lib/utils";
 
 const Select = SelectPrimitive.Root;
 
