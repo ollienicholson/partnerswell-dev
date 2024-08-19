@@ -1,11 +1,11 @@
 "use client";
 
-import { Dashboard } from "~/app/components/ui/dashboard";
+import { Dashboard } from "./components/ui/dashboard";
 
 export default function Home() {
   return (
     <>
-    <Dashboard></Dashboard>
+      <Dashboard />
     </>
   );
 }
