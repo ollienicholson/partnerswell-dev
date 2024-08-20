@@ -1,5 +1,5 @@
 export default function PartnersAccounts() {
   return (
-    <div>Hello Partner Accounts</div>
+    <div className="flex flex-col gap-4 border-b pb-2 mb-4 w-full">Hello Partner Accounts</div>
   );
 }

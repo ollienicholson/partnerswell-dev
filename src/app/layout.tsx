@@ -142,12 +142,10 @@ export default function RootLayout({
                   </SheetContent>
                 </Sheet>
               </header>
-              <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-                <div className="flex items-center border-b">
-                  <h1 className="text-lg font-semibold md:text-2xl">
+              <main className="p-4">
+                  <div className="text-lg font-semibold md:text-2xl">
                     <TRPCReactProvider>{children}</TRPCReactProvider>
-                  </h1>
-                </div>
+                  </div>
               </main>
             </div>
           </div>

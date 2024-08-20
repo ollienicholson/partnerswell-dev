@@ -1,5 +1,5 @@
 export default function Integrations() {
   return (
-    <div>Hello Integrations</div>
+    <div className="flex flex-col gap-4 border-b pb-2 mb-4 w-full">Hello Integrations</div>
   );
 }
