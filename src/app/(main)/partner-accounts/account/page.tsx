@@ -5,7 +5,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "~/components/ui/table";
+} from "~/app/components/ui/table";
 
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
@@ -23,7 +23,7 @@ export default function Account() {
   return (
     <div>
       <div className="gap-4 border-b pb-2 mb-4 w-full text-lg font-semibold md:text-2xl">
-        Hello Accenture
+        Partner Account: Accenture
       </div>
       <div className="w-full rounded-xl border-1 shadow-md py-2">
         <Table>
@@ -33,12 +33,14 @@ export default function Account() {
               <TableHead>Contact</TableHead>
             </TableRow>
           </TableHeader>
+
           <TableBody>
               <TableRow key={invoice.id} className="hover:bg-white">
                 <TableCell>{invoice.account}</TableCell>
                 <TableCell>{invoice.contact}</TableCell>
               </TableRow>
           </TableBody>
+          <div className="p-2" />
           <TableHeader>
             <TableRow className="hover:bg-white">
               <TableHead>Created At</TableHead>

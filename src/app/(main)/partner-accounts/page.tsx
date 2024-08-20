@@ -5,7 +5,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "~/components/ui/table";
+} from "~/app/components/ui/table";
 
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
@@ -101,7 +101,7 @@ export default function PartnersAccount() {
         </div>
         <div className="mt-6 pt-12">
           <div className="flex justify-start">
-            <Link href="/dashboard">
+            <Link href="/">
               <Button>Back</Button>
             </Link>
           </div>
