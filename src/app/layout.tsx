@@ -86,7 +86,7 @@ export default function RootLayout({
                 </div>
               </div>
             </div>
-            <div className="flex flex-col">
+            <div>
               <header className="flex h-14 items-center gap-4 px-4 lg:h-[60px] lg:px-6">
                 <Sheet>
                   <SheetTrigger asChild>
@@ -143,9 +143,7 @@ export default function RootLayout({
                 </Sheet>
               </header>
               <main className="p-4">
-                  <div className="text-lg font-semibold md:text-2xl">
                     <TRPCReactProvider>{children}</TRPCReactProvider>
-                  </div>
               </main>
             </div>
           </div>
