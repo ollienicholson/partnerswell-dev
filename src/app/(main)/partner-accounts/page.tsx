@@ -73,14 +73,14 @@ interface Invoice {
 
 export default function PartnersAccount() {
   return (
-      <div className="relative min-h-screen">
-        <div className="gap-4 border-b pb-2 mb-4 w-full text-lg font-semibold md:text-2xl">
+      <div className="relative min-h-screen p-2">
+        <div className="gap-4 border-b mb-4 pb-2 w-full text-lg font-semibold md:text-2xl">
           Partner Accounts
         </div>
         <div className="w-full rounded-xl border-1 shadow-md">
           <Table>
             <TableHeader>
-              <TableRow>
+              <TableRow className="hover:bg-white">
                 <TableHead>Account</TableHead>
                 <TableHead>Contact</TableHead>
                 <TableHead>Created At</TableHead>
