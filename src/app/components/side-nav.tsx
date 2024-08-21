@@ -21,8 +21,8 @@ const links = [
 
 export default function SideNav() {
   const pathname = usePathname();
-  const isActive = (href: string) => {
-    return pathname === href;
+  const isActive = (link: string) => {
+    return pathname === link;
   };
 
   return (
@@ -34,6 +34,7 @@ export default function SideNav() {
               const LinkIcon = link.icon;
               return (
                 <Link
+                  key={link.name}
                   href={link.href}
                   className={`flex items-center gap-4 rounded-md px-3 py-2 ${isActive(link.href) ? 'text-foreground bg-muted' : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                   }`}

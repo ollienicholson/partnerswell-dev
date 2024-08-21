@@ -76,14 +76,6 @@ const invoices = [
   },
 ]
 
-interface Invoice {
-  id: number;
-  account: string;
-  contact: string;
-  createdBy: string;
-  createdAt: string; // or number, depending on your data type
-}
-
 
 export default function CallTranscriptions() {
   return (
