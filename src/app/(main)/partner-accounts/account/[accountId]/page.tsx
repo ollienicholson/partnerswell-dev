@@ -17,10 +17,10 @@ import { useEffect, useState } from 'react';
 const fetchAccountData = async (id: number) => {
   return   {
     id,
-    accountName: "Accenture",
-    contactName: "Bruce Wayne",
-    createdBy: "Cam Tickell",
-    createdAt: "12/01/2024 6:40PM",
+    accountName: "Accenture" as string,
+    contactName: "Bruce Wayne" as string,
+    createdBy: "Cam Tickell" as string,
+    createdAt: "12/01/2024 6:40PM" as string,
   };
 };
 
