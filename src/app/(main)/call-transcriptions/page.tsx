@@ -13,7 +13,8 @@ import Link from "next/link";
 const invoices = [
   {
     id: 1,
-    account: "Accenture",
+    import: "",
+    account: "",
     contact: "Bruce Wayne",
     createdAt: "12/01/2024 6:40PM",
     duration: "1hr 13mins",
@@ -21,7 +22,8 @@ const invoices = [
   },
   {
     id: 2,
-    account: "Capgemini",
+    import: "",
+    account: "",
     contact: "Peter Parker",
     createdAt: "12/01/2024 6:40PM",
     duration: "1hr 13mins",
@@ -29,7 +31,8 @@ const invoices = [
   },
   {
     id: 3,
-    account: "Accenture",
+    import: "",
+    account: "",
     contact: "Steve Jobs",
     createdAt: "12/01/2024 6:40PM",
     duration: "1hr 13mins",
@@ -37,7 +40,8 @@ const invoices = [
   },
   {
     id: 4,
-    account: "AWS",
+    import: "",
+    account: "",
     contact: "Reid Hoffman",
     createdAt: "12/01/2024 6:40PM",
     duration: "1hr 13mins",
@@ -45,7 +49,8 @@ const invoices = [
   },
   {
     id: 5,
-    account: "AWS",
+    import: "",
+    account: "",
     contact: "Bruce Wayne",
     createdAt: "12/01/2024 6:40PM",
     duration: "1hr 13mins",
@@ -53,15 +58,17 @@ const invoices = [
   },
   {
     id: 6,
-    account: "Capgemini",
+    import: "",
+    account: "",
     contact: "Peter Parker",
     createdAt: "12/01/2024 6:40PM",
     duration: "1hr 13mins",
     title: "Intro call with Peter",
-  },
+  }, 
   {
     id: 7,
-    account: "Google",
+    import: "",
+    account: "",
     contact: "Steve Jobs",
     createdAt: "12/01/2024 6:40PM",
     duration: "1hr 13mins",
@@ -88,6 +95,7 @@ export default function CallTranscriptions() {
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-white">
+                <TableHead>Import</TableHead>
                 <TableHead>Account</TableHead>
                 <TableHead>Contact</TableHead>
                 <TableHead>Created At</TableHead>
@@ -98,6 +106,7 @@ export default function CallTranscriptions() {
             <TableBody>
               {invoices.map((invoice) => (
                 <TableRow key={invoice.id}>
+                  <TableCell>{invoice.import}</TableCell>
                   <TableCell>{invoice.account}</TableCell>
                   <TableCell>{invoice.contact}</TableCell>
                   <TableCell>{invoice.createdAt}</TableCell>
