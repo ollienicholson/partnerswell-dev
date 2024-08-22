@@ -46,6 +46,8 @@ model PartnerAccount {
     contacts         Contact[]
 
     // CallTranscript   CallTranscriptData[]
+    // need to add createdById to this table
+    // then link to the USER table and retrieve the first name and last name
 }
 
 model Contact {

@@ -8,71 +8,23 @@ import {
   TableHeader,
   TableRow,
 } from "~/app/components/ui/table";
-
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
-
 import { useRouter } from "next/navigation";
+import { api } from "~/trpc/react";
 
-
-const accounts = [
-  {
-    id: 1,
-    accountName: "Accenture",
-    contact: "Bruce Wayne",
-    createdBy: "Cam Tickell",
-    createdAt: "12/01/2024 6:40PM",
-  },
-  {
-    id: 2,
-    accountName: "Capgemini",
-    contact: "Peter Parker",
-    createdBy: "Cam Tickell",
-    createdAt: "12/01/2024 6:40PM",
-  },
-  {
-    id: 3,
-    accountName: "Accenture",
-    contact: "Steve Jobs",
-    createdBy: "Cam Tickell",
-    createdAt: "12/01/2024 6:40PM",
-  },
-  {
-    id: 4,
-    accountName: "AWS",
-    contact: "Reid Hoffman",
-    createdBy: "Cam Tickell",
-    createdAt: "12/01/2024 6:40PM",
-  },
-  {
-    id: 5,
-    accountName: "AWS",
-    contact: "Bruce Wayne",
-    createdBy: "Cam Tickell",
-    createdAt: "12/01/2024 6:40PM",
-  },
-  {
-    id: 6,
-    accountName: "Capgemini",
-    contact: "Peter Parker",
-    createdBy: "Cam Tickell",
-    createdAt: "12/01/2024 6:40PM",
-  },
-  {
-    id: 7,
-    accountName: "Google",
-    contact: "Steve Jobs",
-    createdBy: "Cam Tickell",
-    createdAt: "12/01/2024 6:40PM",
-  },
-]
-
-
-export default function PartnerAccounts() {
+export default function Accounts() {
   const router = useRouter();
-  const handleRowClick = (id: number) => {
-    router.push(`/partner-accounts/account/${id}`);
+  const {data: accounts, isLoading} = api.partnerAccountRouter.getPartnerAccounts.useQuery();
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
+  const handleRowClick = (accountId: number) => {
+    router.push(`/partner-accounts/${accountId}`);
   };
+  // remove accounts folder and list accounts under [id]
 
   return (
       <div className="relative min-h-screen p-2">
@@ -90,7 +42,7 @@ export default function PartnerAccounts() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {accounts.map((account) => (
+              {accounts?.map((account) => (
                 <TableRow 
                 key={account.id}
                 onClick={() => handleRowClick(account.id)}

@@ -10,49 +10,40 @@ import {
 } from "~/app/components/ui/table";
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
-
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-
-const fetchAccountData = async (id: number) => {
-  return   {
-    id,
-    accountName: "Accenture" as string,
-    contactName: "Bruce Wayne" as string,
-    createdBy: "Cam Tickell" as string,
-    createdAt: "12/01/2024 6:40PM" as string,
-  };
-};
+import { api } from "~/trpc/react";
+// import { useRouter } from "next/navigation"; // Correct hook for navigation in app directory
+import { useEffect, useState } from "react";
 
 export default function Account() {
-  const { accountId } = useParams();
-  console.log(accountId);
-  const [accountData, setAccount] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  // const router = useRouter();
+  const [accountId, setAccountId] = useState<number | null>(null);
 
   useEffect(() => {
-    if (accountId) {
-      const fetchData = async () => {
-        const data = await fetchAccountData(parseInt(accountId as string));
-        setAccount(data);
-        setIsLoading(false);
-      };
-      fetchData();
+    const id = window.location.pathname.split("/").pop(); // Grab the last segment of the path
+    if (id && !isNaN(Number(id))) {
+      setAccountId(Number(id));
     }
-  }, [accountId]);
+  }, []);
+
+  const { data: account, isLoading } = api.partnerAccountRouter.getPartnerAccountById.useQuery(
+    { id: accountId ?? 0 },
+    {
+      enabled: !!accountId, // Only fetch if accountId is valid
+    }
+  );
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  if (!accountData) {
-    return <div>Error: ${accountId} is not a valid account ID.</div>;
+  if (!account) {
+    return <div>Account not found</div>;
   }
 
   return (
     <div>
       <div className="gap-4 border-b pb-2 mb-4 w-full text-lg font-semibold md:text-2xl">
-        Partner Account {accountData.accountName}
+        Partner Account {account.accountName}
       </div>
       <div className="w-full rounded-xl border-1 shadow-md py-2">
         <Table>
@@ -62,12 +53,11 @@ export default function Account() {
               <TableHead>Contact</TableHead>
             </TableRow>
           </TableHeader>
-
           <TableBody>
-              <TableRow key={accountData.id} className="hover:bg-white">
-                <TableCell>{accountData.accountName}</TableCell>
-                <TableCell>{accountData.contactName}</TableCell>
-              </TableRow>
+            <TableRow key={account.id} className="hover:bg-white">
+              <TableCell>{account.accountName}</TableCell>
+              <TableCell>{account.contact}</TableCell>
+            </TableRow>
           </TableBody>
           <div className="p-2" />
           <TableHeader>
@@ -77,10 +67,10 @@ export default function Account() {
             </TableRow>
           </TableHeader>
           <TableBody>
-              <TableRow key={accountData.id} className="hover:bg-white">
-                <TableCell>{accountData.createdAt}</TableCell>
-                <TableCell>{accountData.createdBy}</TableCell>
-              </TableRow>
+            <TableRow key={account.id} className="hover:bg-white">
+              <TableCell>{account.createdAt}</TableCell>
+              <TableCell>{account.createdBy}</TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </div>
@@ -95,6 +85,5 @@ export default function Account() {
         </div>
       </div>
     </div>
-
   );
 }
