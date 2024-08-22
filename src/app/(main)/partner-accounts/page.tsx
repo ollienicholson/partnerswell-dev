@@ -108,7 +108,7 @@ export default function Accounts() {
   };
 
   return (
-      <div className="relative min-h-screen p-2">
+      <div className="relative min-h-screen p-6">
         <div className="gap-4 border-b mb-4 pb-2 w-full text-lg font-semibold md:text-2xl">
           Partner Accounts
         </div>
@@ -169,10 +169,8 @@ export default function Accounts() {
         </div>
         <div className="mt-6 pt-12">
           <div className="flex justify-between">
-            <Link href="/">
-              <Button>Back</Button>
-            </Link>
-              <CreateAccountButton/>
+            <Link href="/"><Button>Back</Button></Link>
+            <CreateAccountButton/>
           </div>
         </div>
       </div>

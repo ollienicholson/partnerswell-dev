@@ -136,15 +136,20 @@ export default function Account() {
   };
 
   if (!account) {
-    return <div>Account not found</div>;
+    return (
+      <div className="loader-container">
+      <div className="loader"></div>
+      <div>Account not found?</div>;
+    </div>
+    )
   };
 
   return (
-    <div>
+    <div className="relative min-h-screen p-6">
       <div className="gap-4 border-b pb-2 mb-4 w-full text-lg font-semibold md:text-2xl">
-        Partner Account {account.accountName}
+        Partner Account: {account.accountName}
       </div>
-      <div className="w-full rounded-xl border-1 shadow-md py-2">
+      <div className="rounded-xl border-1 shadow-md">
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-white">
