@@ -48,6 +48,7 @@ model PartnerAccount {
     // CallTranscript   CallTranscriptData[]
     // need to add createdById to this table
     // then link to the USER table and retrieve the first name and last name
+    // change 'contacts' to 'contact'? check if this is a pain before changing -> should be singular
 }
 
 model Contact {

@@ -8,23 +8,87 @@ import {
   TableHeader,
   TableRow,
 } from "~/app/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "~/app/components/ui/dialog";
+import { Input } from "~/app/components/ui/input";
+import { Label } from "~/app/components/ui/label";
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
+import { useState } from "react";
+
+
+export function CreateAccountButton({}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const openDialog = () => setIsOpen(true);
+  const closeDialog = () => setIsOpen(false);
+  
+  return (
+    <>
+    <Button onClick={openDialog}>Create Account</Button>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogContent className="sm:max-w-[600px]">
+        <DialogHeader>
+          <DialogTitle>Create new account</DialogTitle>
+          <DialogDescription>
+            Create a new account here. Click save when you're done.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right">
+              Account Name
+            </Label>
+            <Input
+              id="name"
+              placeholder="Partner account name"
+              className="col-span-3"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="username" className="text-right">
+              Primary Contact
+            </Label>
+            <Input
+              id="username"
+              placeholder="Contact full name"
+              className="col-span-3"
+            />
+          </div>
+        </div>
+        <div className="flex justify-between">
+            <Button variant="outline" type="submit" onClick={closeDialog}>Cancel</Button>
+            <Button type="submit" onClick={closeDialog}>Create</Button>
+        </div>
+
+      </DialogContent>
+    </Dialog>
+    </>
+  )
+}
 
 export default function Accounts() {
+
+  // get accounts
   const router = useRouter();
   const {data: accounts, isLoading} = api.partnerAccountRouter.getPartnerAccounts.useQuery();
-
   if (isLoading) {
-    return <div>Loading...</div>
-  }
-
+    return (
+      <div className="loader-container">
+        <div className="loader"></div>
+      </div>
+    );
+  };
   const handleRowClick = (accountId: number) => {
     router.push(`/partner-accounts/${accountId}`);
   };
-  // remove accounts folder and list accounts under [id]
 
   return (
       <div className="relative min-h-screen p-2">
@@ -57,10 +121,11 @@ export default function Accounts() {
           </Table>
         </div>
         <div className="mt-6 pt-12">
-          <div className="flex justify-start">
+          <div className="flex justify-between">
             <Link href="/">
               <Button>Back</Button>
             </Link>
+              <CreateAccountButton/>
           </div>
         </div>
       </div>

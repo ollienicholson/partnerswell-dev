@@ -8,14 +8,109 @@ import {
   TableHeader,
   TableRow,
 } from "~/app/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "~/app/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "~/app/components/ui/alert-dialog"
+import { Input } from "~/app/components/ui/input";
+import { Label } from "~/app/components/ui/label";
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 import { api } from "~/trpc/react";
-// import { useRouter } from "next/navigation"; // Correct hook for navigation in app directory
 import { useEffect, useState } from "react";
 
+export function AlertBox( {children}: {children: React.ReactNode}) {
+  return (
+  <AlertDialog>
+    {children}
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+        <AlertDialogDescription>
+          This action cannot be undone. This will permanently delete your account
+          and remove your data from our servers.
+        </AlertDialogDescription>
+      </AlertDialogHeader>
+        <div className="flex justify-between mt-4">
+        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogAction>Delete</AlertDialogAction>
+        </div>
+    </AlertDialogContent>
+  </AlertDialog>
+  );
+}
+
+export function EditAccountButton({accountName, accountContact}: {accountName: string, accountContact: string}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const openDialog = () => setIsOpen(true);
+  const closeDialog = () => setIsOpen(false);
+  
+  return (
+    <>
+    <Button onClick={openDialog}>Edit Account</Button>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogContent className="sm:max-w-[600px]">
+        <DialogHeader>
+          <DialogTitle>Edit account</DialogTitle>
+          <DialogDescription>
+            Edit {accountName}'s account. Click save when you're done.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right">
+              Account Name
+            </Label>
+            <Input
+              id="name"
+              defaultValue={accountName}
+              placeholder="Partner account name"
+              className="col-span-3"
+              />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="username" className="text-right">
+              Primary Contact
+            </Label>
+            <Input
+              id="username"
+              defaultValue={accountContact}
+              placeholder="Contact full name"
+              className="col-span-3"
+            />
+          </div>
+        </div>
+        <div className="flex justify-between">
+          <Button variant="secondary" type="submit" onClick={closeDialog}>Cancel</Button>
+          <Button type="submit" onClick={closeDialog}>Save</Button>
+          <AlertBox>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive" type="submit">Delete</Button>
+            </AlertDialogTrigger>
+          </AlertBox>
+        </div>
+      </DialogContent>
+    </Dialog>
+    </>
+  );
+}
+
 export default function Account() {
-  // const router = useRouter();
   const [accountId, setAccountId] = useState<number | null>(null);
 
   useEffect(() => {
@@ -33,12 +128,16 @@ export default function Account() {
   );
 
   if (isLoading) {
-    return <div>Loading...</div>;
-  }
+    return (
+      <div className="loader-container">
+        <div className="loader"></div>
+      </div>
+    );
+  };
 
   if (!account) {
     return <div>Account not found</div>;
-  }
+  };
 
   return (
     <div>
@@ -79,9 +178,7 @@ export default function Account() {
           <Link href="/partner-accounts">
             <Button>Back</Button>
           </Link>
-          <Link href="">
-            <Button>Delete Account</Button>
-          </Link>
+          <EditAccountButton accountName={account.accountName} accountContact={account.contact}/>
         </div>
       </div>
     </div>
