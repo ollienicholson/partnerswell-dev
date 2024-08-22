@@ -3,7 +3,7 @@ import {
   createTRPCRouter, 
  } from "~/server/api/trpc";
 import { dbRouter } from "./routers/db";
-import { partnerAccountRouter } from "./routers/partnerAccounts";
+import { partnerAccountRouter } from "./routers/partner-accounts";
 
 
 /**
