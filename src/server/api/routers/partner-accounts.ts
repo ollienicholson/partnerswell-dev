@@ -64,6 +64,30 @@ const partnerAccounts = [
     createdAt: "12/01/2024 6:40PM",
     updatedAt: "10/08/2024 7:20PM",
   },
+  {
+    id: 8,
+    accountName: "Microsoft",
+    contact: "Bruce Wayne",
+    createdBy: "Cam Tickell",
+    createdAt: "12/01/2024 6:40PM",
+    updatedAt: "10/08/2024 7:20PM",
+  },
+  {
+    id: 9,
+    accountName: "Capgemini",
+    contact: "Peter Parker",
+    createdBy: "Cam Tickell",
+    createdAt: "12/01/2024 6:40PM",
+    updatedAt: "10/08/2024 7:20PM",
+  },
+  {
+    id: 10,
+    accountName: "Microsoft",
+    contact: "Steve Jobs",
+    createdBy: "Cam Tickell",
+    createdAt: "12/01/2024 6:40PM",
+    updatedAt: "10/08/2024 7:20PM",
+  },
 ];
 
 export const partnerAccountRouter = createTRPCRouter({

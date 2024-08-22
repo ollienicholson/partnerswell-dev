@@ -12,10 +12,18 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "~/app/components/ui/dialog";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "~/app/components/ui/pagination";
 import { Input } from "~/app/components/ui/input";
 import { Label } from "~/app/components/ui/label";
 import { Button } from "~/app/components/ui/button";
@@ -74,18 +82,27 @@ export function CreateAccountButton({}) {
   )
 }
 
+// interface for accounts??
+
 export default function Accounts() {
+
+  // pagination
+  const rowsPerPage = 5;
+  const [startIndex, setStartIndex] = useState(0);
+  const [endIndex, setEndIndex] = useState(rowsPerPage);
 
   // get accounts
   const router = useRouter();
   const {data: accounts, isLoading} = api.partnerAccountRouter.getPartnerAccounts.useQuery();
+  
   if (isLoading) {
     return (
       <div className="loader-container">
         <div className="loader"></div>
       </div>
-    );
+    )
   };
+
   const handleRowClick = (accountId: number) => {
     router.push(`/partner-accounts/${accountId}`);
   };
@@ -106,7 +123,8 @@ export default function Accounts() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {accounts?.map((account) => (
+              {accounts?.slice(startIndex, endIndex).map((account) => (
+              // {accounts?.map((account) => (
                 <TableRow 
                 key={account.id}
                 onClick={() => handleRowClick(account.id)}
@@ -119,6 +137,35 @@ export default function Accounts() {
               ))}
             </TableBody>
           </Table>
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious 
+                className={
+                  startIndex === 0 ? "pointer-events-none opacity-50" : "no-select"
+                }
+                onClick={() => {
+                setStartIndex(startIndex - rowsPerPage);
+                setEndIndex(endIndex - rowsPerPage);
+                }}
+                />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationNext
+                  className={
+                    endIndex === accounts?.length ? "pointer-events-none opacity-50" : "no-select"
+                  }
+                  onClick={() => {
+                  setStartIndex(startIndex + rowsPerPage);
+                  setEndIndex(endIndex + rowsPerPage);
+                  }}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
         </div>
         <div className="mt-6 pt-12">
           <div className="flex justify-between">
