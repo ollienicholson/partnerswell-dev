@@ -1,8 +1,9 @@
 {
-  "name": "packetswell",
+  "name": "partnerswell",
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "node": "--trace-warnings",
   "scripts": {
     "build": "next build",
     "db:push": "prisma db push",
