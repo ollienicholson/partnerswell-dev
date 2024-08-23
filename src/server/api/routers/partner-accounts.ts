@@ -5,9 +5,18 @@ import {
 
  import { z } from "zod";
 
+ type PartnerAccount = {
+  id: number;
+  accountName: string;
+  contact: string;
+  createdAt: string;
+  createdBy: string;
+  updatedAt: string;
+};
+
 
 // Static data array
-const partnerAccounts = [
+const partnerAccounts: PartnerAccount[] = [
   {
     id: 1,
     accountName: "Accenture",

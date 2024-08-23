@@ -93,15 +93,23 @@ export default function Accounts() {
 
   // get accounts
   const router = useRouter();
-  const {data: accounts, isLoading} = api.partnerAccountRouter.getPartnerAccounts.useQuery();
+  const {data: accounts, isLoading, error} = api.partnerAccountRouter.getPartnerAccounts.useQuery();
   
   if (isLoading) {
     return (
       <div className="loader-container">
         <div className="loader"></div>
       </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="error-container">
+        <p>Error loading accounts: {error.message}</p>
+      </div>
     )
-  };
+  }
 
   const handleRowClick = (accountId: number) => {
     router.push(`/partner-accounts/${accountId}`);
@@ -119,7 +127,7 @@ export default function Accounts() {
                 <TableHead>Account Name</TableHead>
                 <TableHead>Contact Name</TableHead>
                 <TableHead>Created At</TableHead>
-                <TableHead className="text-right">Created By</TableHead >
+                <TableHead>Created By</TableHead >
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -132,7 +140,7 @@ export default function Accounts() {
                   <TableCell>{account.accountName}</TableCell>
                   <TableCell>{account.contact}</TableCell>
                   <TableCell>{account.createdAt}</TableCell>
-                  <TableCell className="text-right">{account.createdBy}</TableCell>
+                  <TableCell>{account.createdBy}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -176,7 +184,3 @@ export default function Accounts() {
       </div>
   );
 }
-
-// add pagination component
-// https://www.youtube.com/watch?v=x8dszJTm_RQ
-// https://ui.shadcn.com/docs/components/pagination
