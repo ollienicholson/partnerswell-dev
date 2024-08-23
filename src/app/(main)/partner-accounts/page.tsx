@@ -20,7 +20,6 @@ import {
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
-  PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "~/app/components/ui/pagination";
@@ -30,7 +29,7 @@ import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 export function CreateAccountButton({}) {
   const [isOpen, setIsOpen] = useState(false);
@@ -95,10 +94,16 @@ export default function Accounts() {
   // get accounts
   const router = useRouter();
   const {
-    data: accounts,
+    data: accounts = [],
     isLoading,
     error,
-  } = api.partnerAccountRouter.getPartnerAccounts.useQuery();
+  } = api.partnerAccountRouter.getPartnerAccounts.useQuery(undefined, {
+    staleTime: 5 * 60 * 1000, /// 2 minutes
+  });
+
+  const pagintedAccounts = useMemo(() => {
+    return accounts.slice(startIndex, endIndex);
+  }, [accounts, startIndex, endIndex]);
 
   if (isLoading) {
     return (
@@ -112,6 +117,9 @@ export default function Accounts() {
     return (
       <div className="error-container">
         <p>Error loading accounts: {error.message}</p>
+        <Link href="/">
+          <Button>Back</Button>
+        </Link>
       </div>
     );
   }
@@ -136,8 +144,7 @@ export default function Accounts() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {accounts?.slice(startIndex, endIndex).map((account) => (
-              // {accounts?.map((account) => (
+            {pagintedAccounts.map((account) => (
               <TableRow
                 key={account.id}
                 onClick={() => handleRowClick(account.id)}

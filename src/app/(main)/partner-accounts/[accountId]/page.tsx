@@ -149,8 +149,12 @@ export default function Account() {
   if (!account) {
     return (
       <div className="loader-container">
-        <div className="loader"></div>
-        <div>Account not found?</div>;
+        <div className=" flex flex-col items-center justify-center gap-6">
+          <div>Account not found</div>
+          <Link href="/partner-accounts">
+            <Button>Back to Partner Accounts</Button>
+          </Link>
+        </div>
       </div>
     );
   }

@@ -1,11 +1,8 @@
-import { 
-  createTRPCRouter, 
-  publicProcedure,
- } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
- import { z } from "zod";
+import { z } from "zod";
 
- type PartnerAccount = {
+type PartnerAccount = {
   id: number;
   accountName: string;
   contact: string;
@@ -13,7 +10,6 @@ import {
   createdBy: string;
   updatedAt: string;
 };
-
 
 // Static data array
 const partnerAccounts: PartnerAccount[] = [
