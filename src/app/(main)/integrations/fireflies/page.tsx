@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "~/app/components/ui/button"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "~/app/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,9 +12,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "~/app/components/ui/form"
-import { Input } from "~/app/components/ui/input"
-import { toast } from "~/app/components/ui/use-toast"
+} from "~/app/components/ui/form";
+import { Input } from "~/app/components/ui/input";
+import { toast } from "~/app/components/ui/use-toast";
 import {
   Card,
   CardDescription,
@@ -28,7 +28,7 @@ const FormSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-})
+});
 
 export function InputForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -36,9 +36,7 @@ export function InputForm() {
     defaultValues: {
       username: "",
     },
-  })
-
-
+  });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
@@ -48,7 +46,7 @@ export function InputForm() {
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
-    })
+    });
   }
 
   return (
@@ -61,58 +59,81 @@ export function InputForm() {
             <FormItem>
               <FormLabel>Enter your API Key</FormLabel>
               <FormControl>
-                <Input placeholder="xxxxxxxx - xxxx - xxxx - xxxx - xxxxxxxxxxxx" {...field} />
+                <Input
+                  placeholder="xxxxxxxx - xxxx - xxxx - xxxx - xxxxxxxxxxxx"
+                  {...field}
+                />
               </FormControl>
               <FormDescription>
-              <div className="pt-2 items-left">
-              <div style={{ marginBottom: '10px' }}>Access meetings, contacts and team data with the Fireflies API.</div>
-              <div style={{ marginBottom: '10px' }}>Usage beyond 50 api calls per day requires a Business account. Contact support@fireflies.ai with questions.</div>
-              <div style={{ marginBottom: '10px' }}>GraphQL API Endpoint: <Link className="text-blue-500" href="https://api.fireflies.ai/graphql" target="_blank" rel="noopener noreferrer">https://api.fireflies.ai/graphql</Link></div>
-              <div style={{ marginBottom: '50px' }}>Copy your API Key and replace in the Authorization box above. </div>
-              </div>
+                <div className="items-left pt-2">
+                  <div style={{ marginBottom: "10px" }}>
+                    Access meetings, contacts and team data with the Fireflies
+                    API.
+                  </div>
+                  <div style={{ marginBottom: "10px" }}>
+                    Usage beyond 50 api calls per day requires a Business
+                    account. Contact support@fireflies.ai with questions.
+                  </div>
+                  <div style={{ marginBottom: "10px" }}>
+                    GraphQL API Endpoint:{" "}
+                    <Link
+                      className="text-blue-500"
+                      href="https://api.fireflies.ai/graphql"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      https://api.fireflies.ai/graphql
+                    </Link>
+                  </div>
+                  <div style={{ marginBottom: "50px" }}>
+                    Copy your API Key and replace in the Authorization box
+                    above.{" "}
+                  </div>
+                </div>
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
         <div className="flex justify-between ">
-        <Button type="submit">Connect</Button>
+          <Button type="submit">Connect</Button>
         </div>
       </form>
     </Form>
-  )
+  );
 }
-
-
-
 
 export default function Fireflies() {
   return (
     <div className="relative min-h-screen p-6">
-      <div className="gap-4 border-b mb-4 pb-2 w-full text-lg font-semibold md:text-2xl">
+      <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
         Fireflies Integration
       </div>
-      <Card className="w-full h-full">
+      <Card className="h-full w-full">
         <CardHeader>
           <CardTitle>Fireflies</CardTitle>
           <div className="items-left">
-          <CardDescription>Connect your Fireflies account to get access to your call transcription data.</CardDescription>
+            <CardDescription>
+              Connect your Fireflies account to get access to your call
+              transcription data.
+            </CardDescription>
           </div>
         </CardHeader>
-        
+
         <div className="px-6">
           <InputForm />
         </div>
-        <CardFooter className="flex justify-between mt-6 pt-6">
-          <Link
-          href="/integrations"
-          >
-          <Button 
-          >Back</Button>
+        <CardFooter className="mt-6 flex justify-between pt-6">
+          <Link href="/integrations">
+            <Button>Back</Button>
           </Link>
-          <Link href="https://app.fireflies.ai/integrations/custom/fireflies" target="_blank" rel="noopener noreferrer">
-        <Button >Get your API Key</Button>
-        </Link>
+          <Link
+            href="https://app.fireflies.ai/integrations/custom/fireflies"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button>Get your API Key</Button>
+          </Link>
         </CardFooter>
       </Card>
     </div>

@@ -64,7 +64,7 @@ const invoices = [
     createdAt: "12/01/2024 6:40PM",
     duration: "1hr 13mins",
     title: "Intro call with Peter",
-  }, 
+  },
   {
     id: 7,
     import: "",
@@ -74,49 +74,48 @@ const invoices = [
     duration: "1hr 13mins",
     title: "Intro call with Steve",
   },
-]
-
+];
 
 export default function CallTranscriptions() {
   return (
-      <div className="relative min-h-screen p-6">
-        <div className="gap-4 border-b mb-4 pb-2 w-full text-lg font-semibold md:text-2xl">
+    <div className="relative min-h-screen p-6">
+      <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
         Call Transcriptions
-        </div>
-        <div className="w-full rounded-xl border-1 shadow-md">
-          <Table>
-            <TableHeader>
-              <TableRow className="hover:bg-white">
-                <TableHead>Import</TableHead>
-                <TableHead>Account</TableHead>
-                <TableHead>Contact</TableHead>
-                <TableHead>Created At</TableHead>
-                <TableHead>Duration</TableHead>
-                <TableHead className="text-right">Title</TableHead>
+      </div>
+      <div className="border-1 w-full rounded-xl shadow-md">
+        <Table>
+          <TableHeader>
+            <TableRow className="hover:bg-white">
+              <TableHead>Import</TableHead>
+              <TableHead>Account</TableHead>
+              <TableHead>Contact</TableHead>
+              <TableHead>Created At</TableHead>
+              <TableHead>Duration</TableHead>
+              <TableHead className="text-right">Title</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {invoices.map((invoice) => (
+              <TableRow key={invoice.id}>
+                <TableCell>{invoice.import}</TableCell>
+                <TableCell>{invoice.account}</TableCell>
+                <TableCell>{invoice.contact}</TableCell>
+                <TableCell>{invoice.createdAt}</TableCell>
+                <TableCell>{invoice.duration}</TableCell>
+                <TableCell className="text-right">{invoice.title}</TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {invoices.map((invoice) => (
-                <TableRow key={invoice.id}>
-                  <TableCell>{invoice.import}</TableCell>
-                  <TableCell>{invoice.account}</TableCell>
-                  <TableCell>{invoice.contact}</TableCell>
-                  <TableCell>{invoice.createdAt}</TableCell>
-                  <TableCell>{invoice.duration}</TableCell>
-                  <TableCell className="text-right">{invoice.title}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-        <div className="pt-12">
-          <div className="flex justify-start">
-            <Link href="/">
-              <Button>Back</Button>
-            </Link>
-          </div>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+      <div className="pt-12">
+        <div className="flex justify-start">
+          <Link href="/">
+            <Button>Back</Button>
+          </Link>
         </div>
       </div>
+    </div>
   );
 }
 // add pagination component
