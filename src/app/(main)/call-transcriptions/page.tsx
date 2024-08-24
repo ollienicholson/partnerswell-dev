@@ -6,118 +6,67 @@ import {
   TableHeader,
   TableRow,
 } from "~/app/components/ui/table";
+import { Checkbox } from "~/app/components/ui/checkbox";
 
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
+import { getTranscripts } from "~/server/api/queries/getTranscripts";
 
-const invoices = [
-  {
-    id: 1,
-    import: "",
-    account: "",
-    contact: "Bruce Wayne",
-    createdAt: "12/01/2024 6:40PM",
-    duration: "1hr 13mins",
-    title: "Intro call with Bruce",
-  },
-  {
-    id: 2,
-    import: "",
-    account: "",
-    contact: "Peter Parker",
-    createdAt: "12/01/2024 6:40PM",
-    duration: "1hr 13mins",
-    title: "Intro call with Peter",
-  },
-  {
-    id: 3,
-    import: "",
-    account: "",
-    contact: "Steve Jobs",
-    createdAt: "12/01/2024 6:40PM",
-    duration: "1hr 13mins",
-    title: "Intro call with Steve",
-  },
-  {
-    id: 4,
-    import: "",
-    account: "",
-    contact: "Reid Hoffman",
-    createdAt: "12/01/2024 6:40PM",
-    duration: "1hr 13mins",
-    title: "Intro call with Reid",
-  },
-  {
-    id: 5,
-    import: "",
-    account: "",
-    contact: "Bruce Wayne",
-    createdAt: "12/01/2024 6:40PM",
-    duration: "1hr 13mins",
-    title: "Intro call with Bruce",
-  },
-  {
-    id: 6,
-    import: "",
-    account: "",
-    contact: "Peter Parker",
-    createdAt: "12/01/2024 6:40PM",
-    duration: "1hr 13mins",
-    title: "Intro call with Peter",
-  },
-  {
-    id: 7,
-    import: "",
-    account: "",
-    contact: "Steve Jobs",
-    createdAt: "12/01/2024 6:40PM",
-    duration: "1hr 13mins",
-    title: "Intro call with Steve",
-  },
-];
+export default async function TranscriptsPage(): Promise<JSX.Element> {
+  const transcripts = await getTranscripts();
 
-export default function CallTranscriptions() {
   return (
-    <div className="relative min-h-screen p-6">
-      <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
-        Call Transcriptions
-      </div>
-      <div className="border-1 w-full rounded-xl shadow-md">
-        <Table>
-          <TableHeader>
-            <TableRow className="hover:bg-white">
-              <TableHead>Import</TableHead>
-              <TableHead>Account</TableHead>
-              <TableHead>Contact</TableHead>
-              <TableHead>Created At</TableHead>
-              <TableHead>Duration</TableHead>
-              <TableHead className="text-right">Title</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {invoices.map((invoice) => (
-              <TableRow key={invoice.id}>
-                <TableCell>{invoice.import}</TableCell>
-                <TableCell>{invoice.account}</TableCell>
-                <TableCell>{invoice.contact}</TableCell>
-                <TableCell>{invoice.createdAt}</TableCell>
-                <TableCell>{invoice.duration}</TableCell>
-                <TableCell className="text-right">{invoice.title}</TableCell>
+    <div>
+      <div className="relative min-h-screen p-6">
+        <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
+          Call Transcripts
+        </div>
+        <div className="border-1 w-full rounded-xl shadow-md">
+          <Table>
+            <TableHeader>
+              <TableRow className="hover:bg-white">
+                {/* add heckbox for import */}
+                <TableHead>Import</TableHead>
+                {/* add dropdown for account */}
+                <TableHead>Account</TableHead>
+                <TableHead>Contact</TableHead>
+                <TableHead>Title</TableHead>
+                <TableHead>Duration</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Attendees</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="pt-12">
-        <div className="flex justify-start">
-          <Link href="/">
-            <Button>Back</Button>
-          </Link>
+            </TableHeader>
+            <TableBody>
+              {transcripts.map((transcript) => (
+                <TableRow key={transcript.id}>
+                  <TableCell>
+                    <Checkbox />
+                  </TableCell>
+                  <TableCell>dropdown</TableCell>
+                  <TableCell>dropdown</TableCell>
+                  <TableCell>{transcript.title}</TableCell>
+                  <TableCell>{transcript.duration} mins</TableCell>
+                  <TableCell>
+                    {new Date(transcript.dateString).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>
+                    {transcript.speakers.map((speaker, index) => (
+                      <li key={index}>{speaker.name}</li>
+                    ))}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+        <div className="pt-12">
+          <div className="flex justify-start">
+            <Link href="/">
+              <Button>Back</Button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
   );
 }
-// add pagination component
-// https://www.youtube.com/watch?v=x8dszJTm_RQ
-// https://ui.shadcn.com/docs/components/pagination

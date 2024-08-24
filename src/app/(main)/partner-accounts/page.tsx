@@ -83,8 +83,6 @@ export function CreateAccountButton({}) {
   );
 }
 
-// interface for accounts??
-
 export default function Accounts() {
   // pagination
   const rowsPerPage = 5;
@@ -116,7 +114,7 @@ export default function Accounts() {
   if (error) {
     return (
       <div className="error-container">
-        <p>Error loading accounts: {error.message}</p>
+        <div>Error loading accounts: {error.message}</div>
         <Link href="/">
           <Button>Back</Button>
         </Link>
