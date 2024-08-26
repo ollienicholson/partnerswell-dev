@@ -13,6 +13,7 @@ import Link from "next/link";
 import { getTranscripts } from "~/server/api/queries/getTranscripts";
 
 export default async function TranscriptsPage(): Promise<JSX.Element> {
+  // TODO: remove hardcoded limit
   const transcripts = await getTranscripts();
 
   return (

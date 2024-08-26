@@ -15,8 +15,8 @@ type transcriptData = {
 };
 
 const GET_TRANSCRIPTS = `
-  query Transcripts {
-    transcripts {
+  query Transcripts($limit: Int) {
+    transcripts(limit: $limit){
       id
       title
       duration
@@ -30,15 +30,18 @@ const GET_TRANSCRIPTS = `
 
 let transcriptsCache: Transcript[] | null = null;
 
-export const getTranscripts = async (): Promise<Transcript[]> => {
+export const getTranscripts = async (
+  limit: number = 2,
+): Promise<Transcript[]> => {
   if (transcriptsCache) {
     console.log("Returning cached transcripts...");
-    return transcriptsCache;
+    return transcriptsCache.slice(0, limit);
   }
   console.log("Fetching transcripts...");
+
   const data: transcriptData = await graphqlClient.request<{
     transcripts: Transcript[];
-  }>(GET_TRANSCRIPTS);
+  }>(GET_TRANSCRIPTS, { limit });
   transcriptsCache = data.transcripts;
   return data.transcripts;
 };

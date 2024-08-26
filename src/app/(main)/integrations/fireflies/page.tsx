@@ -23,30 +23,60 @@ import {
   CardTitle,
 } from "~/app/components/ui/card";
 import Link from "next/link";
+import { useState } from "react";
 
 const FormSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+  api_key: z.string().min(30, {
+    message: "Key must be at least 30 characters.",
   }),
 });
 
 export function InputForm() {
+  console.log("fireflies frontend page.ts InputForm");
+  const [status, setStatus] = useState<string | null>(null);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      username: "",
+      api_key: "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    console.log("fireflies frontend page.ts onSubmit");
+    try {
+      const response = await fetch("/api/fireflies", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      // TODO: add correct toast component
+      const result = await response.json();
+      if (response.ok) {
+        setStatus("SUCCESS: API key is valid !!");
+        toast({
+          title: "Success",
+          description: "API key is valid",
+          variant: "default",
+        });
+      } else {
+        setStatus("ERROR: API key is invalid");
+        toast({
+          title: "Error",
+          description: result.message || "API key is invalid",
+          variant: "default",
+        });
+      }
+    } catch (error) {
+      setStatus("ERR: An error occurred while validating your API key");
+      toast({
+        title: "Error",
+        description: "An error occurred while validating your API key",
+        variant: "destructive",
+      });
+    }
   }
 
   return (
@@ -54,13 +84,13 @@ export function InputForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
         <FormField
           control={form.control}
-          name="username"
+          name="api_key"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Enter your API Key</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="xxxxxxxx - xxxx - xxxx - xxxx - xxxxxxxxxxxx"
+                  placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                   {...field}
                 />
               </FormControl>
@@ -86,17 +116,19 @@ export function InputForm() {
                     </Link>
                   </div>
                   <div style={{ marginBottom: "50px" }}>
-                    Copy your API Key and replace in the Authorization box
-                    above.{" "}
+                    Copy your API key from Fireflies.ai and paste it in the
+                    authorisation box above before clicking connect.
                   </div>
                 </div>
               </FormDescription>
               <FormMessage />
+              {<div className="text-sm">{status}</div>}
             </FormItem>
           )}
         />
-        <div className="flex justify-between ">
+        <div className="flex justify-start gap-4">
           <Button type="submit">Connect</Button>
+          <Button variant="secondary">Edit API key</Button>
         </div>
       </form>
     </Form>
