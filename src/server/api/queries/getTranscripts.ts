@@ -37,7 +37,7 @@ export const getTranscripts = async (
     console.log("Returning cached transcripts...");
     return transcriptsCache.slice(0, limit);
   }
-  console.log("Fetching transcripts...");
+  console.log("Fetching fresh transcripts...");
 
   const data: transcriptData = await graphqlClient.request<{
     transcripts: Transcript[];

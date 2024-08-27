@@ -8,12 +8,27 @@ import {
 } from "~/app/components/ui/table";
 import { Checkbox } from "~/app/components/ui/checkbox";
 
+import * as React from "react";
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/app/components/ui/select";
+
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 import { getTranscripts } from "~/server/api/queries/getTranscripts";
 
-export default async function TranscriptsPage(): Promise<JSX.Element> {
+import { partnerAccounts } from "~/lib/partner-accounts";
+
+export default async function TranscriptsPage() {
   // TODO: remove hardcoded limit
+
+  // get list of transcripts
   const transcripts = await getTranscripts();
 
   return (
@@ -28,7 +43,6 @@ export default async function TranscriptsPage(): Promise<JSX.Element> {
               <TableRow className="hover:bg-white">
                 {/* add heckbox for import */}
                 <TableHead>Import</TableHead>
-                {/* add dropdown for account */}
                 <TableHead>Account</TableHead>
                 <TableHead>Contact</TableHead>
                 <TableHead>Title</TableHead>
@@ -43,8 +57,44 @@ export default async function TranscriptsPage(): Promise<JSX.Element> {
                   <TableCell>
                     <Checkbox />
                   </TableCell>
-                  <TableCell>dropdown</TableCell>
-                  <TableCell>dropdown</TableCell>
+                  <TableCell>
+                    <Select>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Select an account" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {partnerAccounts.map((partnerAccount, index) => (
+                            <SelectItem
+                              key={index}
+                              value={partnerAccount.accountName}
+                            >
+                              {partnerAccount.accountName}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </TableCell>
+                  <TableCell>
+                    <Select>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Select an contact" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {partnerAccounts.map((partnerAccount, index) => (
+                            <SelectItem
+                              key={index}
+                              value={partnerAccount.contact}
+                            >
+                              {partnerAccount.contact}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </TableCell>
                   <TableCell>{transcript.title}</TableCell>
                   <TableCell>{transcript.duration} mins</TableCell>
                   <TableCell>
