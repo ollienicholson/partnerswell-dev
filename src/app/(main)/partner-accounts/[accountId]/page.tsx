@@ -32,6 +32,7 @@ import Link from "next/link";
 import { api } from "~/trpc/react";
 import { useEffect, useState } from "react";
 import { callTranscriptHeader } from "~/lib/call-transcript-header";
+import { useRouter } from "next/navigation";
 
 export function AlertBox({ children }: { children: React.ReactNode }) {
   return (
@@ -160,6 +161,11 @@ export default function Account() {
     );
   }
 
+  const router = useRouter();
+  const handleRowClick = (meetingId: number) => {
+    router.push(`/partner-accounts/${accountId}/${meetingId}`);
+  };
+
   return (
     <div className="relative min-h-screen p-6">
       <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
@@ -212,8 +218,11 @@ export default function Account() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {callTranscriptHeader.map((call, index) => (
-              <TableRow key={index} className="hover:bg-transparent">
+            {callTranscriptHeader.map((call) => (
+              <TableRow
+                key={call.callTranscriptId}
+                onClick={() => handleRowClick(call.callTranscriptId)}
+              >
                 <TableCell>{call.callTranscriptTitle}</TableCell>
                 <TableCell>
                   {new Date(call.dateString).toLocaleDateString()}
