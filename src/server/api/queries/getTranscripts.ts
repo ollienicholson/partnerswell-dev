@@ -39,9 +39,15 @@ export const getTranscripts = async (
   }
   console.log("Fetching fresh transcripts...");
 
-  const data: transcriptData = await graphqlClient.request<{
-    transcripts: Transcript[];
-  }>(GET_TRANSCRIPTS, { limit });
-  transcriptsCache = data.transcripts;
-  return data.transcripts;
+  try {
+    const data: transcriptData = await graphqlClient.request<{
+      transcripts: Transcript[];
+    }>(GET_TRANSCRIPTS, { limit });
+    transcriptsCache = data.transcripts;
+    return data.transcripts;
+  } catch (error) {
+    console.log("Error fetching transcripts:", error);
+    return [];
+    // throw new Error("Failed to fetch transcripts, please try again.");
+  }
 };
