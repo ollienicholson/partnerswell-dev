@@ -31,6 +31,7 @@ import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 import { api } from "~/trpc/react";
 import { useEffect, useState } from "react";
+import { callTranscriptHeader } from "~/lib/call-transcript-header";
 
 export function AlertBox({ children }: { children: React.ReactNode }) {
   return (
@@ -164,10 +165,10 @@ export default function Account() {
       <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
         Partner Account: {account.accountName}
       </div>
-      <div className="border-1 rounded-xl shadow-md">
+      <div className="rounded-xl border-2 shadow">
         <Table>
           <TableHeader>
-            <TableRow className="hover:bg-white">
+            <TableRow className="hover:bg-transparent">
               <TableHead>Account</TableHead>
               <TableHead>Contact</TableHead>
             </TableRow>
@@ -191,6 +192,41 @@ export default function Account() {
               <TableCell>{account.createdBy}</TableCell>
             </TableRow>
           </TableBody>
+          <div className="justify-right flex p-4">
+            <EditAccountButton
+              accountName={account.accountName}
+              accountContact={account.contact}
+            />
+          </div>
+        </Table>
+      </div>
+      <div className="py-4"></div>
+      <div className="rounded-xl border-2 shadow">
+        <Table>
+          <TableHeader>
+            <TableRow className="hover:bg-transparent">
+              <TableHead>Title</TableHead>
+              <TableHead>Meeting Date</TableHead>
+              <TableHead>Duration</TableHead>
+              <TableHead>Attendees</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {callTranscriptHeader.map((call, index) => (
+              <TableRow key={index} className="hover:bg-transparent">
+                <TableCell>{call.callTranscriptTitle}</TableCell>
+                <TableCell>
+                  {new Date(call.dateString).toLocaleDateString()}
+                </TableCell>
+                <TableCell>{call.callDuration} mins</TableCell>
+                <TableCell>
+                  {call.callAttendees.map((attendee, index) => (
+                    <li key={index}>{attendee.speakers}</li>
+                  ))}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
         </Table>
       </div>
       <div className="mt-6 pt-12">
@@ -198,10 +234,6 @@ export default function Account() {
           <Link href="/partner-accounts">
             <Button>Back</Button>
           </Link>
-          <EditAccountButton
-            accountName={account.accountName}
-            accountContact={account.contact}
-          />
         </div>
       </div>
     </div>
