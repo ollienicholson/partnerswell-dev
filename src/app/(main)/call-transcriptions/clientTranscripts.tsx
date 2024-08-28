@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "~/app/components/ui/select";
 
-// import { Transcript } from "~/types"; // Adjust the import according to your types
+// TODO: relocate this to a types file
 type Transcript = {
   id: string;
   title: string;
@@ -39,16 +39,25 @@ export default function ClientTranscripts({
   transcripts,
   partnerAccounts,
 }: ClientTranscriptsProps) {
-  const [selectedAccount, setSelectedAccount] = useState<string | null>(null);
-  const [selectedContact, setSelectedContact] = useState<string | null>(null);
+  const [selectedAccount, setSelectedAccount] = useState<
+    Record<string, string | null>
+  >({});
+  const [selectedContact, setSelectedContact] = useState<
+    Record<string, string | null>
+  >({});
 
-  const handleAccountChange = (accountName: string) => {
-    setSelectedAccount(accountName);
+  const handleAccountChange = (transcriptId: string, accountName: string) => {
+    setSelectedAccount((prev) => ({ ...prev, [transcriptId]: accountName }));
+
     const account = partnerAccounts.find(
       (partnerAccount) => partnerAccount.accountName === accountName,
     );
+
     if (account) {
-      setSelectedContact(account.contact);
+      setSelectedContact((prev) => ({
+        ...prev,
+        [transcriptId]: account.contact,
+      }));
     }
   };
 
@@ -78,16 +87,21 @@ export default function ClientTranscripts({
       <TableBody>
         {transcripts.length > 0
           ? transcripts.map((transcript) => (
-              // {transcripts.map((transcript) => (
               <TableRow key={transcript.id}>
                 <TableCell>
                   <Checkbox />
                 </TableCell>
                 <TableCell>
-                  <Select onValueChange={handleAccountChange}>
+                  <Select
+                    onValueChange={(value) =>
+                      handleAccountChange(transcript.id, value)
+                    }
+                  >
                     <SelectTrigger className="w-[180px]">
                       <SelectValue
-                        placeholder={selectedAccount || "Select an account"}
+                        placeholder={
+                          selectedAccount[transcript.id] || "Select an account"
+                        }
                       />
                     </SelectTrigger>
                     <SelectContent>
@@ -116,7 +130,8 @@ export default function ClientTranscripts({
                             key={index}
                             value={partnerAccount.contact}
                             disabled={
-                              partnerAccount.accountName !== selectedAccount
+                              partnerAccount.accountName !==
+                              selectedAccount[transcript.id]
                             }
                           >
                             {partnerAccount.contact}
