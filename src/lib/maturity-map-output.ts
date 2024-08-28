@@ -9,12 +9,12 @@ export type Detail = {
   description: Description[];
 };
 
-export type GptOutput = {
+export type MaturityMapOutput = {
   title: string;
   details: Detail[];
 };
 
-export const flat_gpt_output = [
+export const maturityMapOutput = [
   {
     title: "Partner Qualification",
     details: [
@@ -91,73 +91,6 @@ export const flat_gpt_output = [
         description: [
           "Elliott: Introduces the concept of a maturity map in Partnerswell, which tracks the progress of partners and ensures continuous improvement throughout the partnership.",
           "Lohit: Discusses the ongoing evaluation of partners at Palo Alto, including their performance reviews and progression through different partnership tiers.",
-        ],
-      },
-    ],
-  },
-  {
-    title: "Partner Lead Researching",
-    details: [
-      {
-        subTitle: "Discovery of Potential Partners",
-        description: [
-          "Elliott: Describes his process of reaching out to potential partners, like Lohit, to understand their work and challenges better. This helps in researching and identifying potential leads that might benefit from his platform.",
-        ],
-      },
-    ],
-  },
-  {
-    title: "Partner Lead Cultivating",
-    details: [
-      {
-        subTitle: "Building Relationships with Potential Partners",
-        description: [
-          "Elliott: Cultivates a relationship with a potential partner by understanding their needs, explaining the benefits of Partnerswell, and seeking feedback.",
-        ],
-      },
-    ],
-  },
-  {
-    title: "Partner Opportunity Alignment",
-    details: [
-      {
-        subTitle: "Aligning Partners with Sales Opportunities",
-        description: [
-          "Lohit: Discusses how Palo Alto aligns partners with sales opportunities, ensuring that partners who contribute to bringing in business are recognized and incentivized.",
-          "Elliott: Touches on how Partnerswell aims to help companies manage these alignments within their CRM.",
-        ],
-      },
-    ],
-  },
-  {
-    title: "Prove Partner Value",
-    details: [
-      {
-        subTitle: "Proving the Value of Partners",
-        description: [
-          "Lohit: Explains the importance of proving the value of partners by tracking their contributions to sales and ensuring they meet certain criteria to qualify for rebates and incentives.",
-        ],
-      },
-    ],
-  },
-  {
-    title: "Partner Opportunity Negotiation",
-    details: [
-      {
-        subTitle: "Not Explicitly Discussed",
-        description: [
-          "There is no explicit discussion around the negotiation phase of partner opportunities in the provided transcription.",
-        ],
-      },
-    ],
-  },
-  {
-    title: "Partner Opportunity Closed",
-    details: [
-      {
-        subTitle: "Tracking and Closing Partner Opportunities",
-        description: [
-          "Lohit: Talks about how Palo Alto tracks deals closed by partners using customized Salesforce tools, ensuring that all aspects of the partner’s contributions are recorded and rewarded appropriately.",
         ],
       },
     ],

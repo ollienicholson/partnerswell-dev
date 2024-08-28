@@ -20,28 +20,26 @@ export default function SideNav() {
   };
 
   return (
-    <div className="flex h-full max-h-screen flex-col gap-2">
-      <div className="flex-1">
-        <nav className="grid items-start p-2 text-sm font-medium lg:px-4">
-          {links.map((link) => {
-            const LinkIcon = link.icon;
-            return (
-              <Link
-                key={link.name}
-                href={link.href}
-                className={`flex items-center gap-4 rounded-md px-3 py-2 ${
-                  isActive(link.href)
-                    ? "bg-muted text-foreground"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                }`}
-              >
-                <LinkIcon className="h-4 w-4" />
-                {link.name}
-              </Link>
-            );
-          })}
-        </nav>
-      </div>
+    <div className="flex h-full max-h-screen flex-col">
+      <nav className="grid items-start gap-2 p-2 font-medium">
+        {links.map((link) => {
+          const LinkIcon = link.icon;
+          return (
+            <Link
+              key={link.name}
+              href={link.href}
+              className={`flex items-center gap-4 rounded-md px-3 py-2 ${
+                isActive(link.href)
+                  ? "bg-muted text-foreground"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+            >
+              <LinkIcon className="h-4 w-4" />
+              {link.name}
+            </Link>
+          );
+        })}
+      </nav>
     </div>
   );
 }
