@@ -10,7 +10,7 @@ const links = [
   { name: "Partner Accounts", href: "/partner-accounts", icon: Users },
   { name: "Integrations", href: "/integrations", icon: Blocks },
   { name: "Call Transcripts", href: "/call-transcriptions", icon: ScrollText },
-  { name: "Options", href: "/options", icon: Ellipsis },
+  // { name: "Options", href: "/options", icon: Ellipsis },
 ];
 
 export default function SideNav() {
