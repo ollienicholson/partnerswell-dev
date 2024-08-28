@@ -1,4 +1,4 @@
-type CallTranscriptHeader = {
+export type CallTranscriptHeader = {
   callTranscriptId: number;
   callTranscriptTitle: string;
   callDuration: string;

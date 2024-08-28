@@ -130,6 +130,7 @@ export function EditAccountButton({
   );
 }
 
+// TODO: handle incorrect acccount id
 export default function AccountPage() {
   const [accountId, setAccountId] = useState<number | null>(null);
   // pagination
@@ -187,7 +188,7 @@ export default function AccountPage() {
       <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
         Partner Account: {account.accountName}
       </div>
-      <div className="rounded-xl border-2 shadow">
+      <div className="rounded-xl border shadow">
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
@@ -226,7 +227,7 @@ export default function AccountPage() {
       <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
         {account.accountName} Meetings
       </div>
-      <div className="rounded-xl border-2 shadow">
+      <div className="rounded-xl border shadow">
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
