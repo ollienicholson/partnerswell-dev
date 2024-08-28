@@ -125,18 +125,24 @@ export default function ClientTranscripts({
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        {partnerAccounts.map((partnerAccount, index) => (
-                          <SelectItem
-                            key={index}
-                            value={partnerAccount.contact}
-                            disabled={
-                              partnerAccount.accountName !==
-                              selectedAccount[transcript.id]
-                            }
-                          >
-                            {partnerAccount.contact}
-                          </SelectItem>
-                        ))}
+                        {partnerAccounts
+                          .filter(
+                            (partnerAccount) =>
+                              partnerAccount.accountName ===
+                              selectedAccount[transcript.id],
+                          )
+                          .map((partnerAccount, index) => (
+                            <SelectItem
+                              key={index}
+                              value={partnerAccount.contact}
+                              disabled={
+                                partnerAccount.accountName !==
+                                selectedAccount[transcript.id]
+                              }
+                            >
+                              {partnerAccount.contact}
+                            </SelectItem>
+                          ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>

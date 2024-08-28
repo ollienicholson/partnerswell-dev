@@ -31,7 +31,7 @@ const GET_TRANSCRIPTS = `
 let transcriptsCache: Transcript[] | null = null;
 
 export const getTranscripts = async (
-  limit: number = 2,
+  limit: number = 5,
 ): Promise<Transcript[]> => {
   if (transcriptsCache) {
     console.log("Returning cached transcripts...");
