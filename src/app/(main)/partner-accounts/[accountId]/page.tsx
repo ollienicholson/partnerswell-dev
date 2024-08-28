@@ -207,6 +207,9 @@ export default function Account() {
         </Table>
       </div>
       <div className="py-4"></div>
+      <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
+        {account.accountName} Meetings
+      </div>
       <div className="rounded-xl border-2 shadow">
         <Table>
           <TableHeader>
@@ -219,21 +222,31 @@ export default function Account() {
           </TableHeader>
           <TableBody>
             {callTranscriptHeader.map((call) => (
-              <TableRow
-                key={call.callTranscriptId}
-                onClick={() => handleRowClick(call.callTranscriptId)}
-              >
-                <TableCell>{call.callTranscriptTitle}</TableCell>
-                <TableCell>
-                  {new Date(call.dateString).toLocaleDateString()}
-                </TableCell>
-                <TableCell>{call.callDuration} mins</TableCell>
-                <TableCell>
-                  {call.callAttendees.map((attendee, index) => (
-                    <li key={index}>{attendee.speakers}</li>
-                  ))}
-                </TableCell>
-              </TableRow>
+              <>
+                <TableRow
+                  key={call.callTranscriptId}
+                  onClick={() => handleRowClick(call.callTranscriptId)}
+                  className="b-0 border-0 p-0"
+                >
+                  <TableCell>{call.callTranscriptTitle}</TableCell>
+                  <TableCell>
+                    {new Date(call.dateString).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>{call.callDuration} mins</TableCell>
+                  <TableCell className="">
+                    {call.callAttendees.map((attendee, index) => (
+                      <li key={index}>{attendee.speakers}</li>
+                    ))}
+                  </TableCell>
+                </TableRow>
+                <TableRow className=" text-gray-300 hover:bg-transparent">
+                  <TableCell colSpan={4} align="left">
+                    {call.callSummary.length > 200
+                      ? `${call.callSummary.substring(0, 200)}...`
+                      : call.callSummary}
+                  </TableCell>
+                </TableRow>
+              </>
             ))}
           </TableBody>
         </Table>
