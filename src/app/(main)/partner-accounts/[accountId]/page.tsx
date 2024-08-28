@@ -25,12 +25,20 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "~/app/components/ui/alert-dialog";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from "~/app/components/ui/pagination";
 import { Input } from "~/app/components/ui/input";
 import { Label } from "~/app/components/ui/label";
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 import { api } from "~/trpc/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { callTranscriptHeader } from "~/lib/call-transcript-header";
 import { useRouter } from "next/navigation";
 
@@ -122,8 +130,12 @@ export function EditAccountButton({
   );
 }
 
-export default function Account() {
+export default function AccountPage() {
   const [accountId, setAccountId] = useState<number | null>(null);
+  // pagination
+  const rowsPerPage = 5;
+  const [startIndex, setStartIndex] = useState(0);
+  const [endIndex, setEndIndex] = useState(rowsPerPage);
 
   useEffect(() => {
     const id = window.location.pathname.split("/").pop(); // Grab the last segment of the path
@@ -139,6 +151,10 @@ export default function Account() {
         enabled: !!accountId, // Only fetch if accountId is valid
       },
     );
+
+  const pagintedTranscripts = useMemo(() => {
+    return callTranscriptHeader.slice(startIndex, endIndex);
+  }, [callTranscriptHeader, startIndex, endIndex]);
 
   if (isLoading) {
     return (
@@ -221,12 +237,12 @@ export default function Account() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {callTranscriptHeader.map((call) => (
+            {pagintedTranscripts.map((call) => (
               <>
                 <TableRow
                   key={call.callTranscriptId}
                   onClick={() => handleRowClick(call.callTranscriptId)}
-                  className="b-0 border-0 p-0"
+                  className="border-0"
                 >
                   <TableCell>{call.callTranscriptTitle}</TableCell>
                   <TableCell>
@@ -239,10 +255,10 @@ export default function Account() {
                     ))}
                   </TableCell>
                 </TableRow>
-                <TableRow className=" text-gray-300 hover:bg-transparent">
+                <TableRow className="text-gray-300 hover:bg-transparent">
                   <TableCell colSpan={4} align="left">
-                    {call.callSummary.length > 200
-                      ? `${call.callSummary.substring(0, 200)}...`
+                    {call.callSummary.length > 190
+                      ? `${call.callSummary.substring(0, 190)}...`
                       : call.callSummary}
                   </TableCell>
                 </TableRow>
@@ -250,6 +266,39 @@ export default function Account() {
             ))}
           </TableBody>
         </Table>
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                className={
+                  startIndex === 0
+                    ? "pointer-events-none opacity-50"
+                    : "no-select"
+                }
+                onClick={() => {
+                  setStartIndex(startIndex - rowsPerPage);
+                  setEndIndex(endIndex - rowsPerPage);
+                }}
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext
+                className={
+                  endIndex === callTranscriptHeader?.length
+                    ? "pointer-events-none opacity-50"
+                    : "no-select"
+                }
+                onClick={() => {
+                  setStartIndex(startIndex + rowsPerPage);
+                  setEndIndex(endIndex + rowsPerPage);
+                }}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
       <div className="mt-6 pt-12">
         <div className="flex justify-between">

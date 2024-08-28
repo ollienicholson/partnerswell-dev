@@ -83,7 +83,7 @@ export function CreateAccountButton({}) {
   );
 }
 
-export default function Accounts() {
+export default function PartnerAccountsPage() {
   // pagination
   const rowsPerPage = 5;
   const [startIndex, setStartIndex] = useState(0);
