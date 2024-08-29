@@ -40,6 +40,7 @@ export default function MeetingPage() {
   const [meetingId, setMeetingId] = useState<number | null>(null);
   const [meeting, setMeeting] = useState<CallTranscriptHeader | null>(null);
   const [capabilityButtonClicked, setCapabilityButtonClicked] = useState(false);
+  const [resetButton, setResetButton] = useState(false);
 
   const router = useRouter();
 
@@ -192,6 +193,7 @@ export default function MeetingPage() {
                     <ToggleGroupItem
                       variant="outline"
                       value="maturityMap"
+                      disabled={capabilityButtonClicked}
                       className={`rounded px-4 py-2 ${
                         selectedToggle === "maturityMap"
                           ? "border-2 border-green-300"
@@ -203,6 +205,7 @@ export default function MeetingPage() {
                     <ToggleGroupItem
                       variant="outline"
                       value="influenceIndicator"
+                      disabled={capabilityButtonClicked}
                       className={`rounded px-4 py-2 ${
                         selectedToggle === "influenceIndicator"
                           ? "border-2 border-green-300"
@@ -212,7 +215,7 @@ export default function MeetingPage() {
                       Influence Indicator
                     </ToggleGroupItem>
                     {selectedToggle === "influenceIndicator" ? (
-                      <Select>
+                      <Select disabled={capabilityButtonClicked}>
                         <SelectTrigger className="w-[260px]">
                           <SelectValue placeholder="Select an indicator" />
                         </SelectTrigger>
@@ -247,16 +250,18 @@ export default function MeetingPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow className="flex justify-start p-6 hover:bg-transparent">
+                <TableRow className="flex justify-between gap-2 p-6 hover:bg-transparent">
                   <Button
                     disabled={
                       capabilityButtonClicked ||
+                      resetButton ||
                       (selectedToggle !== "maturityMap" &&
                         selectedToggle !== "influenceIndicator")
                     }
                     onClick={() => {
                       setCapabilityData(true);
                       setCapabilityButtonClicked(true);
+                      setResetButton(true);
                     }}
                     className={`${
                       selectedToggle === "maturityMap" ||
@@ -267,6 +272,21 @@ export default function MeetingPage() {
                   >
                     Get capability data
                   </Button>
+                  <Button
+                    variant="outline"
+                    disabled={
+                      selectedToggle !== "maturityMap" &&
+                      selectedToggle !== "influenceIndicator"
+                    }
+                    onClick={() => {
+                      setCapabilityData(false);
+                      setCapabilityButtonClicked(false);
+                      setResetButton(false);
+                    }}
+                  >
+                    Reset Data
+                  </Button>
+                  <Button variant="outline">Save Data to Account</Button>
                 </TableRow>
               </TableBody>
             </Table>

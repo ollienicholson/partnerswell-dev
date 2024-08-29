@@ -15,7 +15,7 @@ const inter = Inter({
 export const metadata = {
   title: "Partnerswell",
   description: "Partnerswell WebApp",
-  icons: [{ rel: "icon", url: "/favicon.png" }],
+  icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
 export default function RootLayout({

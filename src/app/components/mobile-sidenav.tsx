@@ -38,7 +38,7 @@ export default function MobileSideNav() {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="flex flex-col">
-          <Image src="/favicon.png" alt="logo" width={35} height={35} />
+          <Image src="/icon.png" alt="logo" width={35} height={35} />
           <span className="sr-only">Partnerswell</span>
           <nav className="grid gap-2 text-sm font-medium">
             {links.map((link) => {
