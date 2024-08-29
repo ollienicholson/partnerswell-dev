@@ -45,9 +45,11 @@ export const getTranscripts = async (
     }>(GET_TRANSCRIPTS, { limit });
     transcriptsCache = data.transcripts;
     return data.transcripts;
-  } catch (error) {
-    console.log("Error fetching transcripts:", error);
+  } catch (error: any) {
+    console.log(
+      "Error fetching transcripts:",
+      error.response?.errors || error.message,
+    );
     return [];
-    // throw new Error("Failed to fetch transcripts, please try again.");
   }
 };
