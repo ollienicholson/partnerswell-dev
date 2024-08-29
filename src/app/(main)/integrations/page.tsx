@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 
 import { Button } from "~/app/components/ui/button";
 import {
@@ -13,30 +13,27 @@ import Link from "next/link";
 export default function Integrations() {
   return (
     <div className="relative min-h-screen p-6">
-      <div className="gap-4 border-b pb-2 mb-4 w-full text-lg font-semibold md:text-2xl">
+      <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
         Integrations
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-8">
-        <Card className="w-[350px] h-[200]">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-1 lg:grid-cols-2">
+        <Card className="h-[200] w-[350px]">
           <CardHeader>
             <CardTitle>Fireflies</CardTitle>
             <CardDescription>Connected</CardDescription>
           </CardHeader>
-          <CardFooter className="flex justify-between mt-4">
-            <Link
-            href="/integrations/fireflies"
-            >
-            <Button 
-            >Configure</Button>
+          <CardFooter className="mt-4 flex justify-between">
+            <Link href="/integrations/fireflies">
+              <Button>Configure</Button>
             </Link>
           </CardFooter>
         </Card>
-        <Card className="w-[350px] h-[200]">
+        <Card className="h-[200] w-[350px]">
           <CardHeader>
             <CardTitle>Add Integration</CardTitle>
             <CardDescription>Connect your favourite tools</CardDescription>
           </CardHeader>
-          <CardFooter className="flex justify-between mt-4">
+          <CardFooter className="mt-4 flex justify-between">
             <Button>Connect</Button>
           </CardFooter>
         </Card>
