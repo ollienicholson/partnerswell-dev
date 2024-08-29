@@ -28,7 +28,7 @@ export default async function TranscriptsPage() {
             <Link href="/">
               <Button>Back</Button>
             </Link>
-            <Button>Import Transcripts</Button>
+            {/* <Button>Import Transcripts</Button> */}
           </div>
         </div>
       </div>

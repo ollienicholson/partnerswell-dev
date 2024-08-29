@@ -42,7 +42,7 @@ import { useEffect, useMemo, useState } from "react";
 import { callTranscriptHeader } from "~/lib/call-transcript-header";
 import { useRouter } from "next/navigation";
 
-export function AlertBox({ children }: { children: React.ReactNode }) {
+export function DeleteAlertBox({ children }: { children: React.ReactNode }) {
   return (
     <AlertDialog>
       {children}
@@ -116,13 +116,13 @@ export function EditAccountButton({
             <Button type="submit" onClick={closeDialog}>
               Save
             </Button>
-            <AlertBox>
+            <DeleteAlertBox>
               <AlertDialogTrigger asChild>
                 <Button variant="destructive" type="submit">
                   Delete
                 </Button>
               </AlertDialogTrigger>
-            </AlertBox>
+            </DeleteAlertBox>
           </div>
         </DialogContent>
       </Dialog>
