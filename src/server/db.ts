@@ -4,10 +4,7 @@ import { PrismaClient } from "@prisma/client";
 
 import { env } from "~/env";
 
-const psClient = new Client({
-  url: "postgres://default:uhCaRzK91vYq@ep-raspy-morning-a7vc0cka-pooler.ap-southeast-2.aws.neon.tech:5432/verceldb?sslmode=require&pgbouncer=true&connect_timeout=15",
-});
-// const psClient = new Client({ url: env.POSTGRES_URL });
+const psClient = new Client({ url: env.POSTGRES_URL });
 
 const createPrismaClient = () =>
   new PrismaClient({
