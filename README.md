@@ -1,7 +1,6 @@
 # Web Application build on [T3 Stack](https://create.t3.gg/)
 
 ## Integrations
-
 - Fireflies.ai notetaker API
 - ChatGPT API
 
