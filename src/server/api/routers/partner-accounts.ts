@@ -4,8 +4,13 @@ import { z } from "zod";
 import { partnerAccounts } from "~/lib/partner-accounts";
 
 export const partnerAccountRouter = createTRPCRouter({
-  getPartnerAccounts: publicProcedure.query(() => {
-    return partnerAccounts;
+  // getPartnerAccounts: publicProcedure.query(() => {
+  //   return partnerAccounts;
+  // }),
+
+  // Ollie db test
+  getAll: publicProcedure.query(({ ctx }) => {
+    return ctx.db.partnerAccount.findMany();
   }),
 
   getPartnerAccountById: publicProcedure

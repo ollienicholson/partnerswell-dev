@@ -91,17 +91,25 @@ export default function PartnerAccountsPage() {
 
   // get accounts
   const router = useRouter();
+  // const {
+  //   data: accounts = [],
+  //   isLoading,
+  //   error,
+  // } = api.partnerAccountRouter.getPartnerAccounts.useQuery(undefined, {
+  //   staleTime: 5 * 60 * 1000, /// 2 minutes
+  // });
+
   const {
     data: accounts = [],
     isLoading,
     error,
-  } = api.partnerAccountRouter.getPartnerAccounts.useQuery(undefined, {
-    staleTime: 5 * 60 * 1000, /// 2 minutes
-  });
+  } = api.partnerAccountRouter.getAll.useQuery();
 
   const pagintedAccounts = useMemo(() => {
     return accounts.slice(startIndex, endIndex);
   }, [accounts, startIndex, endIndex]);
+
+  console.log("ACCOUNTS", accounts);
 
   if (isLoading) {
     return (
@@ -143,13 +151,14 @@ export default function PartnerAccountsPage() {
           </TableHeader>
           <TableBody>
             {pagintedAccounts.map((account) => (
+              //  {allpartneraccount.data?.map((account) => (
               <TableRow
-                key={account.id}
-                onClick={() => handleRowClick(account.id)}
+                key={account.partnerAccountId}
+                onClick={() => handleRowClick(account.partnerAccountId)}
               >
                 <TableCell>{account.accountName}</TableCell>
-                <TableCell>{account.contact}</TableCell>
-                <TableCell>{account.createdAt}</TableCell>
+                <TableCell>{account.contactName}</TableCell>
+                <TableCell>{account.createdAt.toString()}</TableCell>
                 <TableCell>{account.createdBy}</TableCell>
               </TableRow>
             ))}

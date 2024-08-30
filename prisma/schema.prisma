@@ -1,15 +1,17 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// @@index[column] to sort by index 
+
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["driverAdapters"]
+    provider = "prisma-client-js"
+    // previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
-    provider  = "postgresql"
-    url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
-    directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+    provider = "postgresql"
+    url      = env("POSTGRES_PRISMA_URL") // uses connection pooling
+    // directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 enum Role {
@@ -24,26 +26,28 @@ model userRoles {
     @@index([clerkId, role])
 }
 
-model User {
-    id        Int      @id @default(autoincrement())
-    firstName String
-    lastName  String
-    email     String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    role      Role     @default(GUEST)
-    contact   Contact? @relation(fields: [contactId], references: [contactId], onDelete: Cascade)
-    contactId Int? // Foriegn key to Contact
+// model User {
+//     id        Int      @id @default(autoincrement())
+//     firstName String
+//     lastName  String
+//     email     String
+//     createdAt DateTime @default(now())
+//     updatedAt DateTime @updatedAt
+//     role      Role     @default(GUEST)
+//     contact   Contact? @relation(fields: [contactId], references: [contactId], onDelete: Cascade)
+//     contactId Int? // Foriegn key to Contact
 
-    // CallTranscriptData CallTranscriptData[]
-}
+//     // CallTranscriptData CallTranscriptData[]
+// }
 
 model PartnerAccount {
-    partnerAccountId Int       @id @default(autoincrement())
+    partnerAccountId Int      @id @default(autoincrement())
     accountName      String
-    createdAt        DateTime  @default(now())
-    updatedAt        DateTime  @updatedAt
-    contacts         Contact[]
+    contactName      String
+    createdBy        String?
+    createdAt        DateTime @default(now())
+    updatedAt        DateTime @updatedAt
+    // contacts         Contact[]
 
     // CallTranscript   CallTranscriptData[]
     // need to add createdById to this table
@@ -51,18 +55,18 @@ model PartnerAccount {
     // change 'contacts' to 'contact'? check if this is a pain before changing -> should be singular
 }
 
-model Contact {
-    contactId      Int            @id @default(autoincrement())
-    firstName      String
-    lastName       String
-    contactEmail   String
-    createdAt      DateTime       @default(now())
-    updatedAt      DateTime       @updatedAt
-    partnerAccount PartnerAccount @relation(fields: [accountId], references: [partnerAccountId], onDelete: Cascade, onUpdate: Cascade)
-    accountId      Int
-    // CallTranscript CallTranscriptData[]
-    User           User[]
-}
+// model Contact {
+//     contactId      Int            @id @default(autoincrement())
+//     firstName      String
+//     lastName       String
+//     contactEmail   String
+//     createdAt      DateTime       @default(now())
+//     updatedAt      DateTime       @updatedAt
+//     partnerAccount PartnerAccount @relation(fields: [accountId], references: [partnerAccountId], onDelete: Cascade, onUpdate: Cascade)
+//     accountId      Int
+//     // CallTranscript CallTranscriptData[]
+//     User           User[]
+// }
 
 // will need to be able to assign a user to a CONTACT, and a contact to a PARTNER ACCOUNT, only then can we delete the USER
 // I believe this will be the case with other tables as well
