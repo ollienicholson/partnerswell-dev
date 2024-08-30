@@ -199,7 +199,7 @@ export default function AccountPage() {
           <TableBody>
             <TableRow key={account.id} className="hover:bg-white">
               <TableCell>{account.accountName}</TableCell>
-              <TableCell>{account.contact}</TableCell>
+              <TableCell>{account.contactName}</TableCell>
             </TableRow>
           </TableBody>
           <div className="p-2" />
@@ -218,7 +218,7 @@ export default function AccountPage() {
           <div className="justify-right flex p-4">
             <EditAccountButton
               accountName={account.accountName}
-              accountContact={account.contact}
+              accountContact={account.contactName}
             />
           </div>
         </Table>

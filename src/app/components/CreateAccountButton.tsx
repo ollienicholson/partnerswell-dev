@@ -11,11 +11,35 @@ import { Input } from "~/app/components/ui/input";
 import { Label } from "~/app/components/ui/label";
 import { Button } from "~/app/components/ui/button";
 import { useState } from "react";
+import { api } from "~/trpc/react";
 
 export function CreateAccountButton() {
   const [isOpen, setIsOpen] = useState(false);
   const openDialog = () => setIsOpen(true);
   const closeDialog = () => setIsOpen(false);
+  const [accountName, setaccountName] = useState("");
+  const [contact, setcontact] = useState("");
+  const [createdBy, setcreatedBy] = useState("");
+
+  const createPartnerAccount =
+    api.partnerAccountRouter.createPartnerAccount.useMutation();
+
+  // define handlers
+  const handlePartnerAccountCreation = async () => {
+    try {
+      await createPartnerAccount.mutateAsync({
+        accountName: accountName,
+        contactName: contact,
+        createdBy: createdBy,
+      });
+      setaccountName("");
+      setcontact("");
+      setcreatedBy("");
+      // accounts.refetch();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -37,6 +61,8 @@ export function CreateAccountButton() {
                 id="name"
                 placeholder="Partner account name"
                 className="col-span-3"
+                value={accountName}
+                onChange={(e) => setaccountName(e.target.value)}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -47,6 +73,8 @@ export function CreateAccountButton() {
                 id="username"
                 placeholder="Contact full name"
                 className="col-span-3"
+                value={contact}
+                onChange={(e) => setcontact(e.target.value)}
               />
             </div>
           </div>
@@ -54,7 +82,13 @@ export function CreateAccountButton() {
             <Button variant="outline" type="submit" onClick={closeDialog}>
               Cancel
             </Button>
-            <Button type="submit" onClick={closeDialog}>
+            <Button
+              type="submit"
+              onClick={() => {
+                handlePartnerAccountCreation();
+                closeDialog();
+              }}
+            >
               Create
             </Button>
           </div>

@@ -7,9 +7,7 @@ import { Suspense } from "react";
 export default async function PartnerAccountsPage() {
   try {
     const accounts = await api.partnerAccountRouter.getAll();
-
     console.log("ACCOUNTS", accounts);
-
     return (
       <div className="relative min-h-screen p-6">
         <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
