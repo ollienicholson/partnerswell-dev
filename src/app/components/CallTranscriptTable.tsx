@@ -31,7 +31,7 @@ import {
 import { Button } from "~/app/components/ui/button";
 
 // TODO: relocate this to a types file
-type Transcript = {
+type CallTranscript = {
   id: string;
   title: string;
   duration: string;
@@ -41,15 +41,15 @@ type Transcript = {
   }[];
 };
 
-type ClientTranscriptsProps = {
-  transcripts: Transcript[];
-  partnerAccounts: { accountName: string; contact: string }[];
+type CallTranscriptsTableProps = {
+  transcripts: CallTranscript[];
+  partnerAccounts: { accountName: string; contactName: string }[];
 };
 
-export default function ClientTranscripts({
+export default function CallTranscriptsTable({
   transcripts,
   partnerAccounts,
-}: ClientTranscriptsProps) {
+}: CallTranscriptsTableProps) {
   const [selectedAccount, setSelectedAccount] = useState<
     Record<string, string | null>
   >({});
@@ -73,7 +73,7 @@ export default function ClientTranscripts({
     if (account) {
       setSelectedContact((prev) => ({
         ...prev,
-        [transcriptId]: account.contact,
+        [transcriptId]: account.contactName,
       }));
     }
     // Update the selected rows by accountName
@@ -215,13 +215,13 @@ export default function ClientTranscripts({
                             .map((partnerAccount, index) => (
                               <SelectItem
                                 key={index}
-                                value={partnerAccount.contact}
+                                value={partnerAccount.contactName}
                                 disabled={
                                   partnerAccount.accountName !==
                                   selectedAccount[transcript.id]
                                 }
                               >
-                                {partnerAccount.contact}
+                                {partnerAccount.contactName}
                               </SelectItem>
                             ))}
                         </SelectGroup>

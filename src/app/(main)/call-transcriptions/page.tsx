@@ -3,10 +3,10 @@ import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 import { getTranscripts } from "~/server/api/queries/getTranscripts";
 import { partnerAccounts } from "~/lib/partner-accounts";
-import ClientTranscripts from "./clientTranscripts";
+import CallTranscriptsTable from "../../components/CallTranscriptTable";
 
 export default async function TranscriptsPage() {
-  // TODO: remove hardcoded limit
+  // TODO: remove hardcoded transcripts limit
 
   // get list of transcripts
   const transcripts = await getTranscripts();
@@ -18,7 +18,7 @@ export default async function TranscriptsPage() {
           Call Transcripts
         </div>
         <div className="border-1 w-full rounded-xl shadow-md">
-          <ClientTranscripts
+          <CallTranscriptsTable
             transcripts={transcripts}
             partnerAccounts={partnerAccounts}
           />
@@ -28,7 +28,6 @@ export default async function TranscriptsPage() {
             <Link href="/">
               <Button>Back</Button>
             </Link>
-            {/* <Button>Import Transcripts</Button> */}
           </div>
         </div>
       </div>

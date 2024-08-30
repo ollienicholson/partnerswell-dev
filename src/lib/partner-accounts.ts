@@ -1,7 +1,7 @@
 type PartnerAccount = {
   id: number;
   accountName: string;
-  contact: string;
+  contactName: string;
   createdAt: string;
   createdBy: string;
   updatedAt: string;
@@ -12,7 +12,7 @@ export const partnerAccounts: PartnerAccount[] = [
   {
     id: 1,
     accountName: "Accenture",
-    contact: "Bruce Wayne",
+    contactName: "Bruce Wayne",
     createdBy: "Cam Tickell",
     createdAt: "12/01/2024 6:40PM",
     updatedAt: "10/08/2024 7:20PM",
@@ -20,7 +20,7 @@ export const partnerAccounts: PartnerAccount[] = [
   {
     id: 2,
     accountName: "Capgemini",
-    contact: "Peter Parker",
+    contactName: "Peter Parker",
     createdBy: "Cam Tickell",
     createdAt: "12/01/2024 6:40PM",
     updatedAt: "10/08/2024 7:20PM",
@@ -28,7 +28,7 @@ export const partnerAccounts: PartnerAccount[] = [
   {
     id: 3,
     accountName: "Bricks",
-    contact: "Steve Jobs",
+    contactName: "Steve Jobs",
     createdBy: "Cam Tickell",
     createdAt: "12/01/2024 6:40PM",
     updatedAt: "10/08/2024 7:20PM",
@@ -36,7 +36,7 @@ export const partnerAccounts: PartnerAccount[] = [
   {
     id: 4,
     accountName: "AWS",
-    contact: "Reid Hoffman",
+    contactName: "Reid Hoffman",
     createdBy: "Cam Tickell",
     createdAt: "12/01/2024 6:40PM",
     updatedAt: "10/08/2024 7:20PM",
@@ -44,7 +44,7 @@ export const partnerAccounts: PartnerAccount[] = [
   {
     id: 5,
     accountName: "Amazon",
-    contact: "Joe Blogs",
+    contactName: "Joe Blogs",
     createdBy: "Cam Tickell",
     createdAt: "12/01/2024 6:40PM",
     updatedAt: "10/08/2024 7:20PM",
@@ -52,7 +52,7 @@ export const partnerAccounts: PartnerAccount[] = [
   {
     id: 6,
     accountName: "Casundi",
-    contact: "Jane Doe",
+    contactName: "Jane Doe",
     createdBy: "Cam Tickell",
     createdAt: "12/01/2024 6:40PM",
     updatedAt: "10/08/2024 7:20PM",
@@ -60,7 +60,7 @@ export const partnerAccounts: PartnerAccount[] = [
   {
     id: 7,
     accountName: "Google",
-    contact: "Piper Chapman",
+    contactName: "Piper Chapman",
     createdBy: "Cam Tickell",
     createdAt: "12/01/2024 6:40PM",
     updatedAt: "10/08/2024 7:20PM",
@@ -68,7 +68,7 @@ export const partnerAccounts: PartnerAccount[] = [
   {
     id: 8,
     accountName: "Microsoft",
-    contact: "Aaron Johnson",
+    contactName: "Aaron Johnson",
     createdBy: "Cam Tickell",
     createdAt: "12/01/2024 6:40PM",
     updatedAt: "10/08/2024 7:20PM",
@@ -76,7 +76,7 @@ export const partnerAccounts: PartnerAccount[] = [
   {
     id: 9,
     accountName: "Small Company",
-    contact: "Winston Smith",
+    contactName: "Winston Smith",
     createdBy: "Cam Tickell",
     createdAt: "12/01/2024 6:40PM",
     updatedAt: "10/08/2024 7:20PM",
@@ -84,7 +84,7 @@ export const partnerAccounts: PartnerAccount[] = [
   {
     id: 10,
     accountName: "Facebook",
-    contact: "Cambria Johnson",
+    contactName: "Cambria Johnson",
     createdBy: "Cam Tickell",
     createdAt: "12/01/2024 6:40PM",
     updatedAt: "10/08/2024 7:20PM",
@@ -92,7 +92,7 @@ export const partnerAccounts: PartnerAccount[] = [
   {
     id: 11,
     accountName: "Big Company",
-    contact: "Simon Smith",
+    contactName: "Simon Smith",
     createdBy: "Cam Tickell",
     createdAt: "12/01/2024 6:40PM",
     updatedAt: "10/08/2024 7:20PM",
