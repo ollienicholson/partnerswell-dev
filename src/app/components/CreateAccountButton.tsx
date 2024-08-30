@@ -1,5 +1,9 @@
 "use client";
-
+import { api } from "~/trpc/react";
+import { useState } from "react";
+import { Button } from "~/app/components/ui/button";
+import { Label } from "~/app/components/ui/label";
+import { Input } from "~/app/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -7,22 +11,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from "~/app/components/ui/dialog";
-import { Input } from "~/app/components/ui/input";
-import { Label } from "~/app/components/ui/label";
-import { Button } from "~/app/components/ui/button";
-import { useState } from "react";
-import { api } from "~/trpc/react";
 
 export function CreateAccountButton() {
   const [isOpen, setIsOpen] = useState(false);
-  const openDialog = () => setIsOpen(true);
-  const closeDialog = () => setIsOpen(false);
+
   const [accountName, setaccountName] = useState("");
   const [contact, setcontact] = useState("");
   const [createdBy, setcreatedBy] = useState("");
 
   const createPartnerAccount =
     api.partnerAccountRouter.createPartnerAccount.useMutation();
+
+  const openDialog = () => setIsOpen(true);
+  const closeDialog = () => setIsOpen(false);
 
   // define handlers
   const handlePartnerAccountCreation = async () => {
@@ -35,12 +36,15 @@ export function CreateAccountButton() {
       setaccountName("");
       setcontact("");
       setcreatedBy("");
-      // accounts.refetch();
+      // getAll.refetch();
     } catch (error) {
       console.log(error);
     }
   };
 
+  // TODO: add toast to show create account success or error
+  // TODO: refetch accounts correctly
+  // TODO: sort list by most recently created
   return (
     <>
       <Button onClick={openDialog}>Create Account</Button>
@@ -83,7 +87,7 @@ export function CreateAccountButton() {
               Cancel
             </Button>
             <Button
-              type="submit"
+              type="button"
               onClick={() => {
                 handlePartnerAccountCreation();
                 closeDialog();

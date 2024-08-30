@@ -33,6 +33,9 @@ type Props = {
   accounts: Account[];
 };
 
+// TODO: fix date
+// TODO: fix pagination
+
 export default function PartnerAccountsTable({ accounts }: Props) {
   // pagination
   const rowsPerPage = 5;
