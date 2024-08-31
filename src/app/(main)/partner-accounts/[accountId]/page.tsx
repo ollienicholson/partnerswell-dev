@@ -44,6 +44,38 @@ import { useParams, useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query"; // Import useQueryClient
 
 export function DeleteAlertBox({ children }: { children: React.ReactNode }) {
+  const { accountId: partnerAccountId } = useParams();
+  const router = useRouter();
+
+  // delete mutation
+  const [accountIdToDelete, setAccountIdToDelete] = useState(
+    partnerAccountId ? Number(partnerAccountId) : null,
+  );
+  const partnerAccountMutation =
+    api.partnerAccountRouter.deletePartnerAccount.useMutation({
+      onSuccess: () => {
+        // Redirect back to the partner accounts list after deletion
+        router.push("/partner-accounts");
+      },
+      onError: (error) => {
+        console.log("Error deleting partner account:", error);
+      },
+    });
+
+  const handlePartnerAccountDelete = async () => {
+    if (!accountIdToDelete) {
+      console.log("Account ID is missing or invalid");
+      return;
+    }
+    try {
+      await partnerAccountMutation.mutateAsync({
+        partnerAccountId: Number(accountIdToDelete),
+      });
+      //rediret back to list
+    } catch (error) {
+      console.log("Error during deletion:", error);
+    }
+  };
   return (
     <AlertDialog>
       {children}
@@ -57,7 +89,15 @@ export function DeleteAlertBox({ children }: { children: React.ReactNode }) {
         </AlertDialogHeader>
         <div className="mt-4 flex justify-between">
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Delete</AlertDialogAction>
+          <AlertDialogAction asChild>
+            <Button
+              // variant="destructive"
+              type="button"
+              onClick={handlePartnerAccountDelete}
+            >
+              Delete
+            </Button>
+          </AlertDialogAction>
         </div>
       </AlertDialogContent>
     </AlertDialog>

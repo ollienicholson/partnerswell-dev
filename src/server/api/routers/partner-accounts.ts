@@ -63,12 +63,12 @@ export const partnerAccountRouter = createTRPCRouter({
       });
     }),
 
-  // //delete partnerAccount
-  // deletePartnerAccount: publicProcedure
-  //   .input(idSchema)
-  //   .mutation(({ input, ctx }) => {
-  //     return ctx.db.partnerAccount.delete({
-  //       where: idSchema.parse(input),
-  //     });
-  //   }),
+  //delete partnerAccount
+  deletePartnerAccount: publicProcedure
+    .input(idSchema)
+    .mutation(({ input, ctx }) => {
+      return ctx.db.partnerAccount.delete({
+        where: idSchema.parse(input),
+      });
+    }),
 });
