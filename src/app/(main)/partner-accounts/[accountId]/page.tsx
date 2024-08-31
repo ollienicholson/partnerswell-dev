@@ -38,9 +38,10 @@ import { Label } from "~/app/components/ui/label";
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 import { api } from "~/trpc/react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { callTranscriptHeader } from "~/lib/call-transcript-header";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query"; // Import useQueryClient
 
 export function DeleteAlertBox({ children }: { children: React.ReactNode }) {
   return (
@@ -71,8 +72,55 @@ export function EditAccountButton({
   accountContact: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const openDialog = () => setIsOpen(true);
+  // const openDialog = () => setIsOpen(true);
+  const openDialog = () => {
+    setaccountNameToUpdate(accountName);
+    setcontactToUpdate(accountContact);
+    setIsOpen(true);
+  };
   const closeDialog = () => setIsOpen(false);
+  const queryClient = useQueryClient();
+
+  const { accountId } = useParams();
+
+  const [accountIdToUpdate, setAccountIdToUpdate] = useState(
+    accountId ? Number(accountId) : null,
+  );
+  const [accountNameToUpdate, setaccountNameToUpdate] = useState("");
+  const [contactToUpdate, setcontactToUpdate] = useState("");
+  const [createdByToUpdate, setcreatedByToUpdate] = useState("");
+
+  // update partner account
+  const updatePartnerAccountMutation =
+    api.partnerAccountRouter.updatePartnerAccount.useMutation({
+      onSuccess: () => {
+        console.log("updatePartnerAccountMutation");
+        // Invalidate and refetch the data for the updated account
+        queryClient.invalidateQueries();
+      },
+      onError: (error) => {
+        console.error("Error updating partner account:", error);
+      },
+    });
+
+  const handleUpdatePartnerAccountMutation = async () => {
+    if (!accountIdToUpdate) {
+      console.log("Account ID is missing or invalid");
+      return;
+    }
+    try {
+      await updatePartnerAccountMutation.mutateAsync({
+        partnerAccountId: Number(accountIdToUpdate),
+        accountName: accountNameToUpdate,
+        contactName: contactToUpdate,
+        createdBy: createdByToUpdate,
+      });
+      setaccountNameToUpdate(accountNameToUpdate);
+      setcontactToUpdate(contactToUpdate);
+    } catch (error) {
+      console.log("Error updating partner account:", error);
+    }
+  };
 
   return (
     <>
@@ -80,46 +128,54 @@ export function EditAccountButton({
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
-            <DialogTitle>Edit account</DialogTitle>
+            <DialogTitle>Edit {accountName}'s account</DialogTitle>
             <DialogDescription>
-              Edit {accountName}'s account. Click save when you're done.
+              Click Save Changes to update. Click Delete to delete the account.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
+              <Label htmlFor="accountName" className="text-right">
                 Account Name
               </Label>
               <Input
-                id="name"
-                defaultValue={accountName}
+                id="accountName"
+                value={accountNameToUpdate}
+                onChange={(e) => setaccountNameToUpdate(e.target.value)}
                 placeholder="Partner account name"
                 className="col-span-3"
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="username" className="text-right">
+              <Label htmlFor="contactName" className="text-right">
                 Primary Contact
               </Label>
               <Input
-                id="username"
-                defaultValue={accountContact}
+                id="contactName"
+                value={contactToUpdate}
+                onChange={(e) => setcontactToUpdate(e.target.value)}
                 placeholder="Contact full name"
                 className="col-span-3"
               />
             </div>
           </div>
           <div className="flex justify-between">
-            <Button variant="secondary" type="submit" onClick={closeDialog}>
+            <Button variant="secondary" type="button" onClick={closeDialog}>
               Cancel
             </Button>
-            <Button type="submit" onClick={closeDialog}>
-              Save
+            <Button
+              type="button"
+              onClick={() => {
+                handleUpdatePartnerAccountMutation();
+                closeDialog();
+              }}
+            >
+              Save Changes
             </Button>
             <DeleteAlertBox>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive" type="submit">
-                  Delete
+                <Button variant="destructive" type="button">
+                  Delete Account
                 </Button>
               </AlertDialogTrigger>
             </DeleteAlertBox>
@@ -131,27 +187,25 @@ export function EditAccountButton({
 }
 
 // TODO: handle incorrect acccount id
+// TODO: separate client and server components
+// TODO: move imported transcripts to call transcripts flow
+
 export default function AccountPage() {
-  const [accountId, setAccountId] = useState<number | null>(null);
-  // pagination
+  // pagination for call transcripts
   const rowsPerPage = 5;
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(rowsPerPage);
 
-  useEffect(() => {
-    const id = window.location.pathname.split("/").pop(); // Grab the last segment of the path
-    if (id && !isNaN(Number(id))) {
-      setAccountId(Number(id));
-    }
-  }, []);
+  //get account id
+  const { accountId } = useParams();
+  console.log("Getting data for AccountId:", accountId);
 
-  const { data: account, isLoading } =
-    api.partnerAccountRouter.getPartnerAccountById.useQuery(
-      { id: accountId ?? 0 },
-      {
-        enabled: !!accountId, // Only fetch if accountId is valid
-      },
-    );
+  //get account details
+  const { data: account, isLoading } = api.partnerAccountRouter.getOne.useQuery(
+    {
+      partnerAccountId: Number(accountId),
+    },
+  );
 
   const pagintedTranscripts = useMemo(() => {
     return callTranscriptHeader.slice(startIndex, endIndex);
@@ -197,7 +251,7 @@ export default function AccountPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow key={account.id} className="hover:bg-white">
+            <TableRow key={account.partnerAccountId} className="hover:bg-white">
               <TableCell>{account.accountName}</TableCell>
               <TableCell>{account.contactName}</TableCell>
             </TableRow>
@@ -210,8 +264,8 @@ export default function AccountPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow key={account.id} className="hover:bg-white">
-              <TableCell>{account.createdAt}</TableCell>
+            <TableRow key={account.partnerAccountId} className="hover:bg-white">
+              <TableCell>{account.createdAt.toString()}</TableCell>
               <TableCell>{account.createdBy}</TableCell>
             </TableRow>
           </TableBody>
