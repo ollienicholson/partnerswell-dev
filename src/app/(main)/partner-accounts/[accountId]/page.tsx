@@ -305,7 +305,7 @@ export default function AccountPage() {
           </TableHeader>
           <TableBody>
             <TableRow key={account.partnerAccountId} className="hover:bg-white">
-              <TableCell>{account.createdAt.toString()}</TableCell>
+              <TableCell>{account.createdAt.toLocaleString("en-AU")}</TableCell>
               <TableCell>{account.createdBy}</TableCell>
             </TableRow>
           </TableBody>

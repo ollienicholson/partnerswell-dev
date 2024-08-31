@@ -75,7 +75,9 @@ export default function PartnerAccountsTable({ accounts }: Props) {
               >
                 <TableCell>{account.accountName}</TableCell>
                 <TableCell>{account.contactName}</TableCell>
-                <TableCell>{account.createdAt.toString()}</TableCell>
+                <TableCell>
+                  {account.createdAt.toLocaleString("en-AU")}
+                </TableCell>
                 <TableCell>{account.createdBy}</TableCell>
               </TableRow>
             ))}
