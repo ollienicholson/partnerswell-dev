@@ -25,6 +25,7 @@ export function DeleteAlertBox({ children }: { children: React.ReactNode }) {
     api.partnerAccountRouter.deletePartnerAccount.useMutation({
       onSuccess: () => {
         router.push("/partner-accounts");
+        router.refresh();
       },
       onError: (error) => {
         console.error("Error deleting partner account:", error);

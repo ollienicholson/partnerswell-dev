@@ -1,9 +1,4 @@
 "use client";
-import { api } from "~/trpc/react";
-import { useState } from "react";
-import { Button } from "~/app/components/ui/button";
-import { Label } from "~/app/components/ui/label";
-import { Input } from "~/app/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -11,8 +6,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from "~/app/components/ui/dialog";
+import { Button } from "~/app/components/ui/button";
+import { Label } from "~/app/components/ui/label";
+import { Input } from "~/app/components/ui/input";
+import { api } from "~/trpc/react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export function CreateAccountButton() {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const [accountName, setaccountName] = useState("");
@@ -20,7 +22,14 @@ export function CreateAccountButton() {
   const [createdBy, setcreatedBy] = useState("");
 
   const createPartnerAccount =
-    api.partnerAccountRouter.createPartnerAccount.useMutation();
+    api.partnerAccountRouter.createPartnerAccount.useMutation({
+      onSuccess: () => {
+        router.refresh();
+      },
+      onError: (error) => {
+        console.error("Error deleting partner account:", error);
+      },
+    });
 
   const openDialog = () => setIsOpen(true);
   const closeDialog = () => setIsOpen(false);
@@ -36,9 +45,8 @@ export function CreateAccountButton() {
       setaccountName("");
       setcontact("");
       setcreatedBy("");
-      // getAll.refetch();
     } catch (error) {
-      console.log(error);
+      console.error("Error during account creation:", error);
     }
   };
 
