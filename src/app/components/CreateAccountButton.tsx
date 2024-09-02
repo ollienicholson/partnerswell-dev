@@ -9,7 +9,7 @@ import {
 import { Button } from "~/app/components/ui/button";
 import { Label } from "~/app/components/ui/label";
 import { Input } from "~/app/components/ui/input";
-import { api } from "~/trpc/react";
+import { react_api } from "~/trpc/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -22,7 +22,7 @@ export function CreateAccountButton() {
   const [createdBy, setcreatedBy] = useState("");
 
   const createPartnerAccount =
-    api.partnerAccountRouter.createPartnerAccount.useMutation({
+    react_api.partnerAccountRouter.createPartnerAccount.useMutation({
       onSuccess: () => {
         router.refresh();
       },

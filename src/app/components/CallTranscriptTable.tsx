@@ -29,6 +29,7 @@ import {
 } from "~/app/components/ui/alert-dialog";
 import { Button } from "~/app/components/ui/button";
 import { CallTranscript } from "~/lib/types";
+import { useRouter } from "next/navigation";
 
 type CallTranscriptsTableProps = {
   transcripts: CallTranscript[];
@@ -39,6 +40,7 @@ export default function CallTranscriptsTable({
   transcripts,
   partnerAccounts,
 }: CallTranscriptsTableProps) {
+  const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState<string | null>(null);
   const [selectedRow, setSelectedRow] = useState<string | null>(null);
@@ -50,6 +52,14 @@ export default function CallTranscriptsTable({
   const handleAccountSelect = (accountName: string, transcriptId: string) => {
     setSelectedAccount(accountName);
     setSelectedRow(transcriptId);
+  };
+
+  const handleRowClick = (transcriptId: string, accountName: string) => {
+    router.push(
+      `/call-transcriptions/${transcriptId}?account=${encodeURIComponent(
+        accountName,
+      )}`,
+    );
   };
 
   const renderEmptyTranscripts = () => (
@@ -143,7 +153,16 @@ export default function CallTranscriptsTable({
               <AlertDialogCancel onClick={handleDialogClose}>
                 Cancel
               </AlertDialogCancel>
-              <AlertDialogAction>Import</AlertDialogAction>
+              <AlertDialogAction
+                onClick={() => {
+                  if (selectedRow && selectedAccount) {
+                    handleRowClick(selectedRow, selectedAccount);
+                    handleDialogClose();
+                  }
+                }}
+              >
+                Import
+              </AlertDialogAction>
             </div>
           </AlertDialogContent>
         </AlertDialog>

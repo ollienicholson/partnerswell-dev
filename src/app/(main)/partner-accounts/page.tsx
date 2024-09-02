@@ -1,5 +1,5 @@
 import PartnerAccountsTable from "~/app/components/PartnerAccountsTable";
-import { api } from "src/trpc/server";
+import { server_api } from "src/trpc/server";
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -7,7 +7,7 @@ import { Suspense } from "react";
 // TODO: format loading screen
 export default async function PartnerAccountsPage() {
   try {
-    const accounts = await api.partnerAccountRouter.getAll();
+    const accounts = await server_api.partnerAccountRouter.getAll();
 
     return (
       <>

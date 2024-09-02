@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
-import { api } from "src/trpc/server";
+import { server_api } from "src/trpc/server";
 import { getTranscripts } from "~/server/api/queries/getTranscripts";
 import CallTranscriptsTable from "../../components/CallTranscriptTable";
 
@@ -12,7 +12,7 @@ export default async function TranscriptsPage() {
   const transcripts = await getTranscripts();
 
   // fetch all partner accounts
-  const accounts = await api.partnerAccountRouter.getAll();
+  const accounts = await server_api.partnerAccountRouter.getAll();
 
   const partnerAccounts = accounts.map((account) => ({
     accountName: account.accountName,

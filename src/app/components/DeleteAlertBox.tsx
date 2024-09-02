@@ -10,7 +10,7 @@ import {
 } from "~/app/components/ui/alert-dialog";
 import { Button } from "~/app/components/ui/button";
 import { useParams, useRouter } from "next/navigation";
-import { api } from "~/trpc/react";
+import { react_api } from "~/trpc/react";
 import { useState } from "react";
 
 export function DeleteAlertBox({ children }: { children: React.ReactNode }) {
@@ -22,7 +22,7 @@ export function DeleteAlertBox({ children }: { children: React.ReactNode }) {
 
   // delete partner account mutation
   const partnerAccountMutation =
-    api.partnerAccountRouter.deletePartnerAccount.useMutation({
+    react_api.partnerAccountRouter.deletePartnerAccount.useMutation({
       onSuccess: () => {
         router.push("/partner-accounts");
         router.refresh();

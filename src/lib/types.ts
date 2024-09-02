@@ -8,6 +8,7 @@ export type PartnerAccount = {
   createdAt: Date;
 };
 
+// correct graphQL API structute???
 export type CallTranscript = {
   id: string;
   title: string;
@@ -16,4 +17,17 @@ export type CallTranscript = {
   speakers: {
     name: string;
   }[];
+};
+
+export type CallTranscriptHeader = {
+  callTranscriptId: number;
+  callTranscriptTitle: string;
+  callDuration: string;
+  callAttendees: {
+    speakers: string;
+  }[];
+  dateString: string;
+  createdBy: string;
+  updatedAt: string;
+  callSummary: string;
 };

@@ -5,6 +5,10 @@ const idSchema = z.object({
   partnerAccountId: z.number(),
 });
 
+const acccountSchema = z.object({
+  partnerAccountName: z.string(),
+});
+
 const partnerAccountSchema = z.object({
   accountName: z.string(),
   contactName: z.string(),
@@ -29,6 +33,16 @@ export const partnerAccountRouter = createTRPCRouter({
       where: idSchema.parse(input),
     });
   }),
+
+  // get partner account by name
+  // TODO: may need to update to use findUnique
+  getAccountByName: publicProcedure
+    .input(acccountSchema)
+    .query(({ input, ctx }) => {
+      return ctx.db.partnerAccount.findFirst({
+        where: { accountName: input.partnerAccountName },
+      });
+    }),
 
   //create new partner account
   createPartnerAccount: publicProcedure

@@ -3,7 +3,7 @@
 import { AccountTable } from "~/app/components/AccountTable";
 import { MeetingTable } from "~/app/components/MeetingTable";
 import { useParams } from "next/navigation";
-import { api } from "~/trpc/react";
+import { react_api } from "~/trpc/react";
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 
@@ -14,11 +14,10 @@ export default function AccountPage() {
   console.log("Getting data for AccountId:", accountId);
 
   //get account details
-  const { data: account, isLoading } = api.partnerAccountRouter.getOne.useQuery(
-    {
+  const { data: account, isLoading } =
+    react_api.partnerAccountRouter.getOne.useQuery({
       partnerAccountId: Number(accountId),
-    },
-  );
+    });
 
   if (isLoading) {
     return (
