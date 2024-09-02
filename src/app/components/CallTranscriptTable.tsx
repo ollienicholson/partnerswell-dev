@@ -49,37 +49,39 @@ export default function CallTranscriptsTable({
   transcripts,
   partnerAccounts,
 }: CallTranscriptsTableProps) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false); // control dialog visibility
-  const [selectedAccount, setSelectedAccount] = useState<string | null>(null); // state to handle selected account
-  const [enabledRow, setEnabledRow] = useState<string | null>(null); // state to handle enabled row
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedAccount, setSelectedAccount] = useState<string | null>(null);
+  const [selectedRow, setSelectedRow] = useState<string | null>(null);
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
   };
 
-  // handler for account select
   const handleAccountSelect = (accountName: string, transcriptId: string) => {
     setSelectedAccount(accountName);
-    setEnabledRow(transcriptId); // enable the row with this transcript id
+    setSelectedRow(transcriptId);
   };
 
-  const emptyTranscripts = () => {
-    return (
-      <TableRow>
-        <TableCell colSpan={7} className="text-center">
-          No transcripts found. Please import transcripts to display data.
-        </TableCell>
-      </TableRow>
-    );
-  };
+  // const handleClearSelections = () => {
+  //   setSelectedAccount(null);
+  //   setSelectedRow(null);
+  // };
+
+  const renderEmptyTranscripts = () => (
+    <TableRow>
+      <TableCell colSpan={5} className="text-center">
+        No transcripts found. Please import transcripts to display data.
+      </TableCell>
+    </TableRow>
+  );
 
   return (
     <>
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-white">
-            <TableHead>Partner Account</TableHead>
             <TableHead>Call Title</TableHead>
+            <TableHead>Partner Account</TableHead>
             <TableHead>Call Duration</TableHead>
             <TableHead>Call Date</TableHead>
             <TableHead>Attendees</TableHead>
@@ -90,18 +92,19 @@ export default function CallTranscriptsTable({
             ? transcripts.map((transcript) => (
                 <TableRow
                   key={transcript.id}
-                  // add class for enabled row
-                  className={enabledRow === transcript.id ? "" : "opacity-50"}
+                  className={selectedRow === transcript.id ? "" : "opacity-50"}
                 >
+                  <TableCell>{transcript.title}</TableCell>
                   <TableCell>
                     <Select
-                      // add handler on change for disabling all other rows
+                      value={
+                        selectedRow === transcript.id
+                          ? selectedAccount ?? ""
+                          : ""
+                      }
                       onValueChange={(value) =>
                         handleAccountSelect(value, transcript.id)
                       }
-                      disabled={
-                        enabledRow !== null && enabledRow !== transcript.id
-                      } // disable all other rows when a row is enabled
                     >
                       <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Select an account" />
@@ -120,36 +123,36 @@ export default function CallTranscriptsTable({
                       </SelectContent>
                     </Select>
                   </TableCell>
-                  <TableCell>{transcript.title}</TableCell>
                   <TableCell>{transcript.duration} mins</TableCell>
                   <TableCell>
                     {new Date(transcript.dateString).toLocaleDateString()}
                   </TableCell>
                   <TableCell>
-                    {transcript.speakers.map((speaker, index) => (
-                      <li key={index}>{speaker.name}</li>
-                    ))}
+                    <ul>
+                      {transcript.speakers.map((speaker, index) => (
+                        <li key={index}>{speaker.name}</li>
+                      ))}
+                    </ul>
                   </TableCell>
                 </TableRow>
               ))
-            : emptyTranscripts()}
+            : renderEmptyTranscripts()}
         </TableBody>
       </Table>
-      <div className="mt-4 flex justify-start p-4">
+      <div className="mt-4 flex justify-between p-4">
         <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <AlertDialogTrigger asChild>
-            <Button
-              variant="default"
-              // add disabled handler
-              disabled={!selectedAccount} // disable button when no account is selected
-            >
+            <Button variant="default" disabled={!selectedAccount}>
               Import Transcript
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>Import account</AlertDialogDescription>
+              <AlertDialogTitle>Import?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to import {selectedAccount}'s call
+                transcript?
+              </AlertDialogDescription>
             </AlertDialogHeader>
             <div className="mt-4 flex justify-between">
               <AlertDialogCancel onClick={handleDialogClose}>
@@ -159,6 +162,13 @@ export default function CallTranscriptsTable({
             </div>
           </AlertDialogContent>
         </AlertDialog>
+        {/* <Button
+          variant="outline"
+          onClick={handleClearSelections}
+          disabled={!selectedAccount}
+        >
+          Clear Selected
+        </Button> */}
       </div>
     </>
   );

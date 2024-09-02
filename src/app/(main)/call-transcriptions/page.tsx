@@ -15,7 +15,7 @@ export default async function TranscriptsPage() {
     <div>
       <div className="relative min-h-screen p-6">
         <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
-          Call Transcripts
+          Select a transcript to import
         </div>
         <div className="border-1 w-full rounded-xl shadow-md">
           <CallTranscriptsTable
