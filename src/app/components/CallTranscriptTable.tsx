@@ -50,9 +50,17 @@ export default function CallTranscriptsTable({
   partnerAccounts,
 }: CallTranscriptsTableProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false); // control dialog visibility
+  const [selectedAccount, setSelectedAccount] = useState<string | null>(null); // state to handle selected account
+  const [enabledRow, setEnabledRow] = useState<string | null>(null); // state to handle enabled row
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
+  };
+
+  // handler for account select
+  const handleAccountSelect = (accountName: string, transcriptId: string) => {
+    setSelectedAccount(accountName);
+    setEnabledRow(transcriptId); // enable the row with this transcript id
   };
 
   const emptyTranscripts = () => {
@@ -80,11 +88,23 @@ export default function CallTranscriptsTable({
         <TableBody>
           {transcripts.length > 0
             ? transcripts.map((transcript) => (
-                <TableRow key={transcript.id}>
+                <TableRow
+                  key={transcript.id}
+                  // add class for enabled row
+                  className={enabledRow === transcript.id ? "" : "opacity-50"}
+                >
                   <TableCell>
-                    <Select>
+                    <Select
+                      // add handler on change for disabling all other rows
+                      onValueChange={(value) =>
+                        handleAccountSelect(value, transcript.id)
+                      }
+                      disabled={
+                        enabledRow !== null && enabledRow !== transcript.id
+                      } // disable all other rows when a row is enabled
+                    >
                       <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder={"Select an account"} />
+                        <SelectValue placeholder="Select an account" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
@@ -118,7 +138,13 @@ export default function CallTranscriptsTable({
       <div className="mt-4 flex justify-start p-4">
         <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <AlertDialogTrigger asChild>
-            <Button variant="default">Import Transcript</Button>
+            <Button
+              variant="default"
+              // add disabled handler
+              disabled={!selectedAccount} // disable button when no account is selected
+            >
+              Import Transcript
+            </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
