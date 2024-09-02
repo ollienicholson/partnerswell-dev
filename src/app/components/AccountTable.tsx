@@ -10,17 +10,10 @@ import {
 } from "~/app/components/ui/table";
 import { EditAccountButton } from "~/app/components/EditAccountButton";
 
-// TODO: add a types file
-type Account = {
-  partnerAccountId: number;
-  accountName: string;
-  contactName: string;
-  createdBy: string | null;
-  createdAt: Date;
-};
+import { PartnerAccount } from "~/lib/types";
 
 // TODO: handle error UI for incorrect acccount id
-export function AccountTable({ account }: { account: Account }) {
+export function AccountTable({ account }: { account: PartnerAccount }) {
   return (
     <div className="rounded-xl border shadow">
       <Table>

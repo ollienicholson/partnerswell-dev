@@ -1,6 +1,5 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { z } from "zod";
-import { partnerAccounts } from "~/lib/partner-accounts";
 
 const idSchema = z.object({
   partnerAccountId: z.number(),
@@ -16,7 +15,6 @@ const partnerAccountUpdateSchema = z.object({
   partnerAccountId: z.number(),
   accountName: z.string(),
   contactName: z.string(),
-  // createdBy: z.string(),
 });
 
 export const partnerAccountRouter = createTRPCRouter({

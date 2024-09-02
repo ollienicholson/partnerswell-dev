@@ -28,17 +28,7 @@ import {
   AlertDialogTrigger,
 } from "~/app/components/ui/alert-dialog";
 import { Button } from "~/app/components/ui/button";
-
-// TODO: relocate this to a types file
-type CallTranscript = {
-  id: string;
-  title: string;
-  duration: string;
-  dateString: string;
-  speakers: {
-    name: string;
-  }[];
-};
+import { CallTranscript } from "~/lib/types";
 
 type CallTranscriptsTableProps = {
   transcripts: CallTranscript[];
@@ -61,11 +51,6 @@ export default function CallTranscriptsTable({
     setSelectedAccount(accountName);
     setSelectedRow(transcriptId);
   };
-
-  // const handleClearSelections = () => {
-  //   setSelectedAccount(null);
-  //   setSelectedRow(null);
-  // };
 
   const renderEmptyTranscripts = () => (
     <TableRow>
@@ -162,13 +147,6 @@ export default function CallTranscriptsTable({
             </div>
           </AlertDialogContent>
         </AlertDialog>
-        {/* <Button
-          variant="outline"
-          onClick={handleClearSelections}
-          disabled={!selectedAccount}
-        >
-          Clear Selected
-        </Button> */}
       </div>
     </>
   );
