@@ -1,0 +1,64 @@
+"use client";
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "~/app/components/ui/table";
+import { EditAccountButton } from "~/app/components/EditAccountButton";
+
+// TODO: add a types file
+type Account = {
+  partnerAccountId: number;
+  accountName: string;
+  contactName: string;
+  createdBy: string | null;
+  createdAt: Date;
+};
+
+// TODO: handle error UI for incorrect acccount id
+export function AccountTable({ account }: { account: Account }) {
+  return (
+    <div className="rounded-xl border shadow">
+      <Table>
+        <TableHeader>
+          <TableRow className="hover:bg-transparent">
+            <TableHead>Account</TableHead>
+            <TableHead>Contact</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow key={account.partnerAccountId} className="hover:bg-white">
+            <TableCell>{account.accountName}</TableCell>
+            <TableCell>{account.contactName}</TableCell>
+          </TableRow>
+        </TableBody>
+        <div className="p-2" />
+        <TableHeader>
+          <TableRow className="hover:bg-white">
+            <TableHead>Created At</TableHead>
+            <TableHead>Created By</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow key={account.partnerAccountId} className="hover:bg-white">
+            {/* Understand the new Date */}
+            <TableCell>
+              {new Date(account.createdAt).toLocaleString("en-AU")}
+            </TableCell>
+            <TableCell>{account.createdBy}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+      <div className="flex justify-end p-4">
+        <EditAccountButton
+          accountName={account.accountName}
+          accountContact={account.contactName}
+        />
+      </div>
+    </div>
+  );
+}

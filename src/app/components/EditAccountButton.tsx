@@ -7,19 +7,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "~/app/components/ui/dialog";
-
 import { AlertDialogTrigger } from "~/app/components/ui/alert-dialog";
-
 import { Input } from "~/app/components/ui/input";
 import { Label } from "~/app/components/ui/label";
 import { Button } from "~/app/components/ui/button";
 import { DeleteAlertBox } from "~/app/components/DeleteAlertBox";
 import { api } from "~/trpc/react";
 import { useParams } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query"; // Import useQueryClient
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-// look into use of accountContact
 export function EditAccountButton({
   accountName,
   accountContact,
@@ -31,8 +28,8 @@ export function EditAccountButton({
   const queryClient = useQueryClient();
   const { accountId } = useParams();
 
-  const [accountNameToUpdate, setaccountNameToUpdate] = useState("");
-  const [contactToUpdate, setcontactToUpdate] = useState("");
+  const [accountNameToUpdate, setaccountNameToUpdate] = useState(accountName);
+  const [contactToUpdate, setcontactToUpdate] = useState(accountContact);
 
   // update partner account
   const updatePartnerAccountMutation =
