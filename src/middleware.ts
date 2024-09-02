@@ -11,13 +11,10 @@ export default authMiddleware({
     "/sign-up/[[...index]]",
   ],
   // ignoredRoutes: ["/"],
-  // ignoredRoutes: ["/((?!api|trpc))(_next.*|.+\.[\w]+$)", "/"],
+  ignoredRoutes: ["/((?!api|trpc))(_next.*|.+.[w]+$)", "/"],
   // debug: false,
 });
 
-
 export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", 
-    "/", 
-    "/(api|trpc)(.*)"],
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };

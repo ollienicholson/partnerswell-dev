@@ -9,23 +9,6 @@ import {
   TableRow,
 } from "~/app/components/ui/table";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "~/app/components/ui/dialog";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "~/app/components/ui/alert-dialog";
-import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
@@ -33,202 +16,15 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "~/app/components/ui/pagination";
-import { Input } from "~/app/components/ui/input";
-import { Label } from "~/app/components/ui/label";
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 import { api } from "~/trpc/react";
 import { useMemo, useState } from "react";
 import { callTranscriptHeader } from "~/lib/call-transcript-header";
 import { useParams, useRouter } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query"; // Import useQueryClient
+import { EditAccountButton } from "~/app/components/EditAccountButton";
 
-export function DeleteAlertBox({ children }: { children: React.ReactNode }) {
-  const { accountId: partnerAccountId } = useParams();
-  const router = useRouter();
-
-  // delete mutation
-  const [accountIdToDelete, setAccountIdToDelete] = useState(
-    partnerAccountId ? Number(partnerAccountId) : null,
-  );
-  const partnerAccountMutation =
-    api.partnerAccountRouter.deletePartnerAccount.useMutation({
-      onSuccess: () => {
-        // Redirect back to the partner accounts list after deletion
-        router.push("/partner-accounts");
-      },
-      onError: (error) => {
-        console.log("Error deleting partner account:", error);
-      },
-    });
-
-  const handlePartnerAccountDelete = async () => {
-    if (!accountIdToDelete) {
-      console.log("Account ID is missing or invalid");
-      return;
-    }
-    try {
-      await partnerAccountMutation.mutateAsync({
-        partnerAccountId: Number(accountIdToDelete),
-      });
-      //rediret back to list
-    } catch (error) {
-      console.log("Error during deletion:", error);
-    }
-  };
-  return (
-    <AlertDialog>
-      {children}
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <div className="mt-4 flex justify-between">
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction asChild>
-            <Button
-              // variant="destructive"
-              type="button"
-              onClick={handlePartnerAccountDelete}
-            >
-              Delete
-            </Button>
-          </AlertDialogAction>
-        </div>
-      </AlertDialogContent>
-    </AlertDialog>
-  );
-}
-
-export function EditAccountButton({
-  accountName,
-  accountContact,
-}: {
-  accountName: string;
-  accountContact: string;
-}) {
-  const [isOpen, setIsOpen] = useState(false);
-  // const openDialog = () => setIsOpen(true);
-  const openDialog = () => {
-    setaccountNameToUpdate(accountName);
-    setcontactToUpdate(accountContact);
-    setIsOpen(true);
-  };
-  const closeDialog = () => setIsOpen(false);
-  const queryClient = useQueryClient();
-
-  const { accountId } = useParams();
-
-  const [accountIdToUpdate, setAccountIdToUpdate] = useState(
-    accountId ? Number(accountId) : null,
-  );
-  const [accountNameToUpdate, setaccountNameToUpdate] = useState("");
-  const [contactToUpdate, setcontactToUpdate] = useState("");
-  const [createdByToUpdate, setcreatedByToUpdate] = useState("");
-
-  // update partner account
-  const updatePartnerAccountMutation =
-    api.partnerAccountRouter.updatePartnerAccount.useMutation({
-      onSuccess: () => {
-        console.log("updatePartnerAccountMutation");
-        // Invalidate and refetch the data for the updated account
-        queryClient.invalidateQueries();
-      },
-      onError: (error) => {
-        console.error("Error updating partner account:", error);
-      },
-    });
-
-  const handleUpdatePartnerAccountMutation = async () => {
-    if (!accountIdToUpdate) {
-      console.log("Account ID is missing or invalid");
-      return;
-    }
-    try {
-      await updatePartnerAccountMutation.mutateAsync({
-        partnerAccountId: Number(accountIdToUpdate),
-        accountName: accountNameToUpdate,
-        contactName: contactToUpdate,
-        createdBy: createdByToUpdate,
-      });
-      setaccountNameToUpdate(accountNameToUpdate);
-      setcontactToUpdate(contactToUpdate);
-    } catch (error) {
-      console.log("Error updating partner account:", error);
-    }
-  };
-
-  return (
-    <>
-      <Button onClick={openDialog}>Edit Account</Button>
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>Edit {accountName}'s account</DialogTitle>
-            <DialogDescription>
-              Click Save Changes to update. Click Delete to delete the account.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="accountName" className="text-right">
-                Account Name
-              </Label>
-              <Input
-                id="accountName"
-                value={accountNameToUpdate}
-                onChange={(e) => setaccountNameToUpdate(e.target.value)}
-                placeholder="Partner account name"
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="contactName" className="text-right">
-                Primary Contact
-              </Label>
-              <Input
-                id="contactName"
-                value={contactToUpdate}
-                onChange={(e) => setcontactToUpdate(e.target.value)}
-                placeholder="Contact full name"
-                className="col-span-3"
-              />
-            </div>
-          </div>
-          <div className="flex justify-between">
-            <Button variant="secondary" type="button" onClick={closeDialog}>
-              Cancel
-            </Button>
-            <Button
-              type="button"
-              onClick={() => {
-                handleUpdatePartnerAccountMutation();
-                closeDialog();
-              }}
-            >
-              Save Changes
-            </Button>
-            <DeleteAlertBox>
-              <AlertDialogTrigger asChild>
-                <Button variant="destructive" type="button">
-                  Delete Account
-                </Button>
-              </AlertDialogTrigger>
-            </DeleteAlertBox>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
-  );
-}
-
-// TODO: handle incorrect acccount id
-// TODO: separate client and server components
-// TODO: move imported transcripts to call transcripts flow
+// TODO: handle error UI for incorrect acccount id
 
 export default function AccountPage() {
   // pagination for call transcripts

@@ -16,7 +16,7 @@ const partnerAccountUpdateSchema = z.object({
   partnerAccountId: z.number(),
   accountName: z.string(),
   contactName: z.string(),
-  createdBy: z.string(),
+  // createdBy: z.string(),
 });
 
 export const partnerAccountRouter = createTRPCRouter({
