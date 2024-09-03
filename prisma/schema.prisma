@@ -75,13 +75,10 @@ model PartnerAccount {
 //     callTranscriptId          Int                        @id @default(autoincrement())
 //     callTranscriptTitle       String
 //     createdAt                 DateTime                   @default(now())
-//     updatedAt                 DateTime                   @updatedAt
-//     createdBy                 User                       @relation(fields: [createdById], references: [id])
-//     createdById               Int                        @unique
+//     Duration Int // in minutes
+//     Speakers Speakers[]
 //     partnerAccount            PartnerAccount             @relation(fields: [accountId], references: [partnerAccountId])
 //     accountId                 Int                        @unique
-//     contact                   Contact                    @relation(fields: [contactId], references: [contactId])
-//     contactId                 Int                        @unique
 //     CallTranscriptDefaultText CallTranscriptDefaultText?
 //     CallTranscriptSnippet     CallTranscriptSnippet[]
 
