@@ -9,15 +9,15 @@ export type PartnerAccount = {
 };
 
 // correct graphQL API structute???
-export type CallTranscript = {
-  id: string;
-  title: string;
-  duration: string;
-  dateString: string;
-  speakers: {
-    name: string;
-  }[];
-};
+// export type CallTranscript = {
+//   id: string;
+//   title: string;
+//   duration: string;
+//   dateString: string;
+//   speakers: {
+//     name: string;
+//   }[];
+// };
 
 export type CallTranscriptHeader = {
   callTranscriptId: number;
@@ -30,4 +30,35 @@ export type CallTranscriptHeader = {
   createdBy: string;
   updatedAt: string;
   callSummary: string;
+};
+
+export type allTranscripts = {
+  id: string;
+  title: string;
+  duration: string;
+  dateString: string;
+  speakers: {
+    name: string;
+  }[];
+};
+
+export type allTranscriptData = {
+  transcripts: allTranscripts[];
+};
+
+export type getOneTranscriptType = {
+  id: string;
+  duration: string;
+  dateString: string;
+  title: string;
+  speakers: {
+    name: string;
+  }[];
+  sentences: {
+    speaker_name: string;
+    text: string;
+  }[];
+  summary: {
+    overview: string;
+  };
 };

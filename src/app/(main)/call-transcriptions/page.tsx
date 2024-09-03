@@ -2,7 +2,10 @@ import * as React from "react";
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 import { server_api } from "src/trpc/server";
-import { getTranscripts } from "~/server/api/queries/getTranscripts";
+import {
+  getTranscripts,
+  getOneTranscript,
+} from "~/server/api/queries/getTranscripts";
 import CallTranscriptsTable from "../../components/CallTranscriptTable";
 
 export default async function TranscriptsPage() {
@@ -10,6 +13,38 @@ export default async function TranscriptsPage() {
 
   // fetch all transcripts
   const transcripts = await getTranscripts();
+
+  // const getAllTranscripts = async () => {
+  //   try {
+  //     const transcripts = await getTranscripts();
+
+  //     if (transcripts) {
+  //       console.log("Transcripts list:", transcripts);
+  //     } else {
+  //       console.error("Transcript not found.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching transcript:", error);
+  //   }
+  // };
+
+  // getAllTranscripts();
+
+  const getTranscript = async () => {
+    try {
+      const transcript = await getOneTranscript();
+
+      if (transcript) {
+        console.log("Transcript fetched successfully:", transcript);
+      } else {
+        console.error("Transcript not found.");
+      }
+    } catch (error) {
+      console.error("Error fetching transcript:", error);
+    }
+  };
+
+  // getTranscript();
 
   // fetch all partner accounts
   const accounts = await server_api.partnerAccountRouter.getAll();
@@ -29,6 +64,7 @@ export default async function TranscriptsPage() {
           <CallTranscriptsTable
             transcripts={transcripts}
             partnerAccounts={partnerAccounts}
+            // getOne={getOne}
           />
         </div>
         <div className="pt-12">
