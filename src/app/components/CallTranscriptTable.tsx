@@ -28,19 +28,17 @@ import {
   AlertDialogTrigger,
 } from "~/app/components/ui/alert-dialog";
 import { Button } from "~/app/components/ui/button";
-import { getOneTranscriptType, allTranscripts } from "~/lib/types";
+import { allTranscripts } from "~/lib/types";
 import { useRouter } from "next/navigation";
 
 type CallTranscriptsTableProps = {
   transcripts: allTranscripts[];
   partnerAccounts: { accountName: string; contactName: string }[];
-  // getOne: getOneTranscriptType[];
 };
 
 export default function CallTranscriptsTable({
   transcripts,
   partnerAccounts,
-  // getOne,
 }: CallTranscriptsTableProps) {
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);

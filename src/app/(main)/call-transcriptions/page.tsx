@@ -30,19 +30,19 @@ export default async function TranscriptsPage() {
 
   // getAllTranscripts();
 
-  const getTranscript = async () => {
-    try {
-      const transcript = await getOneTranscript();
+  // const getTranscript = async () => {
+  //   try {
+  //     const transcript = await getOneTranscript();
 
-      if (transcript) {
-        console.log("Transcript fetched successfully:", transcript);
-      } else {
-        console.error("Transcript not found.");
-      }
-    } catch (error) {
-      console.error("Error fetching transcript:", error);
-    }
-  };
+  //     if (transcript) {
+  //       console.log("Transcript fetched successfully:", transcript);
+  //     } else {
+  //       console.error("Transcript not found.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching transcript:", error);
+  //   }
+  // };
 
   // getTranscript();
 
@@ -64,7 +64,6 @@ export default async function TranscriptsPage() {
           <CallTranscriptsTable
             transcripts={transcripts}
             partnerAccounts={partnerAccounts}
-            // getOne={getOne}
           />
         </div>
         <div className="pt-12">
