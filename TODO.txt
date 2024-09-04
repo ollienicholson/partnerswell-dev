@@ -1,0 +1,60 @@
+TODO list
+----------
+
+[] Refactor: partner accounts user flow
+    should only see partner account details and successfully imported meeting info
+
+[] Refactor: call transcription flow
+
+[] Fireflies
+
+
+// TODO: AccountTable - add a types file
+// TODO: partner-account[accountId] - handle error UI for incorrect acccount id
+
+[] Nitesh to work on:
+  [] Fireflies Auth 
+    [] saving API key to db against user
+    [] update API key & save against user
+    [] delete API key against user
+  
+  [] chatgpt integration
+    [] you'll need the inputs to parse for the API call
+
+
+  Integrations > Fireflies
+    [] fireflies integration page
+      [] pass API key to input box
+      [] need to encrypt fireflies auth input
+      [] store API key in user table db
+      [] connect button will only test the API request
+      [] add button to import transcript data
+      Popout modals:
+          [] fireflies API
+          [] data import successful
+      [] after importing, take user to call transcriptions
+
+  Call Transcripts
+  [] make sure firelfies API is working in dev
+  [] connect import button to all checked imports
+    [] checkbox to signify wheather or not row item is to been imported
+  [] add popup to display import error/success
+    [] on import, GET call transcript text based on transcript id & POST data against account
+    [] once import is complete, user will be able to view transcript data in partner accounts page
+
+
+
+TYPES:
+[] set types for all data objects - in progress
+[] check typesafety before moving to prod
+
+
+chatgpt
+- parsing fireflies data to chatgpt
+- rendering in browser
+
+fireflies auth
+associatting fireflies auth with a user
+
+
+styling

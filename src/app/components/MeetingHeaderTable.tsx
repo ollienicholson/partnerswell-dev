@@ -8,15 +8,36 @@ import {
   TableHeader,
   TableRow,
 } from "~/app/components/ui/table";
+import { getOneTranscript } from "~/lib/types";
+
+type MeetingHeaderTableProps = {
+  accountName: string;
+  transcript: getOneTranscript;
+};
 
 export default function MeetingHeaderTable({
-  accountId,
-  meetingId,
-}: {
-  accountId: string | null;
-  meetingId: string | null;
-}) {
+  accountName,
+  transcript,
+}: MeetingHeaderTableProps) {
   // get data based on accountId and meetingId
+
+  const formattedDate = new Date(transcript.dateString).toLocaleDateString(
+    "en-US",
+    {
+      month: "numeric",
+      day: "numeric",
+      year: "numeric",
+    },
+  );
+
+  const formattedTime = new Date(transcript.dateString).toLocaleTimeString(
+    "en-US",
+    {
+      hour: "2-digit",
+      minute: "2-digit",
+    },
+  );
+
   return (
     <div className="rounded-xl border shadow">
       <Table>
@@ -28,14 +49,10 @@ export default function MeetingHeaderTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow
-            // key={meeting?.callTranscriptId}
-            className="hover:bg-transparent"
-          >
-            {/* TODO: render account name based on id*/}
-            <TableCell>render account name</TableCell>
-            <TableCell>meeting?.callTranscriptTitle</TableCell>
-            <TableCell>meeting?.callDuration mins</TableCell>
+          <TableRow key={transcript.id} className="hover:bg-transparent">
+            <TableCell>{accountName}</TableCell>
+            <TableCell>{transcript.title}</TableCell>
+            <TableCell>{transcript.duration} mins</TableCell>
           </TableRow>
         </TableBody>
         <div className="p-2" />
@@ -47,27 +64,13 @@ export default function MeetingHeaderTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow
-            // key={meeting?.callTranscriptId}
-            className="hover:bg-transparent"
-          >
+          <TableRow key={transcript.id} className="hover:bg-transparent">
+            <TableCell>{formattedDate || "Date not available"}</TableCell>
+            <TableCell>{formattedTime || "Time not available"}</TableCell>
             <TableCell>
-              meeting date
-              {/* {meeting?.dateString
-                ? new Date(meeting.dateString).toLocaleDateString()
-                : "Date not available"} */}
-            </TableCell>
-            <TableCell>
-              meeting time
-              {/* {meeting?.dateString
-                ? new Date(meeting.dateString).toLocaleTimeString()
-                : "Date not available"} */}
-            </TableCell>
-            <TableCell>
-              meeting speakers
-              {/* {meeting?.callAttendees.map((attendee, index) => (
-                <li key={index}>{attendee.speakers}</li>
-              ))} */}
+              {transcript.speakers.map((speaker, index) => (
+                <li key={index}>{speaker.name}</li>
+              ))}
             </TableCell>
           </TableRow>
         </TableBody>
@@ -80,7 +83,9 @@ export default function MeetingHeaderTable({
         </TableHeader>
         <TableBody>
           <TableRow className="hover:bg-transparent">
-            <TableCell>meeting?.callSummary</TableCell>
+            <TableCell>
+              {transcript.summary.overview || "Summary not available"}
+            </TableCell>
           </TableRow>
         </TableBody>
       </Table>

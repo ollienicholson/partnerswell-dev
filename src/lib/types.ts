@@ -46,19 +46,26 @@ export type allTranscriptData = {
   transcripts: allTranscripts[];
 };
 
-export type getOneTranscriptType = {
+export type getOneTranscript = {
   id: string;
-  duration: string;
+  duration: number;
   dateString: string;
   title: string;
   speakers: {
     name: string;
   }[];
-  sentences: {
-    speaker_name: string;
-    text: string;
-  }[];
   summary: {
     overview: string;
   };
 };
+
+// export type getTranscriptText = {
+//   id: string;
+//   speakers: {
+//     name: string;
+//   }[];
+//   sentences: {
+//     speaker_name: string;
+//     text: string;
+//   }[];
+// };

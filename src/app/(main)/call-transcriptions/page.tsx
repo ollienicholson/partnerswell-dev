@@ -4,12 +4,13 @@ import Link from "next/link";
 import { server_api } from "src/trpc/server";
 import {
   getTranscripts,
-  getOneTranscript,
+  getTranscriptById,
 } from "~/server/api/queries/getTranscripts";
 import CallTranscriptsTable from "../../components/CallTranscriptTable";
 
 export default async function TranscriptsPage() {
   // TODO: remove hardcoded transcripts limit
+  // TODO: catch error for rate limits
 
   // fetch all transcripts
   const transcripts = await getTranscripts();
@@ -30,21 +31,21 @@ export default async function TranscriptsPage() {
 
   // getAllTranscripts();
 
-  // const getTranscript = async () => {
-  //   try {
-  //     const transcript = await getOneTranscript();
+  const fetchTranscript = async (transcriptId: string) => {
+    try {
+      const transcript = await getTranscriptById(transcriptId);
 
-  //     if (transcript) {
-  //       console.log("Transcript fetched successfully:", transcript);
-  //     } else {
-  //       console.error("Transcript not found.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching transcript:", error);
-  //   }
-  // };
-
-  // getTranscript();
+      if (transcript) {
+        console.log("Transcript fetched successfully:", transcript);
+      } else {
+        console.error("Transcript not found.");
+      }
+    } catch (error) {
+      console.error("Error fetching transcript:", error);
+    }
+  };
+  const transID = "Lb0X1ywN0nOTTAs1";
+  fetchTranscript(transID);
 
   // fetch all partner accounts
   const accounts = await server_api.partnerAccountRouter.getAll();

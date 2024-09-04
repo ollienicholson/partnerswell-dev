@@ -1,11 +1,13 @@
 import { graphqlClient } from "~/lib/graphqlClient";
 
 import {
-  getOneTranscriptType,
+  getOneTranscript,
+  // getTranscriptText,
   allTranscripts,
   allTranscriptData,
 } from "~/lib/types";
 
+// get all call transcripts
 const GET_TRANSCRIPTS = `
   query Transcripts($limit: Int) {
     transcripts(limit: $limit){
@@ -20,9 +22,11 @@ const GET_TRANSCRIPTS = `
   }
 `;
 
+// transcript(id: "Lb0X1ywN0nOTTAs1")
+// get the call transcript by id
 const GET_ONE_TRANSCRIPT = `
-query Transcript {
-  transcript(id: "Lb0X1ywN0nOTTAs1") {
+query Transcript($id: String!) {
+  transcript(id: $id) {
       id
       duration
       dateString
@@ -30,27 +34,39 @@ query Transcript {
       speakers {
           name
       }
-      sentences {
-          speaker_name
-          text
-      }
       summary {
           overview
       }
   }
 }`;
 
+// get the entire call transcript
+// const GET_TRANSCRIPT_TEXT = `
+// query Transcript($id: !String) {
+//   transcript(id: $id) {
+//       id
+//       speakers {
+//           name
+//       }
+//       sentences {
+//           speaker_name
+//           text
+//       }
+//   }
+// }`;
+
 // TODO: improve caching
 // TODO: create refresh function for frontend user
-export const getOneTranscript = async (): Promise<
-  getOneTranscriptType | []
-> => {
-  console.log("Fetching one transcript...");
+export const getTranscriptById = async (
+  id: string,
+): Promise<getOneTranscript | null> => {
+  console.log("Fetching transcript with ID:", id);
 
   try {
+    // pass id as variable to graphql query
     const data = await graphqlClient.request<{
-      transcript: getOneTranscriptType;
-    }>(GET_ONE_TRANSCRIPT);
+      transcript: getOneTranscript;
+    }>(GET_ONE_TRANSCRIPT, { id });
 
     //return single transcript
     return data.transcript;
@@ -71,7 +87,7 @@ export const getOneTranscript = async (): Promise<
       console.error("Network error, please try again later.");
     }
     // fallback: return an empty array
-    return [];
+    return null;
   }
 };
 

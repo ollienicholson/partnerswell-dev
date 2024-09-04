@@ -1,0 +1,68 @@
+API FILE SIZES:
+--------------
+raw transcript data json = 80kb
+chatgpt summary = 3kb
+parsed chatgpt json output = 5kb
+
+
+/Users/olivernicholson/github/partnerswell/ollie-sandbox/chatgpt-test02
+- for ChatGPT API pricing, rate limits etc
+
+NOTES:
+DO NOT FOCUS on mobile responsiveness
+Do not hard delete db entries in prod - look at soft delete options
+
+- Clerk currently deactivated
+- test on Chrome browser
+- update UI for Chrome
+- get SENTRY.IO for debugging
+- look into caching behavior for requests
+
+
+DESIGN:
+--------------
+See Figma buttons put aside by Lisa
+
+Button Colour:
+SAVE / Confirm button
+#48B7A2
+
+back-button
+white
+
+nav:
+text-hover
+#399382
+label-hover-background
+#EDF8F6
+
+DATABASE:
+Switch from ID (auto-increment) to CUID as unique identifier in production
+	•	Use Auto-Increment IDs for simple, single-database applications with performance needs and no distribution requirements.
+	•	Use UUIDs when you need global uniqueness across distributed systems, with security in mind.
+	•	Use CUIDs in high-concurrency distributed systems where collision resistance, rough ordering, and readability are beneficial.
+
+
+FIREFLIES GraphQL requests
+	# # Get one transcript
+# query Transcript {
+#     transcript(id: "Lb0X1ywN0nOTTAs1") {
+#         id
+#         duration
+#         dateString
+#         title
+#         speakers {
+#             name
+#         }
+#         sentences {
+#             speaker_name
+#             text
+#         }
+#         summary {
+#             overview
+#         }
+#     }
+# }
+# speaker name needs to equal sentences > speaker_name if chatgpt is to know how to assign speakers to text
+# sentences -> text: returns all text from a given call
+# sentences -> raw_text: returns all text from a given call

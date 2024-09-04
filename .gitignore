@@ -42,7 +42,7 @@ yarn-error.log*
 *.tsbuildinfo
 
 # TODOs
-*.txt
+# *.txt
 
 # testing
 /x-testing
