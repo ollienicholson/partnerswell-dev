@@ -13,9 +13,13 @@ export default function ImportedTranscriptPage() {
   const { importId: importTranscriptId } = useParams();
   console.log("Getting data for AccountId:", importTranscriptId);
 
-  const [transcriptData, setTranscriptData] = useState<getOneTranscript | null>(
-    null,
-  );
+  const { data: transcriptData } = react_api.transcriptRouter.getById.useQuery({
+    id: typeof importTranscriptId === "string" ? importTranscriptId : "",
+  });
+
+  // const [transcriptData, setTranscriptData] = useState<getOneTranscript | null>(
+  //   null,
+  // );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,32 +35,32 @@ export default function ImportedTranscriptPage() {
       partnerAccountName: accountName || "",
     });
 
-  useEffect(() => {
-    const fetchTranscript = async (transcriptId: string) => {
-      try {
-        const transcript = await getTranscriptById(transcriptId);
-        console.log("Fetched Transcript Data:", transcript); // Debug log
-        if (transcript) {
-          console.log("Transcript fetched successfully:");
-          setTranscriptData(transcript);
-        } else {
-          setError("Transcript not found.");
-        }
-      } catch (error) {
-        console.error("Error fetching transcript:", error);
-        setError("Failed to load transcript data. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchTranscript = async (transcriptId: string) => {
+  //     try {
+  //       const transcript = await getTranscriptById(transcriptId);
+  //       console.log("Fetched Transcript Data:", transcript); // Debug log
+  //       if (transcript) {
+  //         console.log("Transcript fetched successfully:");
+  //         setTranscriptData(transcript);
+  //       } else {
+  //         setError("Transcript not found.");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching transcript:", error);
+  //       setError("Failed to load transcript data. Please try again later.");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    // call the fetch function with the importId from URL params
-    if (typeof importTranscriptId === "string") {
-      fetchTranscript(importTranscriptId);
-    } else {
-      console.error("Invalid import ID", importTranscriptId);
-    }
-  }, [importTranscriptId]);
+  //   // call the fetch function with the importId from URL params
+  //   if (typeof importTranscriptId === "string") {
+  //     fetchTranscript(importTranscriptId);
+  //   } else {
+  //     console.error("Invalid import ID", importTranscriptId);
+  //   }
+  // }, [importTranscriptId]);
 
   if (!account) {
     return (
