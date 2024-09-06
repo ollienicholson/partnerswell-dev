@@ -1,16 +1,24 @@
 TODO list
 ----------
 
+EPICS
+-----
 [] Refactor: partner accounts user flow
     should only see partner account details and successfully imported meeting info
 
 [] Refactor: call transcription flow
 
-[] Fireflies
+[] Fireflies Auth
+
+[] chatgpt integration
+
+[] all functionality working before moving forward
+
+[] styling
 
 
-// TODO: AccountTable - add a types file
-// TODO: partner-account[accountId] - handle error UI for incorrect acccount id
+TASKS
+-----
 
 [] Nitesh to work on:
   [] Fireflies Auth 
@@ -42,19 +50,52 @@ TODO list
     [] on import, GET call transcript text based on transcript id & POST data against account
     [] once import is complete, user will be able to view transcript data in partner accounts page
 
-
+Error handling:
+partner-account[accountId] - handle error UI for incorrect acccount id
 
 TYPES:
 [] set types for all data objects - in progress
 [] check typesafety before moving to prod
 
 
-chatgpt
-- parsing fireflies data to chatgpt
-- rendering in browser
 
-fireflies auth
-associatting fireflies auth with a user
+TICKETS
+-------
 
 
-styling
+Fireflies AUTH:
+----------
+Auth storage, import, and save to db
+
+Outcome: work on storing & retrieving API keys safely
+
+[] how to temporarily store keys entered by user - in-prog
+[] get front end to work with keys
+[] button to store and retrieve "edit API key"
+
+
+-- Fireflies API Key Button action: --
+Saves api key on connect
+
+you can then update or delete your api key
+
+edit button greyed out if no api key is stored.  
+- clicking edit button will open a modal to update or remove api key
+
+once testing is complete
+•	Ensure secure storage of the API key, such as saving it encrypted in your database or session management system.
+
+
+ChatGPT Integration:
+--------------------
+
+influence indicator (which refers to a sales deal)
+> list of influence indicators:
+> 1. WestPac
+> 2. Commbank
+> 3. ANZ
+> 4. BNZ
+>> for the influence indicator selected, you then pass a list of phase:
+  think of the phase like a check point in the sales cycle
+
+  (see screenshot) this is a phase list of influence indicators - so lets say you select the WesPac as an influence indicator ( this hsould be a static list of companies i.e. banks for which we have deals in the pipeline) you would then parse that company name along with the list of phases to chatGPT  in order to get the response you want

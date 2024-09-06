@@ -1,4 +1,4 @@
-Mon 02/09
+Fri 06/09
 
 EPICS
 ------
@@ -9,64 +9,18 @@ EPICS
 [] Refactor partner accounts user flow
   [] should only see partner account details and successfully imported meeting info
 
-[] Fireflies - if time
-
-[] chatgpt
-
-[] all functionality working before moving forward
-
-
-DO THIS LAST:
-[] styling
-
 
 TASKS
 -----
 
 [] Call transcripts user flow refactor
-  Notes:
-  - bring all meeting assignment and import into call transcription flow
-  
-  get the backend working first
-  [x] check what data you need to collect
-  [x] for the selected import, create fireflies GET request to get data
-  [x] query gets summary and raw transcript based on transcript id
-  [x] print data in the terminal to check its correct
-  [x] display in the front end
-  [x] get one transcript dynamically
-
-  [x] build the frontend UI so you know where the data is going
-  [] save transcript id to account based on account id
-  [] save speaker>name and sentences>speaker_name, so that when parsing to chatgpt they know who is saying what
+  Notes: bring all meeting assignment and import into call transcription flow
 
   [] get transcript id and make another call to fireflies to return the call transcript
     copy the current flow occurring in partner accounts 
     [] open new page: same format as: src/app/(main)/partner-accounts/[accountId]/[meetingId]
     []  MM or II assignment will take place and the chatgpt parsing
     [] save to account
+        [] save transcript id to account based on account id
+        [] store speaker>name against sentences>speaker_name,  so that when parsing to chatgpt they know who is saying what
   [] open in partner account to view final output
-
-
-
-
-Fireflies AUTH:
-----------
-Auth storage, import, and save to db
-
-Outcome: work on storing & retrieving API keys safely
-
-[] how to temporarily store keys entered by user - in-prog
-[] get front end to work with keys
-[] button to store and retrieve "edit API key"
-
-
--- Fireflies API Key Button action: --
-Saves api key on connect
-
-you can then update or delete your api key
-
-edit button greyed out if no api key is stored.  
-- clicking edit button will open a modal to update or remove api key
-
-once testing is complete
-•	Ensure secure storage of the API key, such as saving it encrypted in your database or session management system.

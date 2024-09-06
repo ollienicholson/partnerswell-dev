@@ -31,21 +31,21 @@ export default async function TranscriptsPage() {
 
   // getAllTranscripts();
 
-  const fetchTranscript = async (transcriptId: string) => {
-    try {
-      const transcript = await getTranscriptById(transcriptId);
+  // const fetchTranscript = async (transcriptId: string) => {
+  //   try {
+  //     const transcript = await getTranscriptById(transcriptId);
 
-      if (transcript) {
-        console.log("Transcript fetched successfully:", transcript);
-      } else {
-        console.error("Transcript not found.");
-      }
-    } catch (error) {
-      console.error("Error fetching transcript:", error);
-    }
-  };
-  const transID = "Lb0X1ywN0nOTTAs1";
-  fetchTranscript(transID);
+  //     if (transcript) {
+  //       console.log("Transcript fetched successfully:", transcript);
+  //     } else {
+  //       console.error("Transcript not found.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching transcript:", error);
+  //   }
+  // };
+  // const transID = "Lb0X1ywN0nOTTAs1";
+  // fetchTranscript(transID);
 
   // fetch all partner accounts
   const accounts = await server_api.partnerAccountRouter.getAll();
