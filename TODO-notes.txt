@@ -37,32 +37,7 @@ label-hover-background
 #EDF8F6
 
 DATABASE:
-Switch from ID (auto-increment) to CUID as unique identifier in production
+Switch from ID (auto-increment) to CUID as unique identifier in production?
 	•	Use Auto-Increment IDs for simple, single-database applications with performance needs and no distribution requirements.
 	•	Use UUIDs when you need global uniqueness across distributed systems, with security in mind.
 	•	Use CUIDs in high-concurrency distributed systems where collision resistance, rough ordering, and readability are beneficial.
-
-
-FIREFLIES GraphQL requests
-	# # Get one transcript
-# query Transcript {
-#     transcript(id: "Lb0X1ywN0nOTTAs1") {
-#         id
-#         duration
-#         dateString
-#         title
-#         speakers {
-#             name
-#         }
-#         sentences {
-#             speaker_name
-#             text
-#         }
-#         summary {
-#             overview
-#         }
-#     }
-# }
-# speaker name needs to equal sentences > speaker_name if chatgpt is to know how to assign speakers to text
-# sentences -> text: returns all text from a given call
-# sentences -> raw_text: returns all text from a given call
