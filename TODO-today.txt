@@ -24,3 +24,7 @@ TASKS
         [] save transcript id to account based on account id
         [] store speaker>name against sentences>speaker_name,  so that when parsing to chatgpt they know who is saying what
   [] open in partner account to view final output
+
+
+
+consider using Image instead of img for nextjs warnings
