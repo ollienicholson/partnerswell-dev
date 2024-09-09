@@ -15,8 +15,9 @@ TASKS
 [] Call transcripts user flow refactor
   Notes: bring all meeting assignment and import into call transcription flow
 
-  [] get basic frontend flow working
+  [x] get basic frontend flow working
   [] remove flow from partner accounts page
+  [] show empty table in partner accounts page if no transcripts have been saved to the account
 
   [] get transcript id and make another call to fireflies to return the call transcript
     copy the current flow occurring in partner accounts 

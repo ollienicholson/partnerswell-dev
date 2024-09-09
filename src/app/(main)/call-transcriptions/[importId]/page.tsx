@@ -6,6 +6,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  TableCell,
 } from "~/app/components/ui/table";
 import {
   Select,
@@ -23,10 +24,20 @@ import { react_api } from "~/trpc/react";
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 import MeetingHeaderTable from "~/app/components/MeetingHeaderTable";
+import {
+  maturityMapOutput,
+  MaturityMapOutput,
+} from "~/lib/maturity-map-output";
+import {
+  influenceIndicatorOutput,
+  InfluenceIndicatorOutput,
+} from "~/lib/influence-indicator-output";
 // import { getTranscriptById } from "~/server/api/queries/getTranscripts";
 // import { getOneTranscript } from "~/lib/types";
 
 export default function ImportedTranscriptPage() {
+  // TODO: add loading screen
+
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState<string | null>(null);
   const [selectedToggle, setSelectedToggle] = useState<string>("");
@@ -75,6 +86,7 @@ export default function ImportedTranscriptPage() {
   //     </div>
   //   );
   // }
+
   // if (error) {
   //   return (
   //     <div className="flex flex-col items-center justify-center gap-6">
@@ -85,6 +97,47 @@ export default function ImportedTranscriptPage() {
   //     </div>
   //   );
   // }
+
+  const renderMaturityMapOutput = () => {
+    return maturityMapOutput.map((item: MaturityMapOutput, index: number) => (
+      <TableRow key={index} className="hover:bg-transparent">
+        <TableCell className="font-semibold">{item.title}</TableCell>
+        <TableCell>
+          {item.details.map((detail, subIndex) => (
+            <div key={subIndex} className="mb-2 flex flex-col gap-2">
+              <strong>{detail.subTitle}:</strong>
+              <ul>
+                {detail.description.map((desc, descIndex) => (
+                  <li key={descIndex}>{desc}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </TableCell>
+      </TableRow>
+    ));
+  };
+  const renderInfluenceIndicatorOutput = () => {
+    return influenceIndicatorOutput.map(
+      (item: InfluenceIndicatorOutput, index: number) => (
+        <TableRow key={index} className="hover:bg-transparent">
+          <TableCell className="font-semibold">{item.title}</TableCell>
+          <TableCell>
+            {item.details.map((detail, subIndex) => (
+              <div key={subIndex} className="mb-2 flex flex-col gap-2">
+                <strong>{detail.subTitle}:</strong>
+                <ul>
+                  {detail.description.map((desc, descIndex) => (
+                    <li key={descIndex}>{desc}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </TableCell>
+        </TableRow>
+      ),
+    );
+  };
 
   return (
     <div className="relative min-h-screen p-6">
@@ -208,6 +261,27 @@ export default function ImportedTranscriptPage() {
             </TableRow>
           </TableBody>
         </Table>
+      </div>
+      <div className="mt-6 rounded-xl border shadow">
+        {capabilityData ? (
+          <Table>
+            <TableHeader>
+              <TableRow className="hover:bg-transparent">
+                <TableHead>Capability</TableHead>
+                <TableHead>Details</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {selectedToggle === "maturityMap"
+                ? renderMaturityMapOutput()
+                : renderInfluenceIndicatorOutput()}
+            </TableBody>
+          </Table>
+        ) : (
+          <div className="flex min-h-[400px] items-center justify-center p-6 text-center text-xl text-gray-300">
+            Select your preference for Maturity Map or Influence Indicator
+          </div>
+        )}
       </div>
       <div className="py-4"></div>
       <div className="mt-6 flex justify-between pt-12">
