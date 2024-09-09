@@ -1,5 +1,6 @@
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { partnerAccountRouter } from "./routers/partner-accounts";
+import { integrationRouter } from "./routers/integration";
 import { transcriptRouter } from "./routers/transcripts";
 
 /**
@@ -9,6 +10,7 @@ import { transcriptRouter } from "./routers/transcripts";
  */
 export const appRouter = createTRPCRouter({
   partnerAccountRouter: partnerAccountRouter,
+  integrationRouter: integrationRouter,
   transcriptRouter: transcriptRouter,
 });
 

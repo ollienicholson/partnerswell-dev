@@ -22,6 +22,7 @@ enum Role {
 model userRoles {
     clerkId String @unique
     role    Role
+    firefliesApi    String?
 
     @@index([clerkId, role])
 }
