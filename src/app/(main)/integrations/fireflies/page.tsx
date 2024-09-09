@@ -14,7 +14,6 @@ import {
   FormMessage,
 } from "~/app/components/ui/form";
 import { Input } from "~/app/components/ui/input";
-import { toast } from "~/app/components/ui/use-toast";
 import {
   Card,
   CardDescription,
@@ -23,7 +22,9 @@ import {
   CardTitle,
 } from "~/app/components/ui/card";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { react_api } from "~/trpc/react";
+import toast from "react-hot-toast";
 
 const FormSchema = z.object({
   api_key: z.string().min(30, {
@@ -32,53 +33,35 @@ const FormSchema = z.object({
 });
 
 export function InputForm() {
-  console.log("fireflies frontend page.ts InputForm");
   const [status, setStatus] = useState<string | null>(null);
+  const { data: firefliesApiKey } =
+    react_api.integrationRouter.getFireFliesKey.useQuery();
+  const upsertApiKey = react_api.integrationRouter.upsertApiKey.useMutation({});
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      api_key: "",
+      api_key: firefliesApiKey ?? "",
     },
   });
-
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log("fireflies frontend page.ts onSubmit");
-    try {
-      const response = await fetch("/api/fireflies", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      // TODO: add correct toast component
-      const result = await response.json();
-      if (response.ok) {
-        setStatus("SUCCESS: API key is valid !!");
-        toast({
-          title: "Success",
-          description: "API key is valid",
-          variant: "default",
-        });
-      } else {
-        setStatus("ERROR: API key is invalid");
-        toast({
-          title: "Error",
-          description: result.message || "API key is invalid",
-          variant: "default",
-        });
-      }
-    } catch (error) {
-      setStatus("ERR: An error occurred while validating your API key");
-      toast({
-        title: "Error",
-        description: "An error occurred while validating your API key",
-        variant: "destructive",
-      });
+  useEffect(() => {
+    if (firefliesApiKey) {
+      form.setValue("api_key", firefliesApiKey);
     }
+  }, [firefliesApiKey, form]);
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    await toast.promise(
+      upsertApiKey.mutateAsync({
+        api_key: data.api_key,
+      }),
+      {
+        loading: "Saving API key...",
+        success: "Successfully saved API key",
+        error: "Error saving API key",
+      },
+    );
   }
 
+  console.log(firefliesApiKey);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
