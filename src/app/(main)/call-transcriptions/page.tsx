@@ -2,10 +2,7 @@ import * as React from "react";
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 import { server_api } from "src/trpc/server";
-import {
-  getTranscripts,
-  getTranscriptById,
-} from "~/server/api/queries/getTranscripts";
+import { getTranscripts } from "~/server/api/queries/getTranscripts";
 import CallTranscriptsTable from "../../components/CallTranscriptTable";
 
 export default async function TranscriptsPage() {

@@ -1,8 +1,4 @@
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 import { getTranscriptById } from "../queries/getTranscripts";
 
@@ -17,7 +13,7 @@ export const transcriptRouter = createTRPCRouter({
       if (!input.id) return;
       try {
         const transcript = await getTranscriptById(input.id);
-        console.log("Fetched Transcript Data:", transcript); // Debug log
+        // console.log("Fetched Transcript Data:", transcript); // Debug log
         if (transcript) {
           console.log("Transcript fetched successfully:");
           return transcript;

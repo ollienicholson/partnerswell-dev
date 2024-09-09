@@ -1,25 +1,49 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "~/app/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/app/components/ui/select";
+import { ToggleGroup, ToggleGroupItem } from "~/app/components/ui/toggle-group";
+import { influenceIndicators } from "~/lib/in-in-list";
+import { useState } from "react";
 import { useParams } from "next/navigation";
 import { react_api } from "~/trpc/react";
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 import MeetingHeaderTable from "~/app/components/MeetingHeaderTable";
-import { getTranscriptById } from "~/server/api/queries/getTranscripts";
-import { getOneTranscript } from "~/lib/types";
+// import { getTranscriptById } from "~/server/api/queries/getTranscripts";
+// import { getOneTranscript } from "~/lib/types";
 
 export default function ImportedTranscriptPage() {
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState<string | null>(null);
+  const [selectedToggle, setSelectedToggle] = useState<string>("");
+  const [capabilityButtonClicked, setCapabilityButtonClicked] = useState(false);
+  const [resetButton, setResetButton] = useState(false);
+  const [capabilityData, setCapabilityData] = useState(false);
+
   const { importId: importTranscriptId } = useParams();
   console.log("Getting data for AccountId:", importTranscriptId);
 
   const { data: transcriptData } = react_api.transcriptRouter.getById.useQuery({
     id: typeof importTranscriptId === "string" ? importTranscriptId : "",
   });
-  console.log("router call matches params Id?", transcriptData?.id);
-
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  console.log(
+    "Does the router call match useParams importId?",
+    transcriptData?.id,
+  );
 
   let accountName: string | null = "";
 
@@ -74,6 +98,117 @@ export default function ImportedTranscriptPage() {
           transcript={transcriptData}
         />
       )}
+      <div className="mt-4 rounded-xl border shadow">
+        <Table>
+          <TableHeader>
+            <TableRow className="hover:bg-transparent">
+              <TableHead>Select Maturtiy Map or Influence Indicator</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="flex justify-start p-2 py-4 hover:bg-transparent">
+              <ToggleGroup
+                className="gap-2 p-4"
+                type="single"
+                value={selectedToggle}
+                onValueChange={(value) => setSelectedToggle(value)}
+              >
+                <ToggleGroupItem
+                  variant="outline"
+                  value="maturityMap"
+                  disabled={capabilityButtonClicked}
+                  className={`rounded px-4 py-2 ${
+                    selectedToggle === "maturityMap"
+                      ? "border-2 border-green-300"
+                      : null
+                  }`}
+                >
+                  Maturity Map
+                </ToggleGroupItem>
+                <ToggleGroupItem
+                  variant="outline"
+                  value="influenceIndicator"
+                  disabled={capabilityButtonClicked}
+                  className={`rounded px-4 py-2 ${
+                    selectedToggle === "influenceIndicator"
+                      ? "border-2 border-green-300"
+                      : null
+                  }`}
+                >
+                  Influence Indicator
+                </ToggleGroupItem>
+                {selectedToggle === "influenceIndicator" ? (
+                  <Select disabled={capabilityButtonClicked}>
+                    <SelectTrigger className="w-[260px]">
+                      <SelectValue placeholder="Select an indicator" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {influenceIndicators.map((indicator) => (
+                          <SelectItem key={indicator.id} value={indicator.name}>
+                            {indicator.name}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                ) : (
+                  <Select disabled>
+                    <SelectTrigger className="w-[260px]">
+                      <SelectValue placeholder="Select an indicator" />
+                    </SelectTrigger>
+                  </Select>
+                )}
+              </ToggleGroup>
+            </TableRow>
+          </TableBody>
+          <TableHeader>
+            <TableRow className="hover:bg-transparent">
+              <TableHead>Get capability data based on your selection</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="flex justify-between gap-2 p-6 hover:bg-transparent">
+              <Button
+                disabled={
+                  capabilityButtonClicked ||
+                  resetButton ||
+                  (selectedToggle !== "maturityMap" &&
+                    selectedToggle !== "influenceIndicator")
+                }
+                onClick={() => {
+                  setCapabilityData(true);
+                  setCapabilityButtonClicked(true);
+                  setResetButton(true);
+                }}
+                className={`${
+                  selectedToggle === "maturityMap" ||
+                  selectedToggle === "influenceIndicator"
+                    ? "bg-green-300 text-white"
+                    : "cursor-not-allowed bg-gray-300 text-gray-500"
+                }`}
+              >
+                Get capability data
+              </Button>
+              <Button
+                variant="outline"
+                disabled={
+                  selectedToggle !== "maturityMap" &&
+                  selectedToggle !== "influenceIndicator"
+                }
+                onClick={() => {
+                  setCapabilityData(false);
+                  setCapabilityButtonClicked(false);
+                  setResetButton(false);
+                }}
+              >
+                Reset Data
+              </Button>
+              <Button variant="outline">Save Data to Account</Button>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </div>
       <div className="py-4"></div>
       <div className="mt-6 flex justify-between pt-12">
         <Link href="/call-transcriptions">
