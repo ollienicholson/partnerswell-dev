@@ -16,14 +16,12 @@ export default function ImportedTranscriptPage() {
   const { data: transcriptData } = react_api.transcriptRouter.getById.useQuery({
     id: typeof importTranscriptId === "string" ? importTranscriptId : "",
   });
+  console.log("router call matches params Id?", transcriptData?.id);
 
-  // const [transcriptData, setTranscriptData] = useState<getOneTranscript | null>(
-  //   null,
-  // );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  let accountName: string | null = null;
+  let accountName: string | null = "";
 
   if (typeof window !== "undefined") {
     const searchParams = new URLSearchParams(window.location.search);
@@ -32,64 +30,37 @@ export default function ImportedTranscriptPage() {
   }
   const { data: account } =
     react_api.partnerAccountRouter.getAccountByName.useQuery({
-      partnerAccountName: accountName || "",
+      partnerAccountName: accountName || "No account name",
     });
 
-  // useEffect(() => {
-  //   const fetchTranscript = async (transcriptId: string) => {
-  //     try {
-  //       const transcript = await getTranscriptById(transcriptId);
-  //       console.log("Fetched Transcript Data:", transcript); // Debug log
-  //       if (transcript) {
-  //         console.log("Transcript fetched successfully:");
-  //         setTranscriptData(transcript);
-  //       } else {
-  //         setError("Transcript not found.");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching transcript:", error);
-  //       setError("Failed to load transcript data. Please try again later.");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  // if ((accountName = "No account name")) {
+  //   return (
+  //     <div className=" flex flex-col items-center justify-center gap-6">
+  //       <div>Account loading...</div>
+  //       <Link href="/call-transcriptions">
+  //         <Button>Back to Partner Accounts</Button>
+  //       </Link>
+  //     </div>
+  //   );
+  // }
 
-  //   // call the fetch function with the importId from URL params
-  //   if (typeof importTranscriptId === "string") {
-  //     fetchTranscript(importTranscriptId);
-  //   } else {
-  //     console.error("Invalid import ID", importTranscriptId);
-  //   }
-  // }, [importTranscriptId]);
-
-  if (!account) {
-    return (
-      <div className=" flex flex-col items-center justify-center gap-6">
-        <div>Account loading...</div>
-        <Link href="/call-transcriptions">
-          <Button>Back to Partner Accounts</Button>
-        </Link>
-      </div>
-    );
-  }
-
-  if (loading) {
-    return (
-      <div className="loader-container">
-        <div className="loader"></div>
-      </div>
-    );
-  }
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center gap-6">
-        <div className="text-red-500">{error}</div>
-        <Link href="/call-transcriptions">
-          <Button>Back</Button>
-        </Link>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="loader-container">
+  //       <div className="loader"></div>
+  //     </div>
+  //   );
+  // }
+  // if (error) {
+  //   return (
+  //     <div className="flex flex-col items-center justify-center gap-6">
+  //       <div className="text-red-500">{error}</div>
+  //       <Link href="/call-transcriptions">
+  //         <Button>Back</Button>
+  //       </Link>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="relative min-h-screen p-6">
@@ -99,7 +70,7 @@ export default function ImportedTranscriptPage() {
       </div>
       {transcriptData && (
         <MeetingHeaderTable
-          accountName={account.accountName}
+          accountName={account?.accountName}
           transcript={transcriptData}
         />
       )}

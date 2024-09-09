@@ -15,38 +15,6 @@ export default async function TranscriptsPage() {
   // fetch all transcripts
   const transcripts = await getTranscripts();
 
-  // const getAllTranscripts = async () => {
-  //   try {
-  //     const transcripts = await getTranscripts();
-
-  //     if (transcripts) {
-  //       console.log("Transcripts list:", transcripts);
-  //     } else {
-  //       console.error("Transcript not found.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching transcript:", error);
-  //   }
-  // };
-
-  // getAllTranscripts();
-
-  // const fetchTranscript = async (transcriptId: string) => {
-  //   try {
-  //     const transcript = await getTranscriptById(transcriptId);
-
-  //     if (transcript) {
-  //       console.log("Transcript fetched successfully:", transcript);
-  //     } else {
-  //       console.error("Transcript not found.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching transcript:", error);
-  //   }
-  // };
-  // const transID = "Lb0X1ywN0nOTTAs1";
-  // fetchTranscript(transID);
-
   // fetch all partner accounts
   const accounts = await server_api.partnerAccountRouter.getAll();
 

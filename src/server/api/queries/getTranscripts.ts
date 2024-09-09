@@ -40,7 +40,7 @@ query Transcript($id: String!) {
   }
 }`;
 
-// get the entire call transcript
+// get complete call transcript with associated speaker names
 // const GET_TRANSCRIPT_TEXT = `
 // query Transcript($id: !String) {
 //   transcript(id: $id) {

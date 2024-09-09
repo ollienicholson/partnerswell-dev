@@ -11,7 +11,7 @@ import {
 import { getOneTranscript } from "~/lib/types";
 
 type MeetingHeaderTableProps = {
-  accountName: string;
+  accountName: string | undefined;
   transcript: getOneTranscript;
 };
 
@@ -55,7 +55,7 @@ export default function MeetingHeaderTable({
             <TableCell>{transcript.duration} mins</TableCell>
           </TableRow>
         </TableBody>
-        <div className="p-2" />
+        {/* <div className="p-2" /> */}
         <TableHeader>
           <TableRow className="hover:bg-transparent">
             <TableHead>Meeting Date</TableHead>
