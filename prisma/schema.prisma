@@ -28,21 +28,25 @@ model userRoles {
 }
 
 model PartnerAccount {
-    partnerAccountId Int      @id @default(autoincrement())
+    partnerAccountId Int                  @id @default(autoincrement())
     accountName      String
     contactName      String
     createdBy        String?
-    createdAt        DateTime @default(now())
-    updatedAt        DateTime @updatedAt
+    createdAt        DateTime             @default(now())
+    updatedAt        DateTime             @updatedAt
+    transcripts      CallTranscriptData[] // one-to-many relationship
 
-    // CallTranscript   CallTranscriptData[]
+    @@index([partnerAccountId])
 }
 
 model CallTranscriptData {
-    id                  Int      @id @default(autoincrement())
-    callTranscriptId    String   @unique
+    id                  Int            @id @default(autoincrement())
+    callTranscriptId    String         @unique
     callTranscriptTitle String
-    createdAt           DateTime @default(now())
+    createdAt           DateTime       @default(now())
+    partnerAccount      PartnerAccount @relation(fields: [accountId], references: [partnerAccountId])
+    accountId           Int // Partner Account FK
+
     //     Duration Int // in minutes
     //     Speakers Speakers[]
     //     partnerAccount            PartnerAccount             @relation(fields: [accountId], references: [partnerAccountId])

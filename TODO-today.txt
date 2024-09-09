@@ -32,7 +32,8 @@ TASKS
             Note: MM or II assignment will take place before sending raw text to chatgpt for parsing
       [] Create "get capability data" action - this will trigger response from OpenAI API
         [] create crud for saving transcript data to db
-          [] create
+          [x] create
+            [] add all required fields gradually
           [] delete
         [x] Need to write chatGPT request to parse transcript data - general request plus either maturity map or influence indicator and related phase
         [] need to send list of speakers to chatGPT along with transcript text
