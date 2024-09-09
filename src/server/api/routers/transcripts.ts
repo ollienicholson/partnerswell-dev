@@ -13,7 +13,7 @@ export const transcriptRouter = createTRPCRouter({
       if (!input.id) return;
       try {
         const transcript = await getTranscriptById(input.id);
-        // console.log("Fetched Transcript Data:", transcript); // log
+        console.log("Fetched Transcript Data:", transcript); // log
         if (transcript) {
           console.log("Transcript fetched successfully:");
           return transcript;
@@ -31,6 +31,9 @@ export const transcriptRouter = createTRPCRouter({
       z.object({
         callTranscriptId: z.string(),
         callTranscriptTitle: z.string(),
+        duration: z.number().optional(),
+        meetingDate: z.string().optional(),
+        // speakers: z.string().optional(),
         partnerAccountId: z.number(),
       }),
     )
@@ -40,6 +43,8 @@ export const transcriptRouter = createTRPCRouter({
         data: {
           callTranscriptId: input.callTranscriptId,
           callTranscriptTitle: input.callTranscriptTitle,
+          duration: input.duration,
+          meetingDate: input.meetingDate,
           accountId: input.partnerAccountId,
         },
       });

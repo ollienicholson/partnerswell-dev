@@ -94,7 +94,7 @@ export const getTranscriptById = async (
 let transcriptsCache: allTranscripts[] | null = null;
 
 export const getTranscripts = async (
-  limit: number = 4,
+  limit: number = 1,
 ): Promise<allTranscripts[]> => {
   if (transcriptsCache) {
     console.log("Returning cached transcripts...");

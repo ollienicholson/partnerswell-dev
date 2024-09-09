@@ -5,8 +5,12 @@ import { react_api } from "~/trpc/react";
 
 export function CallTranscriptForm({
   partnerAccountId,
+  duration,
+  meetingDate,
 }: {
   partnerAccountId: number;
+  duration: number;
+  meetingDate: string;
 }) {
   // hooks for form fields
   const [callTranscriptId, setCallTranscriptId] = useState("");
@@ -22,6 +26,8 @@ export function CallTranscriptForm({
       await createCallTranscript.mutateAsync({
         callTranscriptId: callTranscriptId,
         callTranscriptTitle: callTranscriptTitle,
+        duration: duration,
+        meetingDate: meetingDate,
         partnerAccountId: partnerAccountId,
       });
       alert("Call transcript created successfully!");
@@ -35,8 +41,8 @@ export function CallTranscriptForm({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
+    <form onSubmit={handleSubmit} className="border p-2">
+      <div className="border p-2">
         <label htmlFor="callTranscriptId">Call Transcript ID:</label>
         <input
           type="text"
@@ -45,7 +51,7 @@ export function CallTranscriptForm({
           onChange={(e) => setCallTranscriptId(e.target.value)}
         />
       </div>
-      <div>
+      <div className="border p-2">
         <label htmlFor="callTranscriptTitle">Call Transcript Title:</label>
         <input
           type="text"

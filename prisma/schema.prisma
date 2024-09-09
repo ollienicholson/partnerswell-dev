@@ -41,24 +41,14 @@ model CallTranscriptData {
     callTranscriptId    String         @unique
     callTranscriptTitle String
     createdAt           DateTime       @default(now())
-    accountId           Int // Partner Account FK
+    duration            Int? // in minutes
+    meetingDate         String?
+    speakers            Json? // list of Speakers
+    summary             Json?
     partnerAccount      PartnerAccount @relation(fields: [accountId], references: [partnerAccountId], onDelete: Cascade)
+    accountId           Int // Partner Account FK
 
-    //     Duration Int // in minutes
-    //     Speakers Speakers[]
-    //     partnerAccount            PartnerAccount             @relation(fields: [accountId], references: [partnerAccountId])
-    //     accountId                 Int                        @unique
-    //     CallTranscriptDefaultText CallTranscriptDefaultText?
-    //     CallTranscriptSnippet     CallTranscriptSnippet[]
+    // chatgptOutput - relation LONGTEXT
 
     @@index([id])
 }
-
-// model CallTranscriptDefaultText {
-//     callTranscriptDefaultTextId Int                @id @default(autoincrement())
-//     transcriptText              String
-//     callTranscript              CallTranscriptData @relation(fields: [callTranscriptId], references: [callTranscriptId])
-//     callTranscriptId            Int                @unique
-
-//     @@index([callTranscriptDefaultTextId])
-// }
