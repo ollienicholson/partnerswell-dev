@@ -3,10 +3,10 @@ Mon 09/09
 EPICS
 ------
 
-[] Call transcripts user flow refactor - IN PROGRESS
+[x] Call transcripts user flow refactor
 
-[] Refactor partner accounts user flow
-  [] should only see partner account details and successfully imported meeting info
+[x] Refactor partner accounts user flow
+  [x] should only see partner account details and successfully imported meeting info
 
 
 TASKS
@@ -16,14 +16,18 @@ TASKS
   Notes: bring all meeting assignment and import into call transcription flow
 
   [x] get basic frontend flow working
-  [] remove flow from partner accounts page
-  [] show empty table in partner accounts page if no transcripts have been saved to the account
+  [x] show empty table in partner accounts page if no transcripts have been saved to the account
+  [x] remove flow from partner accounts page
 
-  [] get transcript id and make another call to fireflies to return the call transcript
-    copy the current flow occurring in partner accounts 
-    [] open new page: same format as: src/app/(main)/partner-accounts/[accountId]/[meetingId]
-    []  MM or II assignment will take place and the chatgpt parsing
-    [] save to account
+  [x] add new table in partner accounts page to display final chatgpt output - which will look alot like the capability table in call transcript user flow
+    [x] Table headings - partner-accounts/[accountId]/[meetingId]/page.tsx
+
+
+  [x] get transcript id and make another call to fireflies to return the call transcript
+    [x] open new page: same format as: src/app/(main)/partner-accounts/[accountId]/[meetingId]
+    
+    []  MM or II assignment will take place before sending raw text to chatgpt for parsing
+    [] save to associated partner account
         [] save transcript id to account based on account id
         [] store speaker>name against sentences>speaker_name,  so that when parsing to chatgpt they know who is saying what
   [] open in partner account to view final output
