@@ -1,7 +1,7 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// @@index[column] to sort by index 
+// use @@index[column] to sort by index 
 
 generator client {
     provider = "prisma-client-js"
@@ -20,26 +20,12 @@ enum Role {
 }
 
 model userRoles {
-    clerkId String @unique
-    role    Role
-    firefliesApi    String?
+    clerkId      String  @unique
+    role         Role
+    firefliesApi String?
 
     @@index([clerkId, role])
 }
-
-// model User {
-//     id        Int      @id @default(autoincrement())
-//     firstName String
-//     lastName  String
-//     email     String
-//     createdAt DateTime @default(now())
-//     updatedAt DateTime @updatedAt
-//     role      Role     @default(GUEST)
-//     contact   Contact? @relation(fields: [contactId], references: [contactId], onDelete: Cascade)
-//     contactId Int? // Foriegn key to Contact
-
-//     // CallTranscriptData CallTranscriptData[]
-// }
 
 model PartnerAccount {
     partnerAccountId Int      @id @default(autoincrement())
@@ -48,43 +34,24 @@ model PartnerAccount {
     createdBy        String?
     createdAt        DateTime @default(now())
     updatedAt        DateTime @updatedAt
-    // contacts         Contact[]
 
     // CallTranscript   CallTranscriptData[]
-    // need to add createdById to this table
-    // then link to the USER table and retrieve the first name and last name
-    // change 'contacts' to 'contact'? check if this is a pain before changing -> should be singular
 }
 
-// model Contact {
-//     contactId      Int            @id @default(autoincrement())
-//     firstName      String
-//     lastName       String
-//     contactEmail   String
-//     createdAt      DateTime       @default(now())
-//     updatedAt      DateTime       @updatedAt
-//     partnerAccount PartnerAccount @relation(fields: [accountId], references: [partnerAccountId], onDelete: Cascade, onUpdate: Cascade)
-//     accountId      Int
-//     // CallTranscript CallTranscriptData[]
-//     User           User[]
-// }
+model CallTranscriptData {
+    id                  Int      @id @default(autoincrement())
+    callTranscriptId    String   @unique
+    callTranscriptTitle String
+    createdAt           DateTime @default(now())
+    //     Duration Int // in minutes
+    //     Speakers Speakers[]
+    //     partnerAccount            PartnerAccount             @relation(fields: [accountId], references: [partnerAccountId])
+    //     accountId                 Int                        @unique
+    //     CallTranscriptDefaultText CallTranscriptDefaultText?
+    //     CallTranscriptSnippet     CallTranscriptSnippet[]
 
-// will need to be able to assign a user to a CONTACT, and a contact to a PARTNER ACCOUNT, only then can we delete the USER
-// I believe this will be the case with other tables as well
-
-// model CallTranscriptData {
-//     callTranscriptId          Int                        @id @default(autoincrement())
-//     callTranscriptTitle       String
-//     createdAt                 DateTime                   @default(now())
-//     Duration Int // in minutes
-//     Speakers Speakers[]
-//     partnerAccount            PartnerAccount             @relation(fields: [accountId], references: [partnerAccountId])
-//     accountId                 Int                        @unique
-//     CallTranscriptDefaultText CallTranscriptDefaultText?
-//     CallTranscriptSnippet     CallTranscriptSnippet[]
-
-//     @@index([callTranscriptId])
-// }
+    @@index([id])
+}
 
 // model CallTranscriptDefaultText {
 //     callTranscriptDefaultTextId Int                @id @default(autoincrement())
