@@ -20,7 +20,7 @@ EPICS
 TASKS
 -----
 
-[] Nitesh to work on:
+Nitesh to work on:
   [] Fireflies Auth 
     [] saving API key to db against user
     [] update API key & save against user
@@ -30,6 +30,7 @@ TASKS
     [] you'll need the inputs to parse for the API call
 
 
+General TODO list:
   Integrations > Fireflies
     [] fireflies integration page
       [] pass API key to input box
@@ -42,13 +43,28 @@ TASKS
           [] data import successful
       [] after importing, take user to call transcriptions
 
-  Call Transcripts
-  [] make sure firelfies API is working in dev
-  [] connect import button to all checked imports
-    [] checkbox to signify wheather or not row item is to been imported
-  [] add popup to display import error/success
-    [] on import, GET call transcript text based on transcript id & POST data against account
-    [] once import is complete, user will be able to view transcript data in partner accounts page
+  Call Transcripts User Flow
+  [x] make sure firelfies API is working in dev
+  [x] connect import button to selected imports
+    [x] assign associated partner account to signify row item is to been imported
+
+  [] get basic frontend flow working
+  [] remove flow from partner accounts page
+  [] add popup to display import error, otherwise user is routed to imported transcript page
+    [] on successful import, route user to imported transript page
+      [] GET call transcript info & summary based on transcript id. We wont need to store the raw transript, only the parsed data from ChatGPT
+      [] show transcript details in header table
+      [] assign maturity map or influence indicator
+        [] create list of maturity map phases - this will be a static list of phases to be selected by user and parsed to chatgpt API request
+        [] create dummy list of influence indicators i.e. commbank, westpac, etc
+        [] note list of influence indicator phases
+      [] Create "get capability data" action - this will trigger reponse from OpenAI API
+        [] Need to write chatGPT request to parse transcript data - general request plus either maturity map or influence indicator and related phase 
+      [] once successful response is received from OpenAI - print in fronend
+        [] parsed transcript data should be listed based on capabilty and associated phase
+      [] user will be able to save parsed transcript data to partner account
+  [] user to view transcript data in partner accounts page
+
 
 Error handling:
 partner-account[accountId] - handle error UI for incorrect acccount id
@@ -59,9 +75,8 @@ TYPES:
 
 
 
-TICKETS
+NITESH TICKETS
 -------
-
 
 Fireflies AUTH:
 ----------

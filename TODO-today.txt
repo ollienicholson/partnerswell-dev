@@ -1,11 +1,10 @@
-Fri 06/09
+Mon 09/09
 
 EPICS
 ------
 
-[] Call transcripts user flow refactor  IN PROG
+[] Call transcripts user flow refactor - IN PROGRESS
 
-!! Only do this once you have finished the call transcripts refactor
 [] Refactor partner accounts user flow
   [] should only see partner account details and successfully imported meeting info
 
@@ -15,6 +14,9 @@ TASKS
 
 [] Call transcripts user flow refactor
   Notes: bring all meeting assignment and import into call transcription flow
+
+  [] get basic frontend flow working
+  [] remove flow from partner accounts page
 
   [] get transcript id and make another call to fireflies to return the call transcript
     copy the current flow occurring in partner accounts 
