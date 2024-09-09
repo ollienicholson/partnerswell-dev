@@ -25,13 +25,15 @@ TASKS
 
   [x] get transcript id and make another call to fireflies to return the call transcript
     [x] open new page: same format as: src/app/(main)/partner-accounts/[accountId]/[meetingId]
-    
-    []  MM or II assignment will take place before sending raw text to chatgpt for parsing
-    [] save to associated partner account
-        [] save transcript id to account based on account id
-        [] store speaker>name against sentences>speaker_name,  so that when parsing to chatgpt they know who is saying what
-  [] open in partner account to view final output
 
-
-
-consider using Image instead of img for nextjs warnings
+        [] create list of maturity map phases - this will be a static list of phases to be selected by user and parsed to chatgpt API request
+        [] create dummy list of influence indicators i.e. commbank, westpac, etc
+        [] note list of influence indicator phases
+            Note: MM or II assignment will take place before sending raw text to chatgpt for parsing
+      [] Create "get capability data" action - this will trigger response from OpenAI API
+        [] Need to write chatGPT request to parse transcript data - general request plus either maturity map or influence indicator and related phase
+        [] need to send list of speakers to chatGPT along with transcript text
+          [] testing: return successful response from OpenAI in frontend
+        [] parsed transcript data should be listed based on capabilty and associated phase
+      [] user will be able to save parsed transcript data to partner account
+  [] user to view transcript data in partner accounts page
