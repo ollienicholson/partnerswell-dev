@@ -36,6 +36,14 @@ export function MeetingTable({ accountId }: { accountId: number }) {
     router.push(`/partner-accounts/${accountId}/${meetingId}`);
   };
 
+  const renderEmptyMeetingsTable = () => (
+    <TableRow>
+      <TableCell colSpan={4} className="text-center">
+        No meetings found. Please import meetings to display data.
+      </TableCell>
+    </TableRow>
+  );
+
   return (
     <div className="rounded-xl border shadow">
       <Table>
@@ -48,70 +56,72 @@ export function MeetingTable({ accountId }: { accountId: number }) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {pagintedTranscripts.map((call) => (
-            <>
-              <TableRow
-                key={call.callTranscriptId}
-                onClick={() => handleRowClick(call.callTranscriptId)}
-                className="border-0"
-              >
-                <TableCell>{call.callTranscriptTitle}</TableCell>
-                <TableCell>
-                  {new Date(call.dateString).toLocaleDateString()}
-                </TableCell>
-                <TableCell>{call.callDuration} mins</TableCell>
-                <TableCell className="">
-                  {call.callAttendees.map((attendee, index) => (
-                    <li key={index}>{attendee.speakers}</li>
-                  ))}
-                </TableCell>
-              </TableRow>
-              <TableRow className="text-gray-300 hover:bg-transparent">
-                <TableCell colSpan={4} align="left">
-                  {call.callSummary.length > 190
-                    ? `${call.callSummary.substring(0, 190)}...`
-                    : call.callSummary}
-                </TableCell>
-              </TableRow>
-            </>
-          ))}
+          {pagintedTranscripts.length > 0
+            ? pagintedTranscripts.map((call) => (
+                <>
+                  <TableRow
+                    key={call.callTranscriptId}
+                    onClick={() => handleRowClick(call.callTranscriptId)}
+                    className="border-0"
+                  >
+                    <TableCell>{call.callTranscriptTitle}</TableCell>
+                    <TableCell>
+                      {new Date(call.dateString).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell>{call.callDuration} mins</TableCell>
+                    <TableCell className="">
+                      {call.callAttendees.map((attendee, index) => (
+                        <li key={index}>{attendee.speakers}</li>
+                      ))}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow className="text-gray-300 hover:bg-transparent">
+                    <TableCell colSpan={4} align="left">
+                      {call.callSummary.length > 190
+                        ? `${call.callSummary.substring(0, 190)}...`
+                        : call.callSummary}
+                    </TableCell>
+                  </TableRow>
+                  <Pagination>
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious
+                          className={
+                            startIndex === 0
+                              ? "pointer-events-none opacity-50"
+                              : //     : "no-select"
+                                ""
+                          }
+                          onClick={() => {
+                            setStartIndex(startIndex - rowsPerPage);
+                            setEndIndex(endIndex - rowsPerPage);
+                          }}
+                        />
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationNext
+                          className={
+                            endIndex === callTranscriptHeader?.length
+                              ? "pointer-events-none opacity-50"
+                              : //     : "no-select"
+                                ""
+                          }
+                          onClick={() => {
+                            setStartIndex(startIndex + rowsPerPage);
+                            setEndIndex(endIndex + rowsPerPage);
+                          }}
+                        />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </>
+              ))
+            : renderEmptyMeetingsTable()}
         </TableBody>
       </Table>
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              className={
-                startIndex === 0
-                  ? "pointer-events-none opacity-50"
-                  : //     : "no-select"
-                    ""
-              }
-              onClick={() => {
-                setStartIndex(startIndex - rowsPerPage);
-                setEndIndex(endIndex - rowsPerPage);
-              }}
-            />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext
-              className={
-                endIndex === callTranscriptHeader?.length
-                  ? "pointer-events-none opacity-50"
-                  : //     : "no-select"
-                    ""
-              }
-              onClick={() => {
-                setStartIndex(startIndex + rowsPerPage);
-                setEndIndex(endIndex + rowsPerPage);
-              }}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
     </div>
   );
 }
