@@ -257,7 +257,7 @@ export default function ImportedTranscriptPage() {
               >
                 Reset Data
               </Button>
-              <Button variant="outline">Save Data to Account</Button>
+              <Button variant="outline">Save Data to Partner Account</Button>
             </TableRow>
           </TableBody>
         </Table>
