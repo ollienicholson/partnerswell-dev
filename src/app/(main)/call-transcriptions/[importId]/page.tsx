@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Table,
   TableBody,
@@ -32,8 +31,7 @@ import {
   influenceIndicatorOutput,
   InfluenceIndicatorOutput,
 } from "~/lib/influence-indicator-output";
-// import { getTranscriptById } from "~/server/api/queries/getTranscripts";
-// import { getOneTranscript } from "~/lib/types";
+import { CallTranscriptForm } from "~/app/components/callTranscriptCrud";
 
 export default function ImportedTranscriptPage() {
   // TODO: add loading screen
@@ -261,6 +259,9 @@ export default function ImportedTranscriptPage() {
             </TableRow>
           </TableBody>
         </Table>
+      </div>
+      <div className="mt-6 rounded-xl border shadow">
+        <CallTranscriptForm />
       </div>
       <div className="mt-6 rounded-xl border shadow">
         {capabilityData ? (

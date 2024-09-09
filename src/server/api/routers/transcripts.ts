@@ -25,4 +25,21 @@ export const transcriptRouter = createTRPCRouter({
       }
       return;
     }),
+
+  create: protectedProcedure
+    .input(
+      z.object({
+        callTranscriptId: z.string(),
+        callTranscriptTitle: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      if (!ctx?.user?.id) return;
+      return ctx.db.callTranscriptData.create({
+        data: {
+          callTranscriptId: input.callTranscriptId,
+          callTranscriptTitle: input.callTranscriptTitle,
+        },
+      });
+    }),
 });
