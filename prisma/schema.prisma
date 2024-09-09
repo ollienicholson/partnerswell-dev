@@ -1,17 +1,12 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 // use @@index[column] to sort by index 
 
 generator client {
     provider = "prisma-client-js"
-    // previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
     provider = "postgresql"
     url      = env("POSTGRES_PRISMA_URL") // uses connection pooling
-    // directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 enum Role {
@@ -27,6 +22,7 @@ model userRoles {
     @@index([clerkId, role])
 }
 
+// need to implement soft delete before delivery
 model PartnerAccount {
     partnerAccountId Int                  @id @default(autoincrement())
     accountName      String
@@ -34,18 +30,19 @@ model PartnerAccount {
     createdBy        String?
     createdAt        DateTime             @default(now())
     updatedAt        DateTime             @updatedAt
-    transcripts      CallTranscriptData[] // one-to-many relationship
+    transcripts      CallTranscriptData[] // one-to-many
 
     @@index([partnerAccountId])
 }
 
+// need to implement soft delete before delivery
 model CallTranscriptData {
-    id                  Int             @id @default(autoincrement())
-    callTranscriptId    String          @unique
+    id                  Int            @id @default(autoincrement())
+    callTranscriptId    String         @unique
     callTranscriptTitle String
-    createdAt           DateTime        @default(now())
-    accountId           Int? // Partner Account FK can be NULL
-    partnerAccount      PartnerAccount? @relation(fields: [accountId], references: [partnerAccountId], onDelete: SetNull)
+    createdAt           DateTime       @default(now())
+    accountId           Int // Partner Account FK
+    partnerAccount      PartnerAccount @relation(fields: [accountId], references: [partnerAccountId], onDelete: Cascade)
 
     //     Duration Int // in minutes
     //     Speakers Speakers[]
@@ -64,40 +61,4 @@ model CallTranscriptData {
 //     callTranscriptId            Int                @unique
 
 //     @@index([callTranscriptDefaultTextId])
-// }
-
-// // do they all need to be foreign keys or can they be relations?
-
-// model CallTranscriptSnippet {
-//     callTranscriptSnippetId Int                @id @default(autoincrement())
-//     callTranscript          CallTranscriptData @relation(fields: [callTranscriptId], references: [callTranscriptId])
-//     callTranscriptId        Int                @unique
-//     snippetText             String
-//     InInPhaseLabels         InInPhaseLabel[]
-//     MaMaPhaseLabels         MaMaPhaseLabel[]
-
-//     @@index([callTranscriptSnippetId])
-// }
-
-// model CallTranscriptCategory {
-//     callTranscriptCategoryId   Int    @id @default(autoincrement())
-//     callTranscriptCategoryName String
-// }
-
-// model InInPhaseLabel {
-//     inInPhaseLabelId Int                   @id @default(autoincrement())
-//     labelName        String
-//     callTranscript   CallTranscriptSnippet @relation(fields: [callTranscriptId], references: [callTranscriptSnippetId])
-//     callTranscriptId Int                   @unique
-
-//     @@index([inInPhaseLabelId])
-// }
-
-// model MaMaPhaseLabel {
-//     mamaPhaseLabelId Int                   @id @default(autoincrement())
-//     labelName        Int
-//     callTranscript   CallTranscriptSnippet @relation(fields: [callTranscriptId], references: [callTranscriptSnippetId])
-//     callTranscriptId Int                   @unique
-
-//     @@index([mamaPhaseLabelId])
 // }
