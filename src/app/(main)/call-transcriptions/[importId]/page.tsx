@@ -262,7 +262,7 @@ export default function ImportedTranscriptPage() {
       </div>
       {/* TESTING BASIC FORM FOR CALL TRANSCRIPT CRUD */}
       <div className="mt-6 rounded-xl border shadow">
-        <CallTranscriptForm />
+        <CallTranscriptForm partnerAccountId={account?.partnerAccountId ?? 0} />
       </div>
       <div className="mt-6 rounded-xl border shadow">
         {capabilityData ? (

@@ -3,7 +3,11 @@
 import { useState } from "react";
 import { react_api } from "~/trpc/react";
 
-export function CallTranscriptForm() {
+export function CallTranscriptForm({
+  partnerAccountId,
+}: {
+  partnerAccountId: number;
+}) {
   // hooks for form fields
   const [callTranscriptId, setCallTranscriptId] = useState("");
   const [callTranscriptTitle, setCallTranscriptTitle] = useState("");
@@ -18,6 +22,7 @@ export function CallTranscriptForm() {
       await createCallTranscript.mutateAsync({
         callTranscriptId: callTranscriptId,
         callTranscriptTitle: callTranscriptTitle,
+        partnerAccountId: partnerAccountId,
       });
       alert("Call transcript created successfully!");
       // reset form fields

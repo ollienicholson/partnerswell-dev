@@ -3,10 +3,10 @@ TODO list
 
 EPICS
 -----
-[] Refactor: partner accounts user flow
+[x] Refactor: partner accounts user flow
     should only see partner account details and successfully imported meeting info
 
-[] Refactor: call transcription flow
+[x] Refactor: call transcription flow
 
 [] Fireflies Auth
 
@@ -50,18 +50,33 @@ General TODO list:
     [x] assign associated partner account to signify row item is to been imported
 
   [x] get basic frontend flow working
+  [x] show empty table in partner accounts page if no transcripts have been saved to the account
   [x] remove flow from partner accounts page
-  [] add popup to display import error
-    [x] on successful import, route user to imported transript page
-      [x] GET call transcript info & summary based on transcript id. We wont need to store the raw transript, only the parsed data from ChatGPT
-      [x] show transcript details in header table
-      [x] assign maturity map or influence indicator
-        [] create list of maturity map phases - this will be a static list of phases to be selected by user and parsed to chatgpt API request
-        [] create dummy list of influence indicators i.e. commbank, westpac, etc
-        [] note list of influence indicator phases
+
+  [x] add new table in partner accounts page to display final chatgpt output - which will look alot like the capability table in call transcript user flow
+    [x] Table headings - partner-accounts/[accountId]/[meetingId]/page.tsx
+  [x] get transcript id and make another call to fireflies to return the call transcript
+    [x] open new page: same format as: src/app/(main)/partner-accounts/[accountId]/[meetingId]
+        [x] create list of maturity map phases - this will be a static list of phases to be selected by user and parsed to chatgpt API request
+        [x] create dummy list of influence indicators i.e. commbank, westpac, etc
+        [x] note list of influence indicator phases
             Note: MM or II assignment will take place before sending raw text to chatgpt for parsing
+        [x] Write chatGPT request to parse transcript data - general request plus either maturity map or influence indicator and related phase
+        -- OLLIE -DONE ---
+
+        [] create crud for saving transcript data to db
+          [x] create transcript
+            [] add all required fields one by one
+              [x] id
+              [x] title
+              [x] partnerAccountId - FK
+              [] duration
+              [] dateString
+              [] title
+              [] speakers
+              [] summary
+          [] delete transcript
       [] Create "get capability data" action - this will trigger response from OpenAI API
-        [] Need to write chatGPT request to parse transcript data - general request plus either maturity map or influence indicator and related phase
         [] need to send list of speakers to chatGPT along with transcript text
           [] testing: return successful response from OpenAI in frontend
         [] parsed transcript data should be listed based on capabilty and associated phase
