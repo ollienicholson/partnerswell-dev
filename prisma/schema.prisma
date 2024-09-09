@@ -40,12 +40,12 @@ model PartnerAccount {
 }
 
 model CallTranscriptData {
-    id                  Int            @id @default(autoincrement())
-    callTranscriptId    String         @unique
+    id                  Int             @id @default(autoincrement())
+    callTranscriptId    String          @unique
     callTranscriptTitle String
-    createdAt           DateTime       @default(now())
-    partnerAccount      PartnerAccount @relation(fields: [accountId], references: [partnerAccountId])
-    accountId           Int // Partner Account FK
+    createdAt           DateTime        @default(now())
+    accountId           Int? // Partner Account FK can be NULL
+    partnerAccount      PartnerAccount? @relation(fields: [accountId], references: [partnerAccountId], onDelete: SetNull)
 
     //     Duration Int // in minutes
     //     Speakers Speakers[]
