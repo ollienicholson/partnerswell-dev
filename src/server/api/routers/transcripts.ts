@@ -26,6 +26,35 @@ export const transcriptRouter = createTRPCRouter({
       return;
     }),
 
+  getByAccountId: protectedProcedure
+    .input(
+      z.object({
+        accountId: z.number(),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      if (!input.accountId) {
+        console.log("Partner Account Id is required.");
+        return null;
+      }
+      try {
+        const transcript = await ctx.db.callTranscriptData.findMany({
+          where: { accountId: input.accountId },
+        });
+
+        if (transcript.length > 0) {
+          console.log("Transcript fetched successfully", transcript.keys);
+          return transcript;
+        } else {
+          console.log("Transcript not found.");
+          return [];
+        }
+      } catch (error) {
+        console.error("Error fetching transcript:", error);
+        throw new Error("Failed to fetch transcript.");
+      }
+    }),
+
   create: protectedProcedure
     .input(
       z.object({
