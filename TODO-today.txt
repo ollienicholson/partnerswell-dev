@@ -44,6 +44,7 @@ TASKS
           [] view transcript in partner accounts page
           [] delete transcript in partner accounts page
 
+
       [] Create "get capability data" action - this will trigger response from OpenAI API
         [] need to send list of speakers to chatGPT along with transcript text
           [] testing: return successful response from OpenAI in frontend
@@ -51,6 +52,9 @@ TASKS
       [] user will be able to save parsed transcript data to partner account
   [] user to view transcript data in partner accounts page
 
+    [] use saved fireflies auth token to fetch transcripts
+
+    
   look into error:
   src/app/(main)/partner-accounts/[accountId]/page.tsx
   <AccountTable account={account} />

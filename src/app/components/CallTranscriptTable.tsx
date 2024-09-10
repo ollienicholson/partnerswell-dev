@@ -31,6 +31,7 @@ import { Button } from "~/app/components/ui/button";
 import { allTranscripts } from "~/lib/types";
 import { useRouter } from "next/navigation";
 
+// todo: remove contactName - no longer required
 type CallTranscriptsTableProps = {
   transcripts: allTranscripts[];
   partnerAccounts: { accountName: string; contactName: string }[];

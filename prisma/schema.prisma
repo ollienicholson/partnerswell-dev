@@ -27,7 +27,7 @@ model PartnerAccount {
     partnerAccountId Int                  @id @default(autoincrement())
     accountName      String
     contactName      String
-    createdBy        String?
+    createdBy        String
     createdAt        DateTime             @default(now())
     updatedAt        DateTime             @updatedAt
     transcripts      CallTranscriptData[] // one-to-many

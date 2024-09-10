@@ -7,7 +7,7 @@ export type TPartnerAccount = {
   createdBy: string;
   createdAt: Date;
   updatedAt: Date;
-  transcripts: getOneTranscript[];
+  transcripts?: getOneTranscript[];
 };
 
 export type getOneTranscript = {
