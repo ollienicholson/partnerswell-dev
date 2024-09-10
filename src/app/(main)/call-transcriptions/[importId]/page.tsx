@@ -44,22 +44,16 @@ export default function ImportedTranscriptPage() {
   const [capabilityData, setCapabilityData] = useState(false);
 
   const { importId: importTranscriptId } = useParams();
-  console.log("Getting data for AccountId:", importTranscriptId);
 
   const { data: transcriptData } = react_api.transcriptRouter.getById.useQuery({
     id: typeof importTranscriptId === "string" ? importTranscriptId : "",
   });
-  console.log(
-    "Does the router call match useParams importId?",
-    transcriptData?.id,
-  );
 
   let accountName: string | null = "";
 
   if (typeof window !== "undefined") {
     const searchParams = new URLSearchParams(window.location.search);
     accountName = searchParams.get("account");
-    console.log("Account name:", accountName);
   }
   const { data: account } =
     react_api.partnerAccountRouter.getAccountByName.useQuery({
@@ -266,6 +260,7 @@ export default function ImportedTranscriptPage() {
           partnerAccountId={account?.partnerAccountId ?? 0}
           duration={transcriptData?.duration ?? 0}
           meetingDate={transcriptData?.dateString ?? ""}
+          speakers={transcriptData?.speakers ?? []}
         />
       </div>
       <div className="mt-6 rounded-xl border shadow">

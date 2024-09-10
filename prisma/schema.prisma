@@ -41,9 +41,9 @@ model CallTranscriptData {
     callTranscriptId    String         @unique
     callTranscriptTitle String
     createdAt           DateTime       @default(now())
-    duration            Int? // in minutes
-    meetingDate         String?
-    speakers            Json? // list of Speakers
+    duration            Int // in minutes
+    meetingDate         String
+    speakers            Json // list of Speakers
     summary             Json?
     partnerAccount      PartnerAccount @relation(fields: [accountId], references: [partnerAccountId], onDelete: Cascade)
     accountId           Int // Partner Account FK

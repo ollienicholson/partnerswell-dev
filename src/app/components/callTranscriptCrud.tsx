@@ -7,10 +7,12 @@ export function CallTranscriptForm({
   partnerAccountId,
   duration,
   meetingDate,
+  speakers,
 }: {
   partnerAccountId: number;
   duration: number;
   meetingDate: string;
+  speakers: { name: string }[]; // accepts array of objects with name field
 }) {
   // hooks for form fields
   const [callTranscriptId, setCallTranscriptId] = useState("");
@@ -24,12 +26,18 @@ export function CallTranscriptForm({
     try {
       // call the mutation to save data
       await createCallTranscript.mutateAsync({
+        partnerAccountId: partnerAccountId,
         callTranscriptId: callTranscriptId,
         callTranscriptTitle: callTranscriptTitle,
         duration: duration,
         meetingDate: meetingDate,
-        partnerAccountId: partnerAccountId,
+        speakers: speakers,
       });
+      // Log frontend type and content of the speakers input
+      // console.log("Frontend: Speakers type:", typeof speakers);
+      // console.log("Frontend: Is speakers an array:", Array.isArray(speakers));
+      // console.log("Frontend: Speakers content:", speakers);
+
       alert("Call transcript created successfully!");
       // reset form fields
       setCallTranscriptId("");
