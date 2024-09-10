@@ -43,6 +43,7 @@ export default function AccountPage() {
       <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
         Partner Account: {account.accountName}
       </div>
+      {/* TODO: OLLIE FIX */}
       <AccountTable account={account} />
       <div className="py-4"></div>
       <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">

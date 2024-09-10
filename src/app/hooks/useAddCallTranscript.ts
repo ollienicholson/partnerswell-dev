@@ -14,6 +14,7 @@ export function useAddCallTranscript() {
     meetingDate,
     speakers,
     summary,
+    sentences,
   }: {
     partnerAccountId: number;
     callTranscriptId: string;
@@ -22,6 +23,7 @@ export function useAddCallTranscript() {
     meetingDate: string;
     speakers: { name: string }[]; // accepts array of objects with name field
     summary: { overview: string };
+    sentences: { speaker_name: string; text: string }[];
   }) => {
     console.log("Running mutateCallTranscript");
     try {
@@ -34,11 +36,13 @@ export function useAddCallTranscript() {
         meetingDate: meetingDate,
         speakers: speakers,
         summary: summary,
+        sentences: sentences,
       });
       // Log frontend type and content of the speakers input
-      // console.log("Frontend: Speakers type:", typeof speakers);
-      // console.log("Frontend: Is speakers an array:", Array.isArray(speakers));
-      // console.log("Frontend: Speakers content:", speakers);
+      console.log("Frontend: sentences type:", typeof sentences);
+      console.log("Frontend: Is sentences an array:", Array.isArray(sentences));
+      console.log("Frontend: sentences content:", sentences.length);
+
       alert("Call transcript created successfully!");
     } catch (error) {
       console.error("Error creating call transcript:", error);

@@ -2,7 +2,6 @@ import { graphqlClient } from "~/lib/graphqlClient";
 
 import {
   getOneTranscript,
-  // getTranscriptText,
   allTranscripts,
   allTranscriptData,
 } from "~/lib/types";
@@ -22,8 +21,7 @@ const GET_TRANSCRIPTS = `
   }
 `;
 
-// transcript(id: "Lb0X1ywN0nOTTAs1")
-// get the call transcript by id
+// get call transcript by id
 const GET_ONE_TRANSCRIPT = `
 query Transcript($id: String!) {
   transcript(id: $id) {
@@ -52,15 +50,10 @@ export const getTranscriptById = async (
   console.log("Fetching transcript with ID:", id);
 
   try {
-    // pass id as variable to graphql query
+    // pass transcript id as variable to graphql query
     const data = await graphqlClient.request<{
       transcript: getOneTranscript;
     }>(GET_ONE_TRANSCRIPT, { id });
-    // console.log(
-    //   "Transcript sentences:",
-    //   data.transcript.sentences[0]?.speaker_name,
-    // );
-    // console.log("Transcript sentences:", data.transcript.sentences[0]?.text);
 
     return data.transcript;
   } catch (error: any) {

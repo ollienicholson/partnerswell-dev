@@ -21,22 +21,16 @@ import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 import { CreateAccountButton } from "~/app/components/CreateAccountButton";
 
-type Account = {
-  partnerAccountId: number;
-  accountName: string;
-  contactName: string;
-  createdBy: string | null;
-  createdAt: Date;
-};
+import { TPartnerAccount } from "~/lib/types";
 
-type Props = {
-  accounts: Account[];
+type TProps = {
+  accounts: TPartnerAccount[];
 };
 
 // TODO: fix date
 // TODO: fix pagination
 
-export default function PartnerAccountsTable({ accounts }: Props) {
+export default function PartnerAccountsTable({ accounts }: TProps) {
   // pagination
   const rowsPerPage = 5;
   const [startIndex, setStartIndex] = useState(0);
@@ -44,7 +38,6 @@ export default function PartnerAccountsTable({ accounts }: Props) {
   const router = useRouter();
 
   const pagintedAccounts = useMemo(() => {
-    console.log("PagintedAccounts Component Rendered");
     return accounts.slice(startIndex, endIndex);
   }, [accounts, startIndex, endIndex]);
 

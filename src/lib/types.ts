@@ -10,16 +10,22 @@ export type TPartnerAccount = {
   transcripts: getOneTranscript[];
 };
 
-// correct graphQL API structute???
-// export type CallTranscript = {
-//   id: string;
-//   title: string;
-//   duration: string;
-//   dateString: string;
-//   speakers: {
-//     name: string;
-//   }[];
-// };
+export type getOneTranscript = {
+  id: string;
+  duration: number;
+  dateString: string;
+  title: string;
+  speakers: {
+    name: string;
+  }[];
+  summary: {
+    overview: string;
+  };
+  sentences: {
+    speaker_name: string;
+    text: string;
+  }[];
+};
 
 export type CallTranscriptHeader = {
   callTranscriptId: number;
@@ -47,31 +53,3 @@ export type allTranscripts = {
 export type allTranscriptData = {
   transcripts: allTranscripts[];
 };
-
-export type getOneTranscript = {
-  id: string;
-  duration: number;
-  dateString: string;
-  title: string;
-  speakers: {
-    name: string;
-  }[];
-  summary: {
-    overview: string;
-  };
-  sentences: {
-    speaker_name: string;
-    text: string;
-  }[];
-};
-
-// export type getTranscriptText = {
-//   id: string;
-//   speakers: {
-//     name: string;
-//   }[];
-//   sentences: {
-//     speaker_name: string;
-//     text: string;
-//   }[];
-// };

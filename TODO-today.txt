@@ -1,4 +1,4 @@
-Mon 09/09
+Tues 10/09
 
 EPICS
 ------
@@ -28,23 +28,29 @@ TASKS
         [x] note list of influence indicator phases
             Note: MM or II assignment will take place before sending raw text to chatgpt for parsing
         [x] Write chatGPT request to parse transcript data - general request plus either maturity map or influence indicator and related phase
-        -- OLLIE - DONE ---
+        -- OLLIE - DONE Monday ---
 
         [] create crud for saving transcript data to db
-          [x] create transcript
-            [] add all required fields one by one
+          [x] create transcript crud
+            [x] add all required fields one by one
               [x] id
               [x] title
               [x] partnerAccountId - FK
-              [] duration
-              [] dateString
-              [] title
-              [] speakers
-              [] summary
-          [] delete transcript
+              [x] duration
+              [x] dateString
+              [x] speakers
+              [x] summary
+              [x] sentences - speaker_name & text
+          [] view transcript in partner accounts page
+          [] delete transcript in partner accounts page
+
       [] Create "get capability data" action - this will trigger response from OpenAI API
         [] need to send list of speakers to chatGPT along with transcript text
           [] testing: return successful response from OpenAI in frontend
         [] parsed transcript data should be listed based on capabilty and associated phase
       [] user will be able to save parsed transcript data to partner account
   [] user to view transcript data in partner accounts page
+
+  look into error:
+  src/app/(main)/partner-accounts/[accountId]/page.tsx
+  <AccountTable account={account} />

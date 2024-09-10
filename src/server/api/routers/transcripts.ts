@@ -13,7 +13,7 @@ export const transcriptRouter = createTRPCRouter({
       if (!input.id) return;
       try {
         const transcript = await getTranscriptById(input.id);
-        console.log("Fetched Transcript Data:", transcript); // log
+        // console.log("Fetched Transcript Data:", transcript); // log
         if (transcript) {
           console.log("Transcript fetched successfully:");
           return transcript;
@@ -43,9 +43,9 @@ export const transcriptRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       // Log backend type and content of the speakers input
-      console.log("Backend: type:", typeof input.speakers);
-      console.log("Backend: Is an array:", Array.isArray(input.speakers));
-      console.log("Backend: content:", input.speakers);
+      console.log("Backend: type:", typeof input.sentences);
+      console.log("Backend: Is an array:", Array.isArray(input.sentences));
+      console.log("Backend: content:", input.sentences.length);
       if (!ctx?.user?.id) return;
       return ctx.db.callTranscriptData.create({
         data: {

@@ -16,16 +16,13 @@ export default function CallTranscriptButton({
     dateString: string;
     speakers: { name: string }[]; // accepts array of objects with name field
     summary: { overview: string };
+    sentences: { speaker_name: string; text: string }[];
   };
 }) {
   const { addCallTranscript, isLoading, error } = useAddCallTranscript();
 
-  console.log("accountId", accountId);
-  console.log("Clicking CallTranscriptButton");
-
   // Handle loading and error states
   if (isLoading) return <p>Loading account data...</p>;
-  if (error) return <p>Error loading account data: {error.message}</p>;
 
   return (
     <Button
@@ -39,6 +36,7 @@ export default function CallTranscriptButton({
           meetingDate: transriptData?.dateString ?? "",
           speakers: transriptData?.speakers ?? [],
           summary: transriptData?.summary ?? { overview: "" },
+          sentences: transriptData?.sentences ?? [],
         });
       }}
       disabled={isLoading}
