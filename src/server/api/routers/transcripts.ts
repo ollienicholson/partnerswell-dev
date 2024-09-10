@@ -36,17 +36,17 @@ export const transcriptRouter = createTRPCRouter({
         meetingDate: z.string(),
         speakers: z.array(z.object({ name: z.string() })), // array of objects with name field
         summary: z.object({ overview: z.string() }),
+        sentences: z.array(
+          z.object({ speaker_name: z.string(), text: z.string() }),
+        ), // array of objects with speaker_name and text fields
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      if (!ctx?.user?.id) return;
       // Log backend type and content of the speakers input
-      // console.log("Backend: Speakers type:", typeof input.speakers);
-      // console.log(
-      //   "Backend: Is speakers an array:",
-      //   Array.isArray(input.speakers),
-      // );
-      // console.log("Backend:  Speakers content:", input.speakers);
+      console.log("Backend: type:", typeof input.speakers);
+      console.log("Backend: Is an array:", Array.isArray(input.speakers));
+      console.log("Backend: content:", input.speakers);
+      if (!ctx?.user?.id) return;
       return ctx.db.callTranscriptData.create({
         data: {
           accountId: input.partnerAccountId,
@@ -56,6 +56,7 @@ export const transcriptRouter = createTRPCRouter({
           meetingDate: input.meetingDate,
           speakers: input.speakers,
           summary: input.summary,
+          sentences: input.sentences,
         },
       });
     }),

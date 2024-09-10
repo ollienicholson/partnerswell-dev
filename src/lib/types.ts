@@ -59,6 +59,10 @@ export type getOneTranscript = {
   summary: {
     overview: string;
   };
+  sentences: {
+    speaker_name: string;
+    text: string;
+  }[];
 };
 
 // export type getTranscriptText = {

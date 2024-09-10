@@ -1,6 +1,5 @@
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { z } from "zod";
-import { getTranscriptById } from "../queries/getTranscripts";
 
 export const integrationRouter = createTRPCRouter({
   getFireFliesKey: protectedProcedure.query(async ({ input, ctx }) => {

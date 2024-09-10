@@ -37,23 +37,12 @@ query Transcript($id: String!) {
       summary {
           overview
       }
+      sentences {
+          speaker_name
+          text
+      }
   }
 }`;
-
-// get complete call transcript with associated speaker names
-// const GET_TRANSCRIPT_TEXT = `
-// query Transcript($id: !String) {
-//   transcript(id: $id) {
-//       id
-//       speakers {
-//           name
-//       }
-//       sentences {
-//           speaker_name
-//           text
-//       }
-//   }
-// }`;
 
 // TODO: improve caching
 // TODO: create refresh function for frontend user
@@ -67,8 +56,12 @@ export const getTranscriptById = async (
     const data = await graphqlClient.request<{
       transcript: getOneTranscript;
     }>(GET_ONE_TRANSCRIPT, { id });
+    // console.log(
+    //   "Transcript sentences:",
+    //   data.transcript.sentences[0]?.speaker_name,
+    // );
+    // console.log("Transcript sentences:", data.transcript.sentences[0]?.text);
 
-    //return single transcript
     return data.transcript;
   } catch (error: any) {
     console.error(
@@ -76,7 +69,7 @@ export const getTranscriptById = async (
       error.response?.errors || error.message,
     );
 
-    // robust error handling
+    // error handling
     if (error.response) {
       if (error.response.status === 500) {
         console.error("Server error, please try again later.");

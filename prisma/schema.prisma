@@ -43,12 +43,11 @@ model CallTranscriptData {
     createdAt           DateTime       @default(now())
     duration            Int // in minutes
     meetingDate         String
-    speakers            Json // list of Speakers
+    speakers            Json // List of Speakers [{ name: String }]
     summary             Json
+    sentences           Json // // List of Sentences [{ speaker_name: String, raw_text: String }]
     partnerAccount      PartnerAccount @relation(fields: [accountId], references: [partnerAccountId], onDelete: Cascade)
     accountId           Int // Partner Account FK
-
-    // chatgptOutput - relation LONGTEXT
 
     @@index([id])
 }

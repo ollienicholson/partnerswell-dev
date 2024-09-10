@@ -43,6 +43,7 @@ export default function CallTranscriptButton({
       }}
       disabled={isLoading}
     >
+      {/* TODO: Hide this button until capability data has been rendered */}
       Save Data to Partner Account
     </Button>
   );
