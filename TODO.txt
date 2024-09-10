@@ -4,13 +4,14 @@ TODO list
 EPICS
 -----
 [x] Refactor: partner accounts user flow
-    should only see partner account details and successfully imported meeting info
 
 [x] Refactor: call transcription flow
 
-[] Fireflies Auth
+[] call transcript CRUD - in progress
 
-[] chatgpt integration
+[] Fireflies Auth - in progress
+
+[] ChatGPT Integration
 
 [] all functionality working before moving forward
 
@@ -31,18 +32,18 @@ Nitesh to work on:
 
 
 General TODO list:
+-----------------
   Integrations > Fireflies
     [] fireflies integration page
-      [] pass API key to input box
-      [] need to encrypt fireflies auth input
-      [] store API key in user table db
-      [] connect button will only test the API request
-      [] add button to import transcript data
-      Popout modals:
-          [] fireflies API
-          [] data import successful
-      [] after importing, take user to call transcriptions
+      [x] pass API key to input box
+      [x] need to encrypt fireflies auth input
+      [x] store API key in user table db
+      [x] connect button will only test the API request
+      [] Fireflies CRUD operations - Nitesh
 
+      Popout modals:
+          [] fireflies API successful
+          [] data import successful
 
   Call Transcripts User Flow
   [x] make sure firelfies API is working in dev
@@ -62,20 +63,25 @@ General TODO list:
         [x] note list of influence indicator phases
             Note: MM or II assignment will take place before sending raw text to chatgpt for parsing
         [x] Write chatGPT request to parse transcript data - general request plus either maturity map or influence indicator and related phase
-        -- OLLIE -DONE ---
+    -- DONE Monday 09/09 ---
 
         [] create crud for saving transcript data to db
-          [x] create transcript
-            [] add all required fields one by one
+          [x] create transcript crud
+            [x] add all required fields one by one
               [x] id
               [x] title
               [x] partnerAccountId - FK
-              [] duration
-              [] dateString
-              [] title
-              [] speakers
-              [] summary
-          [] delete transcript
+              [x] duration
+              [x] dateString
+              [x] speakers
+              [x] summary
+              [x] sentences - speaker_name & text
+          [x] view transcript in partner accounts page
+    -- DONE Tuesday 10/09---
+
+          [] delete transcript in partner accounts page
+
+
       [] Create "get capability data" action - this will trigger response from OpenAI API
         [] need to send list of speakers to chatGPT along with transcript text
           [] testing: return successful response from OpenAI in frontend

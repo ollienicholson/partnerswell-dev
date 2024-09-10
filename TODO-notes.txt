@@ -21,7 +21,7 @@ PRODUCTION:
 - get SENTRY.IO for debugging
 - look into caching behavior for requests
 - you'll need to look into --turbo flag for nextjs in prod
-- change routes to private procedures
+- change partner account CRUD operations to private procedures
 
 
 DATABASE:
