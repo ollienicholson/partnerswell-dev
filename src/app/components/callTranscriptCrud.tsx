@@ -8,11 +8,13 @@ export function CallTranscriptForm({
   duration,
   meetingDate,
   speakers,
+  summary,
 }: {
   partnerAccountId: number;
   duration: number;
   meetingDate: string;
   speakers: { name: string }[]; // accepts array of objects with name field
+  summary: { overview: string };
 }) {
   // hooks for form fields
   const [callTranscriptId, setCallTranscriptId] = useState("");
@@ -32,6 +34,7 @@ export function CallTranscriptForm({
         duration: duration,
         meetingDate: meetingDate,
         speakers: speakers,
+        summary: summary,
       });
       // Log frontend type and content of the speakers input
       // console.log("Frontend: Speakers type:", typeof speakers);

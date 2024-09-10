@@ -44,7 +44,7 @@ model CallTranscriptData {
     duration            Int // in minutes
     meetingDate         String
     speakers            Json // list of Speakers
-    summary             Json?
+    summary             Json
     partnerAccount      PartnerAccount @relation(fields: [accountId], references: [partnerAccountId], onDelete: Cascade)
     accountId           Int // Partner Account FK
 

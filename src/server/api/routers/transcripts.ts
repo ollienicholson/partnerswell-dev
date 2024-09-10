@@ -32,9 +32,10 @@ export const transcriptRouter = createTRPCRouter({
         partnerAccountId: z.number(),
         callTranscriptId: z.string(),
         callTranscriptTitle: z.string(),
-        duration: z.number().optional(),
-        meetingDate: z.string().optional(),
-        speakers: z.array(z.object({ name: z.string() })).optional(), // array of objects with name field
+        duration: z.number(),
+        meetingDate: z.string(),
+        speakers: z.array(z.object({ name: z.string() })), // array of objects with name field
+        summary: z.object({ overview: z.string() }).optional(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -54,6 +55,7 @@ export const transcriptRouter = createTRPCRouter({
           duration: input.duration,
           meetingDate: input.meetingDate,
           speakers: input.speakers,
+          summary: input.summary,
         },
       });
     }),

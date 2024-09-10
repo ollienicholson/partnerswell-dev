@@ -261,6 +261,7 @@ export default function ImportedTranscriptPage() {
           duration={transcriptData?.duration ?? 0}
           meetingDate={transcriptData?.dateString ?? ""}
           speakers={transcriptData?.speakers ?? []}
+          summary={transcriptData?.summary ?? { overview: "" }}
         />
       </div>
       <div className="mt-6 rounded-xl border shadow">
