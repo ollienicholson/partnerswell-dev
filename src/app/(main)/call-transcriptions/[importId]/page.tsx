@@ -31,13 +31,10 @@ import {
   influenceIndicatorOutput,
   InfluenceIndicatorOutput,
 } from "~/lib/influence-indicator-output";
-import { CallTranscriptForm } from "~/app/components/callTranscriptCrud";
+import CallTranscriptButton from "~/app/components/createCallTranscriptButton";
 
 export default function ImportedTranscriptPage() {
   // TODO: add loading screen
-
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState<string | null>(null);
   const [selectedToggle, setSelectedToggle] = useState<string>("");
   const [capabilityButtonClicked, setCapabilityButtonClicked] = useState(false);
   const [resetButton, setResetButton] = useState(false);
@@ -45,7 +42,11 @@ export default function ImportedTranscriptPage() {
 
   const { importId: importTranscriptId } = useParams();
 
-  const { data: transcriptData } = react_api.transcriptRouter.getById.useQuery({
+  const {
+    data: transcriptData,
+    isLoading: transcriptLoading,
+    error: transcriptError,
+  } = react_api.transcriptRouter.getById.useQuery({
     id: typeof importTranscriptId === "string" ? importTranscriptId : "",
   });
 
@@ -55,40 +56,45 @@ export default function ImportedTranscriptPage() {
     const searchParams = new URLSearchParams(window.location.search);
     accountName = searchParams.get("account");
   }
-  const { data: account } =
-    react_api.partnerAccountRouter.getAccountByName.useQuery({
-      partnerAccountName: accountName || "No account name",
-    });
+  const {
+    data: account,
+    isLoading: accountLoading,
+    error: accountError,
+  } = react_api.partnerAccountRouter.getAccountByName.useQuery({
+    partnerAccountName: accountName || "No account name",
+  });
 
-  // if ((accountName = "No account name")) {
-  //   return (
-  //     <div className=" flex flex-col items-center justify-center gap-6">
-  //       <div>Account loading...</div>
-  //       <Link href="/call-transcriptions">
-  //         <Button>Back to Partner Accounts</Button>
-  //       </Link>
-  //     </div>
-  //   );
-  // }
+  if (!accountName) {
+    return (
+      <div className=" flex flex-col items-center justify-center gap-6">
+        <div>No account data available.</div>
+        <Link href="/call-transcriptions">
+          <Button>Back to Partner Accounts</Button>
+        </Link>
+      </div>
+    );
+  }
 
-  // if (loading) {
-  //   return (
-  //     <div className="loader-container">
-  //       <div className="loader"></div>
-  //     </div>
-  //   );
-  // }
+  if (accountLoading || transcriptLoading) {
+    return (
+      <div className="loader-container">
+        <div className="loader"></div>
+      </div>
+    );
+  }
 
-  // if (error) {
-  //   return (
-  //     <div className="flex flex-col items-center justify-center gap-6">
-  //       <div className="text-red-500">{error}</div>
-  //       <Link href="/call-transcriptions">
-  //         <Button>Back</Button>
-  //       </Link>
-  //     </div>
-  //   );
-  // }
+  if (accountError || transcriptError) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-6">
+        <div className="text-red-500">
+          {accountError?.message || transcriptError?.message}
+        </div>
+        <Link href="/call-transcriptions">
+          <Button>Back</Button>
+        </Link>
+      </div>
+    );
+  }
 
   const renderMaturityMapOutput = () => {
     return maturityMapOutput.map((item: MaturityMapOutput, index: number) => (
@@ -249,20 +255,13 @@ export default function ImportedTranscriptPage() {
               >
                 Reset Data
               </Button>
-              <Button variant="outline">Save Data to Partner Account</Button>
+              <CallTranscriptButton
+                accountId={account?.partnerAccountId ?? 0}
+                transriptData={transcriptData}
+              />
             </TableRow>
           </TableBody>
         </Table>
-      </div>
-      {/* TESTING BASIC FORM FOR CALL TRANSCRIPT CRUD */}
-      <div className="mt-6 rounded-xl border shadow">
-        <CallTranscriptForm
-          partnerAccountId={account?.partnerAccountId ?? 0}
-          duration={transcriptData?.duration ?? 0}
-          meetingDate={transcriptData?.dateString ?? ""}
-          speakers={transcriptData?.speakers ?? []}
-          summary={transcriptData?.summary ?? { overview: "" }}
-        />
       </div>
       <div className="mt-6 rounded-xl border shadow">
         {capabilityData ? (

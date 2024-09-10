@@ -10,10 +10,10 @@ import {
 } from "~/app/components/ui/table";
 import { EditAccountButton } from "~/app/components/EditAccountButton";
 
-import { PartnerAccount } from "~/lib/types";
+import { TPartnerAccount } from "~/lib/types";
 
 // TODO: handle error UI for incorrect acccount id
-export function AccountTable({ account }: { account: PartnerAccount }) {
+export function AccountTable({ account }: { account: TPartnerAccount }) {
   return (
     <div className="rounded-xl border shadow">
       <Table>

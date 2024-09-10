@@ -35,7 +35,7 @@ export const transcriptRouter = createTRPCRouter({
         duration: z.number(),
         meetingDate: z.string(),
         speakers: z.array(z.object({ name: z.string() })), // array of objects with name field
-        summary: z.object({ overview: z.string() }).optional(),
+        summary: z.object({ overview: z.string() }),
       }),
     )
     .mutation(async ({ input, ctx }) => {

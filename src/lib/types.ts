@@ -1,11 +1,13 @@
 // types to be sorted out late
 
-export type PartnerAccount = {
+export type TPartnerAccount = {
   partnerAccountId: number;
   accountName: string;
   contactName: string;
-  createdBy: string | null;
+  createdBy: string;
   createdAt: Date;
+  updatedAt: Date;
+  transcripts: getOneTranscript[];
 };
 
 // correct graphQL API structute???
