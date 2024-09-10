@@ -14,12 +14,26 @@ export default function AccountPage() {
   console.log("Getting data for AccountId:", accountId);
 
   //get account details
-  const { data: account, isLoading } =
+  const { data: account, isLoading: accountLoading } =
     react_api.partnerAccountRouter.getOne.useQuery({
       partnerAccountId: Number(accountId),
     });
 
-  if (isLoading) {
+  // get transcript based on accountId
+  const { data: transcripts, isLoading: transcriptsLoading } =
+    react_api.transcriptRouter.getByAccountId.useQuery({
+      accountId: Number(accountId),
+    });
+
+  if (transcriptsLoading) {
+    return (
+      <div className="loader-container">
+        <div className="loader"></div>
+      </div>
+    );
+  }
+
+  if (accountLoading) {
     return (
       <div className="loader-container">
         <div className="loader"></div>
@@ -48,7 +62,11 @@ export default function AccountPage() {
       <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
         {account.accountName} Meetings
       </div>
-      <MeetingTable accountId={Number(accountId)} />
+      <MeetingTable
+        accountId={Number(accountId)}
+        // TODO: Fix type errors
+        transcripts={transcripts ?? []}
+      />
       <div className="mt-6 flex justify-between pt-12">
         <Link href="/partner-accounts">
           <Button>Back</Button>

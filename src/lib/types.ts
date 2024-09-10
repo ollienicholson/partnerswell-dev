@@ -50,6 +50,25 @@ export type allTranscripts = {
   }[];
 };
 
+export type TGetTranscriptsByAccountId = {
+  id: number;
+  callTranscriptId: string;
+  callTranscriptTitle: string;
+  createdAt: Date;
+  duration: number;
+  meetingDate: string;
+  speakers: {
+    name: string;
+  }[];
+  summary: {
+    overview: string;
+  };
+  sentences: {
+    speaker_name: string;
+    text: string;
+  };
+};
+
 export type allTranscriptData = {
   transcripts: allTranscripts[];
 };

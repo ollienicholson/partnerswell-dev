@@ -1,6 +1,7 @@
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 import { getTranscriptById } from "../queries/getTranscripts";
+import { TGetTranscriptsByAccountId } from "~/lib/types";
 
 export const transcriptRouter = createTRPCRouter({
   getById: protectedProcedure
@@ -26,6 +27,7 @@ export const transcriptRouter = createTRPCRouter({
       return;
     }),
 
+  // get all transcripts by accountId
   getByAccountId: protectedProcedure
     .input(
       z.object({
@@ -38,20 +40,20 @@ export const transcriptRouter = createTRPCRouter({
         return null;
       }
       try {
-        const transcript = await ctx.db.callTranscriptData.findMany({
+        const transcripts = await ctx.db.callTranscriptData.findMany({
           where: { accountId: input.accountId },
         });
 
-        if (transcript.length > 0) {
-          console.log("Transcript fetched successfully", transcript.keys);
-          return transcript;
+        if (transcripts.length > 0) {
+          console.log("transcripts fetched successfully", transcripts.keys);
+          return transcripts;
         } else {
-          console.log("Transcript not found.");
+          console.log("Transcripts not found.");
           return [];
         }
       } catch (error) {
-        console.error("Error fetching transcript:", error);
-        throw new Error("Failed to fetch transcript.");
+        console.error("Error fetching transcripts:", error);
+        throw new Error("Failed to fetch transcripts.");
       }
     }),
 

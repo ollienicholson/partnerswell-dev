@@ -18,11 +18,20 @@ import {
   PaginationPrevious,
 } from "~/app/components/ui/pagination";
 
-import { callTranscriptHeader } from "~/lib/call-transcript-header";
+// TODO: remove callTranscriptHeader file
+// import { callTranscriptHeader } from "~/lib/call-transcript-header";
+
 import { useRouter } from "next/navigation";
+import { TGetTranscriptsByAccountId } from "~/lib/types";
 
 // TODO: handle error UI for incorrect acccount id
-export function MeetingTable({ accountId }: { accountId: number }) {
+export function MeetingTable({
+  accountId,
+  transcripts,
+}: {
+  accountId: number;
+  transcripts: TGetTranscriptsByAccountId[];
+}) {
   // pagination
   const rowsPerPage = 5;
   const [startIndex, setStartIndex] = useState(0);
@@ -30,10 +39,10 @@ export function MeetingTable({ accountId }: { accountId: number }) {
   const router = useRouter();
 
   const pagintedTranscripts = useMemo(() => {
-    return callTranscriptHeader.slice(startIndex, endIndex);
-  }, [callTranscriptHeader, startIndex, endIndex]);
+    return transcripts.slice(startIndex, endIndex);
+  }, [transcripts, startIndex, endIndex]);
 
-  const handleRowClick = (meetingId: number) => {
+  const handleRowClick = (meetingId: string) => {
     router.push(`/partner-accounts/${accountId}/${meetingId}`);
   };
 
@@ -59,28 +68,28 @@ export function MeetingTable({ accountId }: { accountId: number }) {
         <TableBody>
           {pagintedTranscripts.length > 0
             ? pagintedTranscripts.map((call) => (
-                <React.Fragment key={call.callTranscriptId}>
+                <React.Fragment key={call.id}>
                   <TableRow
-                    key={call.callTranscriptId}
+                    key={call.id}
                     onClick={() => handleRowClick(call.callTranscriptId)}
                     className="border-0"
                   >
                     <TableCell>{call.callTranscriptTitle}</TableCell>
                     <TableCell>
-                      {new Date(call.dateString).toLocaleDateString()}
+                      {new Date(call.meetingDate).toLocaleDateString()}
                     </TableCell>
-                    <TableCell>{call.callDuration} mins</TableCell>
+                    <TableCell>{call.duration} mins</TableCell>
                     <TableCell className="">
-                      {call.callAttendees.map((attendee) => (
-                        <li key={attendee.speakers}>{attendee.speakers}</li>
+                      {call.speakers.map((speaker) => (
+                        <li key={speaker.name}>{speaker.name}</li>
                       ))}
                     </TableCell>
                   </TableRow>
                   <TableRow className="text-gray-300 hover:bg-transparent">
                     <TableCell colSpan={4} align="left">
-                      {call.callSummary.length > 190
-                        ? `${call.callSummary.substring(0, 190)}...`
-                        : call.callSummary}
+                      {call.summary.overview.length > 190
+                        ? `${call.summary.overview.substring(0, 190)}...`
+                        : call.summary.overview}
                     </TableCell>
                   </TableRow>
                 </React.Fragment>
@@ -110,7 +119,7 @@ export function MeetingTable({ accountId }: { accountId: number }) {
           <PaginationItem>
             <PaginationNext
               className={
-                endIndex === callTranscriptHeader?.length
+                endIndex === transcripts?.length
                   ? "pointer-events-none opacity-50"
                   : //     : "no-select"
                     ""
