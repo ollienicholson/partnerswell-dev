@@ -1,18 +1,7 @@
-export type CallTranscriptHeader = {
-  callTranscriptId: number;
-  callTranscriptTitle: string;
-  callDuration: string;
-  callAttendees: {
-    speakers: string;
-  }[];
-  dateString: string;
-  createdBy: string;
-  updatedAt: string;
-  callSummary: string;
-};
+import { TCallTranscriptHeader } from "~/lib/types";
 
 // Static data array
-export const callTranscriptHeader: CallTranscriptHeader[] = [
+export const callTranscriptHeader: TCallTranscriptHeader[] = [
   {
     callTranscriptId: 1,
     callTranscriptTitle: "Maturity Map Introduction",

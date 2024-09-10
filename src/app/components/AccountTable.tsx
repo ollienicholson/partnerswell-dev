@@ -29,8 +29,7 @@ export function AccountTable({ account }: { account: TPartnerAccount }) {
             <TableCell>{account.contactName}</TableCell>
           </TableRow>
         </TableBody>
-        <div className="p-2" />
-        <TableHeader>
+        <TableHeader className="p-2">
           <TableRow className="hover:bg-white">
             <TableHead>Created At</TableHead>
             <TableHead>Created By</TableHead>

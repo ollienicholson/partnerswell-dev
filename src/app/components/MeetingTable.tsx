@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useMemo, useState } from "react";
 import {
   Table,
   TableBody,
@@ -16,7 +17,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "~/app/components/ui/pagination";
-import { useMemo, useState } from "react";
+
 import { callTranscriptHeader } from "~/lib/call-transcript-header";
 import { useRouter } from "next/navigation";
 
@@ -58,7 +59,7 @@ export function MeetingTable({ accountId }: { accountId: number }) {
         <TableBody>
           {pagintedTranscripts.length > 0
             ? pagintedTranscripts.map((call) => (
-                <>
+                <React.Fragment key={call.callTranscriptId}>
                   <TableRow
                     key={call.callTranscriptId}
                     onClick={() => handleRowClick(call.callTranscriptId)}
@@ -70,8 +71,8 @@ export function MeetingTable({ accountId }: { accountId: number }) {
                     </TableCell>
                     <TableCell>{call.callDuration} mins</TableCell>
                     <TableCell className="">
-                      {call.callAttendees.map((attendee, index) => (
-                        <li key={index}>{attendee.speakers}</li>
+                      {call.callAttendees.map((attendee) => (
+                        <li key={attendee.speakers}>{attendee.speakers}</li>
                       ))}
                     </TableCell>
                   </TableRow>
@@ -82,46 +83,46 @@ export function MeetingTable({ accountId }: { accountId: number }) {
                         : call.callSummary}
                     </TableCell>
                   </TableRow>
-                  <Pagination>
-                    <PaginationContent>
-                      <PaginationItem>
-                        <PaginationPrevious
-                          className={
-                            startIndex === 0
-                              ? "pointer-events-none opacity-50"
-                              : //     : "no-select"
-                                ""
-                          }
-                          onClick={() => {
-                            setStartIndex(startIndex - rowsPerPage);
-                            setEndIndex(endIndex - rowsPerPage);
-                          }}
-                        />
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationEllipsis />
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationNext
-                          className={
-                            endIndex === callTranscriptHeader?.length
-                              ? "pointer-events-none opacity-50"
-                              : //     : "no-select"
-                                ""
-                          }
-                          onClick={() => {
-                            setStartIndex(startIndex + rowsPerPage);
-                            setEndIndex(endIndex + rowsPerPage);
-                          }}
-                        />
-                      </PaginationItem>
-                    </PaginationContent>
-                  </Pagination>
-                </>
+                </React.Fragment>
               ))
             : renderEmptyMeetingsTable()}
         </TableBody>
       </Table>
+      <Pagination className="my-2">
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              className={
+                startIndex === 0
+                  ? "pointer-events-none opacity-50"
+                  : //     : "no-select"
+                    ""
+              }
+              onClick={() => {
+                setStartIndex(startIndex - rowsPerPage);
+                setEndIndex(endIndex - rowsPerPage);
+              }}
+            />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationNext
+              className={
+                endIndex === callTranscriptHeader?.length
+                  ? "pointer-events-none opacity-50"
+                  : //     : "no-select"
+                    ""
+              }
+              onClick={() => {
+                setStartIndex(startIndex + rowsPerPage);
+                setEndIndex(endIndex + rowsPerPage);
+              }}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 }

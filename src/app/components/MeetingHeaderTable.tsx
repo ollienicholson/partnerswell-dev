@@ -84,7 +84,11 @@ export default function MeetingHeaderTable({
         <TableBody>
           <TableRow className="hover:bg-transparent">
             <TableCell>
-              {transcript.summary.overview || "Summary not available"}
+              <TableCell colSpan={4} align="left">
+                {transcript.summary.overview.length > 190
+                  ? `${transcript.summary.overview.substring(0, 190)}...`
+                  : transcript.summary.overview || "Summary not available"}
+              </TableCell>
             </TableCell>
           </TableRow>
         </TableBody>

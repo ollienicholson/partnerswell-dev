@@ -8,10 +8,9 @@ import {
   TableHeader,
   TableRow,
 } from "~/app/components/ui/table";
-import {
-  callTranscriptHeader,
-  CallTranscriptHeader,
-} from "~/lib/call-transcript-header";
+import { callTranscriptHeader } from "~/lib/call-transcript-header";
+
+import { TCallTranscriptHeader } from "~/lib/types";
 import { Button } from "~/app/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -28,7 +27,7 @@ export default function MeetingPage() {
   const [capabilityData, setCapabilityData] = useState(false);
   const [selectedToggle, setSelectedToggle] = useState<string>("");
   const [meetingId, setMeetingId] = useState<number | null>(null);
-  const [meeting, setMeeting] = useState<CallTranscriptHeader | null>(null);
+  const [meeting, setMeeting] = useState<TCallTranscriptHeader | null>(null);
 
   const router = useRouter();
 

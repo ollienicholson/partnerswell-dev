@@ -27,7 +27,7 @@ export type getOneTranscript = {
   }[];
 };
 
-export type CallTranscriptHeader = {
+export type TCallTranscriptHeader = {
   callTranscriptId: number;
   callTranscriptTitle: string;
   callDuration: string;

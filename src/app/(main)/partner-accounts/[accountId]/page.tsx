@@ -10,7 +10,7 @@ import Link from "next/link";
 // TODO: handle error UI for incorrect acccount id
 export default function AccountPage() {
   //get account id
-  const { accountId } = useParams();
+  const { accountId } = useParams<{ accountId: string }>();
   console.log("Getting data for AccountId:", accountId);
 
   //get account details
@@ -43,7 +43,6 @@ export default function AccountPage() {
       <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
         Partner Account: {account.accountName}
       </div>
-      {/* TODO: OLLIE FIX */}
       <AccountTable account={account} />
       <div className="py-4"></div>
       <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
