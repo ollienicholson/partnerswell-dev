@@ -38,8 +38,6 @@ model PartnerAccount {
 // need to implement soft delete before delivery
 model CallTranscriptData {
     id                  Int            @id @default(autoincrement())
-    partnerAccount      PartnerAccount @relation(fields: [accountId], references: [partnerAccountId], onDelete: Cascade)
-    accountId           Int // Partner Account FK
     callTranscriptId    String         @unique
     callTranscriptTitle String
     createdAt           DateTime       @default(now())
@@ -49,6 +47,8 @@ model CallTranscriptData {
     summary             Json
     sentences           Json // // List of Sentences [{ speaker_name: String, raw_text: String }]
     // chatgpt?
+    partnerAccount      PartnerAccount @relation(fields: [accountId], references: [partnerAccountId], onDelete: Cascade)
+    accountId           Int // Partner Account FK
 
     @@index([id])
 }

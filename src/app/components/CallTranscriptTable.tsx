@@ -34,7 +34,7 @@ import { useRouter } from "next/navigation";
 // todo: remove contactName - no longer required
 type CallTranscriptsTableProps = {
   transcripts: allTranscripts[];
-  partnerAccounts: { accountName: string; contactName: string }[];
+  partnerAccounts: { accountName: string }[];
 };
 
 export default function CallTranscriptsTable({

@@ -12,9 +12,9 @@ export function useDeleteTranscript() {
         callTranscriptId: id,
       });
       // Log frontend type and content of the speakers input
-      console.log("Frontend: type:", typeof id);
-      console.log("Frontend: Is an array:", Array.isArray(id));
-      console.log("Frontend: content:", id.length);
+      // console.log("Frontend: type:", typeof id);
+      // console.log("Frontend: Is an array:", Array.isArray(id));
+      // console.log("Frontend: content:", id.length);
 
       alert("Call transcript deleted successfully!");
     } catch (error) {

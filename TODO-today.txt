@@ -6,38 +6,25 @@ See TODO.txt
 
 Daily TASKS
 -----
-[] call transcript CRUD
-  [] create crud for saving transcript data to db
-    [x] create transcript crud
-      [x] add all required fields one by one
-        [x] id
-        [x] title
-        [x] partnerAccountId - FK
-        [x] duration
-        [x] dateString
-        [x] speakers
-        [x] summary
-        [x] sentences - speaker_name & text
-    [x] view transcripts list in partner accounts page
-    -- DONE Tuesday 10/09---
+[x] call transcript CRUD
     [x] user to view final transcript data in partner accounts page - see ChatGPT Integration ticket
-      
     [x] delete transcript in partner accounts page
 
 Call Transcripts page:
-[]  button to fetch transcripts from Fireflies - currently they are called automatically
+[x]  button to fetch transcripts from Fireflies - currently they are called automatically
 
 [] schema changes for chatgpt integration
+ - what else needs to be done apart from rendering the actual data?
 
 
-[] ChatGPT Integration - in progress
+ChatGPT Integration  - in progress
 --------------------
-      [] Create "get capability data" action - this will trigger response from OpenAI API
-        [] need to send list of speakers to chatGPT along with transcript text
-          [] testing: return successful response from OpenAI in frontend
-        [] parsed transcript data should be listed based on capabilty (maturity map or influence indicator) and associated phase
-      [] user will be able to save parsed transcript data to partner account
-  [x] user to view final transcript data in partner accounts page
+[] Create "get capability data" action - this will trigger response from OpenAI API
+  NOTE: need to send list of speakers to chatGPT along with transcript text
+  TESTING: return successful response from OpenAI in frontend
+[] ChatGPT output data should be listed based on associated phase
+[] user will be able to save ChatGPT output data to partner account
+[] user to view transcript data in partner accounts page 
 
 
 [] Fireflies Auth - in progress
