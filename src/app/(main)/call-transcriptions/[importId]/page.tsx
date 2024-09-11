@@ -39,6 +39,8 @@ export default function ImportedTranscriptPage() {
   const [capabilityButtonClicked, setCapabilityButtonClicked] = useState(false);
   const [resetButton, setResetButton] = useState(false);
   const [capabilityData, setCapabilityData] = useState(false);
+  const { data: getCapabilityData, isLoading } =
+    react_api.transcriptRouter.getCapabilityData.useQuery({});
 
   const { importId: importTranscriptId } = useParams();
 
@@ -228,9 +230,14 @@ export default function ImportedTranscriptPage() {
                     selectedToggle !== "influenceIndicator")
                 }
                 onClick={() => {
-                  setCapabilityData(true);
-                  setCapabilityButtonClicked(true);
-                  setResetButton(true);
+                  console.log("Calling getCapabilityData");
+                  // getCapabilityData.mutateAsync({
+                  //   type: selectedToggle,
+                  //   indicator: influenceIndicators[0]?.name,
+                  // });
+                  // setCapabilityData(true);
+                  // setCapabilityButtonClicked(true);
+                  // setResetButton(true);
                 }}
                 className={`${
                   selectedToggle === "maturityMap" ||

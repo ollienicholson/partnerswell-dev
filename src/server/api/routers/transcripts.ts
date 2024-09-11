@@ -1,8 +1,7 @@
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 import { getTranscriptById } from "../queries/getTranscripts";
-import { TGetTranscriptsByAccountId } from "~/lib/types";
-
+import { OpenAI } from "openai";
 export const transcriptRouter = createTRPCRouter({
   getById: protectedProcedure
     .input(
@@ -90,5 +89,33 @@ export const transcriptRouter = createTRPCRouter({
           sentences: input.sentences,
         },
       });
+    }),
+  getCapabilityData: protectedProcedure
+    .input(
+      z.object({
+        type: z.string(),
+        indicator: z.string().optional(),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const { type, indicator } = input;
+
+      const apikey = process.env.OPENAI_API_KEY;
+      console.log("API key:", apikey);
+      const client = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY, // This is the default and can be omitted
+      });
+      const prompt =
+        `Fetch capability data for type: ${type}` +
+        (indicator ? ` with indicator: ${indicator}` : "");
+
+      const response = await client.chat.completions.create({
+        model: "gpt-4o",
+        messages: [{ role: "user", content: prompt }],
+      });
+      console.log(
+        "Response from OpenAI:",
+        response?.choices[0]?.message.content,
+      );
     }),
 });
