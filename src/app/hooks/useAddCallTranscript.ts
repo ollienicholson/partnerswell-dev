@@ -39,9 +39,9 @@ export function useAddCallTranscript() {
         sentences: sentences,
       });
       // Log frontend type and content of the speakers input
-      console.log("Frontend: sentences type:", typeof sentences);
-      console.log("Frontend: Is sentences an array:", Array.isArray(sentences));
-      console.log("Frontend: sentences content:", sentences.length);
+      // console.log("Frontend: sentences type:", typeof sentences);
+      // console.log("Frontend: Is sentences an array:", Array.isArray(sentences));
+      // console.log("Frontend: sentences content:", sentences.length);
 
       alert("Call transcript created successfully!");
     } catch (error) {

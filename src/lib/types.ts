@@ -7,14 +7,14 @@ export type TPartnerAccount = {
   createdBy: string;
   createdAt: Date;
   updatedAt: Date;
-  transcripts?: getOneTranscript[];
+  transcripts?: TGetOneTranscript[];
 };
 
-export type getOneTranscript = {
+export type TGetOneTranscript = {
   id: string;
-  duration: number;
-  dateString: string;
   title: string;
+  dateString: string;
+  duration: number;
   speakers: {
     name: string;
   }[];
@@ -25,10 +25,19 @@ export type getOneTranscript = {
     speaker_name: string;
     text: string;
   }[];
+  // output: {
+  //   phase: string;
+  //   details: string;
+  // };
 };
 
+// export type chatgptOutput = {
+//   phase: string;
+//   details: string;
+// };
+
 export type TCallTranscriptHeader = {
-  callTranscriptId: number;
+  callTranscriptId: string;
   callTranscriptTitle: string;
   callDuration: string;
   callAttendees: {

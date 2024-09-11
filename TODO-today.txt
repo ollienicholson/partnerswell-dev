@@ -18,11 +18,16 @@ Daily TASKS
         [x] speakers
         [x] summary
         [x] sentences - speaker_name & text
-    [x] view transcript in partner accounts page
+    [x] view transcripts list in partner accounts page
+    -- DONE Tuesday 10/09---
+
+
+    [x] user to view final transcript data in partner accounts page - see ChatGPT Integration ticket
+      
     [] delete transcript in partner accounts page
 
-
 [] button to fetch transcripts from Fireflies - currently they are called automatically
+
 
 
 [] ChatGPT Integration
@@ -32,7 +37,7 @@ Daily TASKS
           [] testing: return successful response from OpenAI in frontend
         [] parsed transcript data should be listed based on capabilty (maturity map or influence indicator) and associated phase
       [] user will be able to save parsed transcript data to partner account
-  [] user to view final transcript data in partner accounts page
+  [x] user to view final transcript data in partner accounts page
 
 
 [] Fireflies Auth - in progress

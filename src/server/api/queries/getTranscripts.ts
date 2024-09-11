@@ -1,7 +1,7 @@
 import { graphqlClient } from "~/lib/graphqlClient";
 
 import {
-  getOneTranscript,
+  TGetOneTranscript,
   allTranscripts,
   allTranscriptData,
 } from "~/lib/types";
@@ -46,13 +46,13 @@ query Transcript($id: String!) {
 // TODO: create refresh function for frontend user
 export const getTranscriptById = async (
   id: string,
-): Promise<getOneTranscript | null> => {
+): Promise<TGetOneTranscript | null> => {
   console.log("Fetching transcript with ID:", id);
 
   try {
     // pass transcript id as variable to graphql query
     const data = await graphqlClient.request<{
-      transcript: getOneTranscript;
+      transcript: TGetOneTranscript;
     }>(GET_ONE_TRANSCRIPT, { id });
 
     return data.transcript;
@@ -80,7 +80,7 @@ export const getTranscriptById = async (
 let transcriptsCache: allTranscripts[] | null = null;
 
 export const getTranscripts = async (
-  limit: number = 1,
+  limit: number = 4,
 ): Promise<allTranscripts[]> => {
   if (transcriptsCache) {
     console.log("Returning cached transcripts...");

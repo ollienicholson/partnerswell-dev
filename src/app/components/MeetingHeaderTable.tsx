@@ -8,11 +8,11 @@ import {
   TableHeader,
   TableRow,
 } from "~/app/components/ui/table";
-import { getOneTranscript } from "~/lib/types";
+import { TGetOneTranscript } from "~/lib/types";
 
 type MeetingHeaderTableProps = {
   accountName: string | undefined;
-  transcript: getOneTranscript;
+  transcript: TGetOneTranscript;
 };
 
 export default function MeetingHeaderTable({
@@ -85,8 +85,8 @@ export default function MeetingHeaderTable({
           <TableRow className="hover:bg-transparent">
             <TableCell>
               <TableCell colSpan={4} align="left">
-                {transcript.summary.overview.length > 190
-                  ? `${transcript.summary.overview.substring(0, 190)}...`
+                {transcript.summary.overview.length > 340
+                  ? `${transcript.summary.overview.substring(0, 340)}...`
                   : transcript.summary.overview || "Summary not available"}
               </TableCell>
             </TableCell>

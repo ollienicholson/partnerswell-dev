@@ -87,8 +87,8 @@ export function MeetingTable({
                   </TableRow>
                   <TableRow className="text-gray-300 hover:bg-transparent">
                     <TableCell colSpan={4} align="left">
-                      {call.summary.overview.length > 190
-                        ? `${call.summary.overview.substring(0, 190)}...`
+                      {call.summary.overview.length > 340
+                        ? `${call.summary.overview.substring(0, 340)}...`
                         : call.summary.overview}
                     </TableCell>
                   </TableRow>

@@ -1,7 +1,7 @@
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 import { getTranscriptById } from "../queries/getTranscripts";
-import { TGetTranscriptsByAccountId } from "~/lib/types";
+// import { TGetTranscriptsByAccountId } from "~/lib/types";
 
 export const transcriptRouter = createTRPCRouter({
   getById: protectedProcedure
@@ -74,9 +74,9 @@ export const transcriptRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       // Log backend type and content of the speakers input
-      console.log("Backend: type:", typeof input.sentences);
-      console.log("Backend: Is an array:", Array.isArray(input.sentences));
-      console.log("Backend: content:", input.sentences.length);
+      // console.log("Backend: type:", typeof input.sentences);
+      // console.log("Backend: Is an array:", Array.isArray(input.sentences));
+      // console.log("Backend: content:", input.sentences.length);
       if (!ctx?.user?.id) return;
       return ctx.db.callTranscriptData.create({
         data: {

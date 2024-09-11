@@ -3,7 +3,7 @@ import { TCallTranscriptHeader } from "~/lib/types";
 // Static data array
 export const callTranscriptHeader: TCallTranscriptHeader[] = [
   {
-    callTranscriptId: 1,
+    callTranscriptId: "kGaRZcC2klMO80sr",
     callTranscriptTitle: "Maturity Map Introduction",
     callDuration: "45",
     callAttendees: [{ speakers: "John Doe" }, { speakers: "Jane Smith" }],

@@ -8,9 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/app/components/ui/table";
-import { callTranscriptHeader } from "~/lib/call-transcript-header";
-
-import { TCallTranscriptHeader } from "~/lib/types";
+import { TGetOneTranscript } from "~/lib/types";
 import { Button } from "~/app/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -22,31 +20,64 @@ import {
   influenceIndicatorOutput,
   InfluenceIndicatorOutput,
 } from "~/lib/influence-indicator-output";
+import { useParams } from "next/navigation";
+import { react_api } from "~/trpc/react";
+import Link from "next/link";
 
 export default function MeetingPage() {
   const [capabilityData, setCapabilityData] = useState(false);
   const [selectedToggle, setSelectedToggle] = useState<string>("");
-  const [meetingId, setMeetingId] = useState<number | null>(null);
-  const [meeting, setMeeting] = useState<TCallTranscriptHeader | null>(null);
-
+  const [meeting, setMeeting] = useState<TGetOneTranscript | undefined>(
+    undefined,
+  );
   const router = useRouter();
+  const { meetingId } = useParams();
+
+  const {
+    data: transcriptData,
+    isLoading: transcriptLoading,
+    error: transcriptError,
+  } = react_api.transcriptRouter.getById.useQuery(
+    {
+      id: typeof meetingId === "string" ? meetingId : "",
+    },
+    {
+      enabled: !!meetingId,
+    },
+  );
 
   useEffect(() => {
-    const id = window.location.pathname.split("/").pop(); // Grab the last segment of the path
-    if (id && !isNaN(Number(id))) {
-      setMeetingId(Number(id));
+    if (transcriptData) {
+      setMeeting(transcriptData);
     }
-  }, []);
+  }, [transcriptData]);
 
-  useEffect(() => {
-    if (meetingId !== null) {
-      const foundMeeting = callTranscriptHeader.find(
-        (call) => call.callTranscriptId === meetingId,
-      );
-      setMeeting(foundMeeting || null);
-    }
-  }, [meetingId]);
+  console.log("useState -> MeetingId", meetingId);
+  console.log("found meeting", meeting);
 
+  if (transcriptLoading) {
+    return (
+      <div className="loader-container">
+        <div className="loader"></div>
+      </div>
+    );
+  }
+
+  if (transcriptError) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-6">
+        <div className="text-red-500">{transcriptError?.message}</div>
+        <Link href="/partner-accounts">
+          <Button>Back</Button>
+        </Link>
+      </div>
+    );
+  }
+
+  // TODO: show actual meeting data
+
+  // static data for maturity map
+  // MaturityMapOutput will be replaced by ChatGPT output
   const renderMaturityMapOutput = () => {
     return maturityMapOutput.map((item: MaturityMapOutput, index: number) => (
       <TableRow key={index} className="hover:bg-transparent">
@@ -66,6 +97,9 @@ export default function MeetingPage() {
       </TableRow>
     ));
   };
+
+  // static data for influence indicator
+  // InfluenceIndicatorOutput will be replaced by ChatGPT output
   const renderInfluenceIndicatorOutput = () => {
     return influenceIndicatorOutput.map(
       (item: InfluenceIndicatorOutput, index: number) => (
@@ -111,7 +145,7 @@ export default function MeetingPage() {
       {meetingId ? (
         <>
           <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
-            Meeting: {meeting?.callTranscriptTitle}
+            Meeting: {meeting?.title}
           </div>
           <div className="rounded-xl border shadow">
             <Table>
@@ -123,14 +157,11 @@ export default function MeetingPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow
-                  key={meeting?.callTranscriptId}
-                  className="hover:bg-transparent"
-                >
+                <TableRow key={meeting?.id} className="hover:bg-transparent">
                   {/* TODO: render account name based on id*/}
                   <TableCell>render account name</TableCell>
-                  <TableCell>{meeting?.callTranscriptTitle}</TableCell>
-                  <TableCell>{meeting?.callDuration} mins</TableCell>
+                  <TableCell>{meeting?.title}</TableCell>
+                  <TableCell>{meeting?.duration} mins</TableCell>
                 </TableRow>
               </TableBody>
               <div className="p-2" />
@@ -142,10 +173,7 @@ export default function MeetingPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow
-                  key={meeting?.callTranscriptId}
-                  className="hover:bg-transparent"
-                >
+                <TableRow key={meeting?.id} className="hover:bg-transparent">
                   <TableCell>
                     {meeting?.dateString
                       ? new Date(meeting.dateString).toLocaleDateString()
@@ -157,8 +185,8 @@ export default function MeetingPage() {
                       : "Date not available"}
                   </TableCell>
                   <TableCell>
-                    {meeting?.callAttendees.map((attendee, index) => (
-                      <li key={index}>{attendee.speakers}</li>
+                    {meeting?.speakers.map((speaker, index) => (
+                      <li key={index}>{speaker.name}</li>
                     ))}
                   </TableCell>
                 </TableRow>
@@ -172,7 +200,7 @@ export default function MeetingPage() {
               </TableHeader>
               <TableBody>
                 <TableRow className="hover:bg-transparent">
-                  <TableCell>{meeting?.callSummary}</TableCell>
+                  <TableCell>{meeting?.summary.overview}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>

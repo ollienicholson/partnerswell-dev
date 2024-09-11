@@ -20,6 +20,9 @@ export default async function TranscriptsPage() {
     contactName: account.contactName,
   }));
 
+  // need to connect to account before rendering call transcripts in table
+  // otherwise show empty table
+
   return (
     <div>
       <div className="relative min-h-screen p-6">
