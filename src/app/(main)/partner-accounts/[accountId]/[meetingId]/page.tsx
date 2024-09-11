@@ -23,7 +23,7 @@ import {
 import { useParams } from "next/navigation";
 import { react_api } from "~/trpc/react";
 import Link from "next/link";
-
+import DeleteCallTranscriptButton from "~/app/components/deleteCallTranscriptButton";
 export default function MeetingPage() {
   const [capabilityData, setCapabilityData] = useState(false);
   const [selectedToggle, setSelectedToggle] = useState<string>("");
@@ -55,6 +55,11 @@ export default function MeetingPage() {
   console.log("useState -> MeetingId", meetingId);
   console.log("found meeting", meeting);
 
+  const handleAfterDelete = () => {
+    console.log("handleAfterDelete: Transcript deleted");
+    router.push("/partner-accounts");
+  };
+
   if (transcriptLoading) {
     return (
       <div className="loader-container">
@@ -73,8 +78,6 @@ export default function MeetingPage() {
       </div>
     );
   }
-
-  // TODO: show actual meeting data
 
   // static data for maturity map
   // MaturityMapOutput will be replaced by ChatGPT output
@@ -232,10 +235,15 @@ export default function MeetingPage() {
             )}
           </div>
           <div className="py-4"></div>
-          <div className="flex py-6">
+          <div className="flex justify-between py-6">
             <Button onClick={() => router.back()} className="">
               Back
             </Button>
+            {/* TODO: add backend delete meeting functionality */}
+            <DeleteCallTranscriptButton
+              id={String(meetingId)}
+              onDelete={handleAfterDelete}
+            />
           </div>
         </>
       ) : (

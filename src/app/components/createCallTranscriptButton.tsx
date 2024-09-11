@@ -4,7 +4,7 @@ import { Button } from "~/app/components/ui/button";
 
 // import types and pass as props
 
-export default function CallTranscriptButton({
+export default function CreateCallTranscriptButton({
   accountId,
   transriptData,
 }: {
@@ -22,7 +22,7 @@ export default function CallTranscriptButton({
   const { addCallTranscript, isLoading, error } = useAddCallTranscript();
 
   // Handle loading and error states
-  if (isLoading) return <p>Loading account data...</p>;
+  if (isLoading) return <p>Saving data...</p>;
 
   return (
     <Button
@@ -41,7 +41,6 @@ export default function CallTranscriptButton({
       }}
       disabled={isLoading}
     >
-      {/* TODO: Hide this button until capability data has been rendered */}
       Save Data to Partner Account
     </Button>
   );

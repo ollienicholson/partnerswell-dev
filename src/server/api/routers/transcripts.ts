@@ -73,10 +73,6 @@ export const transcriptRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      // Log backend type and content of the speakers input
-      // console.log("Backend: type:", typeof input.sentences);
-      // console.log("Backend: Is an array:", Array.isArray(input.sentences));
-      // console.log("Backend: content:", input.sentences.length);
       if (!ctx?.user?.id) return;
       return ctx.db.callTranscriptData.create({
         data: {
@@ -89,6 +85,23 @@ export const transcriptRouter = createTRPCRouter({
           summary: input.summary,
           sentences: input.sentences,
         },
+      });
+    }),
+
+  deleteOne: protectedProcedure
+    .input(
+      z.object({
+        callTranscriptId: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      // Log frontend type and content of the speakers input
+      console.log("Frontend: type:", typeof input);
+      console.log("Frontend: Is an array:", Array.isArray(input));
+      console.log("Frontend: content:", input);
+      if (!ctx?.user?.id) return;
+      return ctx.db.callTranscriptData.delete({
+        where: { callTranscriptId: input.callTranscriptId },
       });
     }),
 });

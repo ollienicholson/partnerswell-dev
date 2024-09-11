@@ -31,7 +31,7 @@ import {
   influenceIndicatorOutput,
   InfluenceIndicatorOutput,
 } from "~/lib/influence-indicator-output";
-import CallTranscriptButton from "~/app/components/createCallTranscriptButton";
+import CreateCallTranscriptButton from "~/app/components/createCallTranscriptButton";
 
 export default function ImportedTranscriptPage() {
   // TODO: add loading screen
@@ -255,7 +255,8 @@ export default function ImportedTranscriptPage() {
               >
                 Reset Data
               </Button>
-              <CallTranscriptButton
+              {/* TODO: Hide this button until capability data has been rendered */}
+              <CreateCallTranscriptButton
                 accountId={account?.partnerAccountId ?? 0}
                 transriptData={transcriptData}
               />
