@@ -12,18 +12,13 @@ import { TGetOneTranscript } from "~/lib/types";
 import { Button } from "~/app/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import {
-  maturityMapOutput,
-  MaturityMapOutput,
-} from "~/lib/maturity-map-output";
-import {
-  influenceIndicatorOutput,
-  InfluenceIndicatorOutput,
-} from "~/lib/influence-indicator-output";
+import { maMaOutput, TMaMaOutput } from "~/lib/maturity-map-output";
+import { inInOutput, TInInOutput } from "~/lib/influence-indicator-output";
 import { useParams } from "next/navigation";
 import { react_api } from "~/trpc/react";
 import Link from "next/link";
 import DeleteCallTranscriptButton from "~/app/components/deleteCallTranscriptButton";
+
 export default function MeetingPage() {
   const [capabilityData, setCapabilityData] = useState(false);
   const [selectedToggle, setSelectedToggle] = useState<string>("");
@@ -53,7 +48,6 @@ export default function MeetingPage() {
   }, [transcriptData]);
 
   console.log("useState -> MeetingId", meetingId);
-  console.log("found meeting", meeting);
 
   const handleAfterDelete = () => {
     console.log("handleAfterDelete: Transcript deleted");
@@ -79,50 +73,26 @@ export default function MeetingPage() {
     );
   }
 
-  // static data for maturity map
-  // MaturityMapOutput will be replaced by ChatGPT output
-  const renderMaturityMapOutput = () => {
-    return maturityMapOutput.map((item: MaturityMapOutput, index: number) => (
+  const renderMaMaOutput = () => {
+    return maMaOutput.map((item: TMaMaOutput, index) => (
       <TableRow key={index} className="hover:bg-transparent">
-        <TableCell className="font-semibold">{item.title}</TableCell>
-        <TableCell>
-          {item.details.map((detail, subIndex) => (
-            <div key={subIndex} className="mb-2 flex flex-col gap-2">
-              <strong>{detail.subTitle}:</strong>
-              <ul>
-                {detail.description.map((desc, descIndex) => (
-                  <li key={descIndex}>{desc}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
+        <TableCell className="font-semibold">{item.phase_name}</TableCell>
+        <TableCell className="mb-2 flex flex-col gap-2">
+          {item.description}
         </TableCell>
       </TableRow>
     ));
   };
 
-  // static data for influence indicator
-  // InfluenceIndicatorOutput will be replaced by ChatGPT output
-  const renderInfluenceIndicatorOutput = () => {
-    return influenceIndicatorOutput.map(
-      (item: InfluenceIndicatorOutput, index: number) => (
-        <TableRow key={index} className="hover:bg-transparent">
-          <TableCell className="font-semibold">{item.title}</TableCell>
-          <TableCell>
-            {item.details.map((detail, subIndex) => (
-              <div key={subIndex} className="mb-2 flex flex-col gap-2">
-                <strong>{detail.subTitle}:</strong>
-                <ul>
-                  {detail.description.map((desc, descIndex) => (
-                    <li key={descIndex}>{desc}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </TableCell>
-        </TableRow>
-      ),
-    );
+  const renderInInOutput = () => {
+    return inInOutput.map((item: TInInOutput, index) => (
+      <TableRow key={index} className="hover:bg-transparent">
+        <TableCell className="font-semibold">{item.phase_name}</TableCell>
+        <TableCell className="mb-2 flex flex-col gap-2">
+          {item.description}
+        </TableCell>
+      </TableRow>
+    ));
   };
 
   const renderEmptyOutputTable = () => (
@@ -226,8 +196,8 @@ export default function MeetingPage() {
                 </TableHeader>
                 <TableBody>
                   {selectedToggle === "maturityMap"
-                    ? renderMaturityMapOutput()
-                    : renderInfluenceIndicatorOutput()}
+                    ? renderMaMaOutput()
+                    : renderInInOutput()}
                 </TableBody>
               </Table>
             ) : (

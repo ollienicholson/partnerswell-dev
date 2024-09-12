@@ -1,4 +1,4 @@
-"use client"; // Ensure this component is a client-side component
+"use client";
 
 import { useAddCallTranscript } from "~/app/hooks/useAddCallTranscript";
 import { Button } from "~/app/components/ui/button";
@@ -9,9 +9,10 @@ type TranscriptData = {
   title: string;
   duration: number;
   dateString: string;
-  speakers: { name: string }[]; // accepts array of objects with name field
+  speakers: { name: string }[];
   summary: { overview: string };
   sentences: { speaker_name: string; text: string }[];
+  // TODO: add gpt output
 };
 
 type Props = {
@@ -26,7 +27,6 @@ export default function CreateCallTranscriptButton({
   const { addCallTranscript, isLoading, error } = useAddCallTranscript();
   const router = useRouter();
 
-  // Handle loading state
   if (isLoading) return <p>Saving data...</p>;
 
   const handleClick = async () => {
@@ -41,6 +41,7 @@ export default function CreateCallTranscriptButton({
         speakers: transriptData?.speakers ?? [],
         summary: transriptData?.summary ?? { overview: "" },
         sentences: transriptData?.sentences ?? [],
+        // TODO: add gpt output to addCallTranscript
       });
 
       // push user to the partner account page on success

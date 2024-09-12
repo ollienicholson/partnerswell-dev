@@ -3,7 +3,7 @@ import { react_api } from "~/trpc/react";
 // import types and pass as props
 
 export function useAddCallTranscript() {
-  // mutation hook for creating call transcript
+  // mutation hook for creating call transcript in db
   const mutateCallTranscript = react_api.transcriptRouter.create.useMutation();
 
   const addCallTranscript = async ({
@@ -15,6 +15,7 @@ export function useAddCallTranscript() {
     speakers,
     summary,
     sentences,
+    // TODO: add gpt output
   }: {
     partnerAccountId: number;
     callTranscriptId: string;
@@ -24,6 +25,7 @@ export function useAddCallTranscript() {
     speakers: { name: string }[]; // accepts array of objects with name field
     summary: { overview: string };
     sentences: { speaker_name: string; text: string }[];
+    // TODO: add gpt output as optional
   }) => {
     console.log("Running mutateCallTranscript");
     try {
@@ -37,6 +39,7 @@ export function useAddCallTranscript() {
         speakers: speakers,
         summary: summary,
         sentences: sentences,
+        // TODO: add gpt output to addCallTranscript
       });
 
       alert("Call transcript created successfully!");

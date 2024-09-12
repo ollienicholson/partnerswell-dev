@@ -70,6 +70,7 @@ export const transcriptRouter = createTRPCRouter({
         sentences: z.array(
           z.object({ speaker_name: z.string(), text: z.string() }),
         ), // array of objects with speaker_name and text fields
+        // TODO: add gpt output as optional
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -84,6 +85,7 @@ export const transcriptRouter = createTRPCRouter({
           speakers: input.speakers,
           summary: input.summary,
           sentences: input.sentences,
+          // TODO: add gpt output to mutation as optional
         },
       });
     }),
@@ -96,9 +98,9 @@ export const transcriptRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       // Log frontend type and content of the speakers input
-      console.log("Frontend: type:", typeof input);
-      console.log("Frontend: Is an array:", Array.isArray(input));
-      console.log("Frontend: content:", input);
+      // console.log("Frontend: type:", typeof input);
+      // console.log("Frontend: Is an array:", Array.isArray(input));
+      // console.log("Frontend: content:", input);
       if (!ctx?.user?.id) return;
       return ctx.db.callTranscriptData.delete({
         where: { callTranscriptId: input.callTranscriptId },
