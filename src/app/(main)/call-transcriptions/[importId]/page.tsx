@@ -40,7 +40,15 @@ export default function ImportedTranscriptPage() {
   const [resetButton, setResetButton] = useState(false);
   const [capabilityData, setCapabilityData] = useState(false);
   const { data: getCapabilityData, isLoading } =
-    react_api.transcriptRouter.getCapabilityData.useQuery({});
+    react_api.transcriptRouter.getCapabilityData.useQuery(
+      {
+        type: selectedToggle,
+        indicator: influenceIndicators[0]?.name,
+      },
+      {
+        enabled: !!selectedToggle,
+      },
+    );
 
   const { importId: importTranscriptId } = useParams();
 
