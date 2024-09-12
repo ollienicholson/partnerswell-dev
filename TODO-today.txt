@@ -16,8 +16,13 @@ Call Transcripts page:
 
 ChatGPT output:
 [x] schema changes for chatgpt integration
-[] show phase and description in transcripts page
-[] show saved phase and description in partner accounts page as part of saved CallTranscript data
+[x] added updated static data for influence indicator and maturity map
+[x] updated static data rendering in frontend
+[x] show phase and description in transcripts page
+[x] show saved phase and description in partner accounts page as part of saved CallTranscript data
+
+[] add create route 
+  - add to callTranscript model
 
 Styling:
 [x] fix pagination
@@ -25,8 +30,12 @@ Styling:
 [x] push user to partner account page on successfuul import
 [x] button styling & default props
 
-[] fix partner account sort
+[] finish styling
+  [] button border
+  [] table border
+[] sort partner account table by most recently created
 [] fix date hydration error
+[] fix console errors
 
 
 ChatGPT Integration  - in progress

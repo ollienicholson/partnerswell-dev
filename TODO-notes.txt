@@ -16,7 +16,6 @@ need to understand passing types as props
 
 PRODUCTION:
 - Cross reference notes in Notion
-- Clerk currently deactivated at ./
 - test on Chrome browser
 - update UI for Chrome
 - get SENTRY.IO for debugging

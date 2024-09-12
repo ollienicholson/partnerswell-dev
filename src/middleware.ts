@@ -9,9 +9,6 @@ export default authMiddleware({
     "/sign-in/[[...index]]",
     "/sign-up/[[...index]]",
   ],
-  // ignoredRoutes: ["/"],
-  // TODO: Remove before moving to production
-  ignoredRoutes: ["/((?!api|trpc))(_next.*|.+.[w]+$)", "/"],
   // debug: false,
 });
 
