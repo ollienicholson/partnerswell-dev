@@ -2,18 +2,14 @@ import PartnerAccountsTable from "~/app/components/PartnerAccountsTable";
 import { server_api } from "src/trpc/server";
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
-import { Suspense } from "react";
 
-// TODO: format loading screen
 export default async function PartnerAccountsPage() {
   try {
     const accounts = await server_api.partnerAccountRouter.getAll();
 
     return (
       <>
-        <Suspense fallback={<div>Loading accounts...</div>}>
-          <PartnerAccountsTable accounts={accounts} />
-        </Suspense>
+        <PartnerAccountsTable accounts={accounts} />
       </>
     );
   } catch (error: any) {
@@ -25,7 +21,7 @@ export default async function PartnerAccountsPage() {
         <div className="error-container">
           <div>Error loading accounts: {error.message}</div>
           <Link href="/">
-            <Button>Back</Button>
+            <Button>Back to Dashboard</Button>
           </Link>
         </div>
       </div>
