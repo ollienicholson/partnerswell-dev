@@ -1,4 +1,4 @@
-Wed 11/09
+Thurs 12/09
 
 EPICS
 ------
@@ -12,12 +12,21 @@ Daily TASKS
 
 Call Transcripts page:
 [x]  button to fetch transcripts from Fireflies - currently they are called automatically
+-- DONE Wednesday 11/09 -- 
 
 ChatGPT output:
 [x] schema changes for chatgpt integration
 [] show phase and description in transcripts page
 [] show saved phase and description in partner accounts page as part of saved CallTranscript data
-[] run through testing & see what else needs to be done
+
+Styling:
+[x] fix pagination
+[x] add pwell button colours
+[x] push user to partner account page on successfuul import
+[x] button styling & default props
+
+[] fix partner account sort
+[] fix date hydration error
 
 
 ChatGPT Integration  - in progress
@@ -32,4 +41,4 @@ ChatGPT Integration  - in progress
 
 [] Fireflies Auth - in progress
 ------------------------------
-    [] use saved fireflies auth token to fetch transcripts - in progress
+[] use saved fireflies auth token to fetch transcripts - in progress

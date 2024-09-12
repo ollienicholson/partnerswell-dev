@@ -12,6 +12,7 @@ NOTES:
 DO NOT FOCUS on mobile responsiveness
 Do not hard delete db entries in prod - look at soft delete options
 
+need to understand passing types as props
 
 PRODUCTION:
 - Cross reference notes in Notion
