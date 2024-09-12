@@ -98,7 +98,7 @@ export default function MeetingPage() {
   const renderEmptyOutputTable = () => (
     <Table>
       <TableHeader>
-        <TableRow className="hover:bg-transparent">
+        <TableRow className="bg-slate-50">
           <TableHead>Phase</TableHead>
           <TableHead>Details</TableHead>
         </TableRow>
@@ -123,7 +123,7 @@ export default function MeetingPage() {
           <div className="rounded-xl border shadow">
             <Table>
               <TableHeader>
-                <TableRow className="hover:bg-transparent">
+                <TableRow className="bg-slate-50">
                   <TableHead>Account Name</TableHead>
                   <TableHead>Title</TableHead>
                   <TableHead>Duration</TableHead>
@@ -139,14 +139,14 @@ export default function MeetingPage() {
               </TableBody>
               <div className="p-2" />
               <TableHeader>
-                <TableRow className="hover:bg-transparent">
+                <TableRow className="bg-slate-50">
                   <TableHead>Meeting Date</TableHead>
                   <TableHead>Meeting Time</TableHead>
                   <TableHead>Attendees</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow key={meeting?.id} className="hover:bg-transparent">
+                <TableRow key={meeting?.id} className="hover:bg-transparent ">
                   <TableCell>
                     {meeting?.dateString
                       ? new Date(meeting.dateString).toLocaleDateString()
@@ -167,7 +167,7 @@ export default function MeetingPage() {
             </Table>
             <Table>
               <TableHeader>
-                <TableRow className="hover:bg-transparent">
+                <TableRow className=" bg-slate-50">
                   <TableHead>Call Summary</TableHead>
                 </TableRow>
               </TableHeader>
@@ -189,7 +189,7 @@ export default function MeetingPage() {
             {capabilityData ? (
               <Table>
                 <TableHeader>
-                  <TableRow className="hover:bg-transparent">
+                  <TableRow className="bg-slate-50">
                     <TableHead>Phase</TableHead>
                     <TableHead>Details</TableHead>
                   </TableRow>

@@ -18,7 +18,7 @@ export function AccountTable({ account }: { account: TPartnerAccount }) {
     <div className="rounded-xl border shadow">
       <Table>
         <TableHeader>
-          <TableRow className="hover:bg-transparent">
+          <TableRow className="bg-slate-50">
             <TableHead>Account</TableHead>
             <TableHead>Contact</TableHead>
           </TableRow>
@@ -30,7 +30,7 @@ export function AccountTable({ account }: { account: TPartnerAccount }) {
           </TableRow>
         </TableBody>
         <TableHeader className="p-2">
-          <TableRow className="hover:bg-white">
+          <TableRow className="bg-slate-50">
             <TableHead>Created At</TableHead>
             <TableHead>Created By</TableHead>
           </TableRow>

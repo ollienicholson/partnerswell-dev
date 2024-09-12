@@ -65,7 +65,7 @@ export default function TranscriptsPage() {
         <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
           Call Transcripts
         </div>
-        <div className="mb-6 flex justify-center rounded-xl border bg-slate-50 p-4">
+        <div className="mb-6 flex justify-center rounded-xl bg-slate-50 p-4">
           <Button
             onClick={fetchTranscripts}
             disabled={loading}

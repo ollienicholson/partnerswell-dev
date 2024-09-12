@@ -57,7 +57,7 @@ export function MeetingTable({
     <div className="rounded-xl border shadow">
       <Table>
         <TableHeader>
-          <TableRow className="hover:bg-transparent">
+          <TableRow className="bg-slate-50">
             <TableHead>Title</TableHead>
             <TableHead>Meeting Date</TableHead>
             <TableHead>Duration</TableHead>

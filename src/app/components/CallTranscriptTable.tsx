@@ -74,7 +74,7 @@ export default function CallTranscriptsTable({
     <>
       <Table className="">
         <TableHeader>
-          <TableRow className="hover:bg-white">
+          <TableRow className="bg-slate-50">
             <TableHead>Call Title</TableHead>
             <TableHead>Partner Account</TableHead>
             <TableHead>Call Duration</TableHead>
@@ -134,7 +134,7 @@ export default function CallTranscriptsTable({
             : renderEmptyTranscripts()}
         </TableBody>
       </Table>
-      <div className="mt-4 flex justify-center p-4">
+      <div className="m-2 mt-4 flex justify-center rounded-xl bg-slate-50 p-4">
         <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <AlertDialogTrigger asChild>
             <Button variant="pswellPrimary" disabled={!selectedAccount}>

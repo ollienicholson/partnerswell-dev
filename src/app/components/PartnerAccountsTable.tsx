@@ -55,7 +55,7 @@ export default function PartnerAccountsTable({ accounts }: TProps) {
       <div className="rounded-xl border shadow">
         <Table>
           <TableHeader>
-            <TableRow className="hover:bg-white">
+            <TableRow className="bg-slate-50">
               <TableHead>Account Name</TableHead>
               <TableHead>Contact Name</TableHead>
               <TableHead>Created At</TableHead>
