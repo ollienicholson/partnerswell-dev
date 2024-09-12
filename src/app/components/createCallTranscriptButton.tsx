@@ -26,7 +26,7 @@ export default function CreateCallTranscriptButton({
 
   return (
     <Button
-      variant="outline"
+      variant="pswellPrimary"
       onClick={() => {
         addCallTranscript({
           partnerAccountId: accountId,

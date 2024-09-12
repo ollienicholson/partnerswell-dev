@@ -28,18 +28,20 @@ type TProps = {
 };
 
 // TODO: fix date
-// TODO: fix pagination
+// TODO: sort by most recently created
 
 export default function PartnerAccountsTable({ accounts }: TProps) {
   // pagination
-  const rowsPerPage = 5;
+  const rowsPerPage = 10;
   const [startIndex, setStartIndex] = useState(0);
-  const [endIndex, setEndIndex] = useState(rowsPerPage);
   const router = useRouter();
 
   const pagintedAccounts = useMemo(() => {
-    return accounts.slice(startIndex, endIndex);
-  }, [accounts, startIndex, endIndex]);
+    return accounts.slice(startIndex, startIndex + rowsPerPage);
+  }, [accounts, startIndex, rowsPerPage]);
+
+  const firstPage = startIndex === 0;
+  const lastPage = startIndex + rowsPerPage >= accounts.length;
 
   const handleRowClick = (accountId: number) => {
     router.push(`/partner-accounts/${accountId}`);
@@ -50,7 +52,7 @@ export default function PartnerAccountsTable({ accounts }: TProps) {
       <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
         Partner Accounts
       </div>
-      <div className="border-1 w-full rounded-xl shadow-md">
+      <div className="rounded-xl border shadow">
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-white">
@@ -76,18 +78,17 @@ export default function PartnerAccountsTable({ accounts }: TProps) {
             ))}
           </TableBody>
         </Table>
-        <Pagination>
+        <Pagination className="my-2">
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious
                 className={
-                  startIndex === 0
-                    ? "pointer-events-none opacity-50"
-                    : "no-select"
+                  firstPage ? "pointer-events-none opacity-50" : "no-select"
                 }
                 onClick={() => {
-                  setStartIndex(startIndex - rowsPerPage);
-                  setEndIndex(endIndex - rowsPerPage);
+                  if (!firstPage) {
+                    setStartIndex(startIndex - rowsPerPage);
+                  }
                 }}
               />
             </PaginationItem>
@@ -97,23 +98,22 @@ export default function PartnerAccountsTable({ accounts }: TProps) {
             <PaginationItem>
               <PaginationNext
                 className={
-                  endIndex === accounts?.length
-                    ? "pointer-events-none opacity-50"
-                    : "no-select"
+                  lastPage ? "pointer-events-none opacity-50" : "no-select"
                 }
                 onClick={() => {
-                  setStartIndex(startIndex + rowsPerPage);
-                  setEndIndex(endIndex + rowsPerPage);
+                  if (!lastPage) {
+                    setStartIndex(startIndex + rowsPerPage);
+                  }
                 }}
               />
             </PaginationItem>
           </PaginationContent>
         </Pagination>
       </div>
-      <div className="mt-6 pt-12">
+      <div className="pt-12">
         <div className="flex justify-between">
           <Link href="/">
-            <Button>Back</Button>
+            <Button variant="default">Back</Button>
           </Link>
           <CreateAccountButton />
         </div>

@@ -55,7 +55,9 @@ export function CreateAccountButton() {
   // TODO: sort list by most recently created
   return (
     <>
-      <Button onClick={openDialog}>Create Account</Button>
+      <Button variant="pswellPrimary" onClick={openDialog}>
+        Create Account
+      </Button>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>

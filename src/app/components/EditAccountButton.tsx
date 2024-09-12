@@ -103,12 +103,16 @@ export function EditAccountButton({
             >
               Cancel
             </Button>
-            <Button type="button" onClick={handleAccountUpdate}>
+            <Button
+              type="button"
+              variant="pswellPrimary"
+              onClick={handleAccountUpdate}
+            >
               Save Changes
             </Button>
             <DeleteAlertBox>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive" type="button">
+                <Button variant="pswellDestructive" type="button">
                   Delete Account
                 </Button>
               </AlertDialogTrigger>

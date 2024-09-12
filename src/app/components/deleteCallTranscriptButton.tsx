@@ -28,7 +28,11 @@ export default function DeleteCallTranscriptButton({
   if (error) return <p>Error deleting meeting: {error.message}</p>;
 
   return (
-    <Button variant="outline" onClick={handleDelete} disabled={isLoading}>
+    <Button
+      variant="pswellDestructive"
+      onClick={handleDelete}
+      disabled={isLoading}
+    >
       Delete Meeting
     </Button>
   );

@@ -29,14 +29,17 @@ export function MeetingTable({
   transcripts: TGetTranscriptsByAccountId[];
 }) {
   // pagination
-  const rowsPerPage = 5;
+  const rowsPerPage = 10;
   const [startIndex, setStartIndex] = useState(0);
-  const [endIndex, setEndIndex] = useState(rowsPerPage);
+  // const [endIndex, setEndIndex] = useState(rowsPerPage);
   const router = useRouter();
 
   const pagintedTranscripts = useMemo(() => {
-    return transcripts.slice(startIndex, endIndex);
-  }, [transcripts, startIndex, endIndex]);
+    return transcripts.slice(startIndex, startIndex + rowsPerPage);
+  }, [transcripts, startIndex, rowsPerPage]);
+
+  const firstPage = startIndex === 0;
+  const lastPage = startIndex + rowsPerPage >= transcripts.length;
 
   const handleRowClick = (meetingId: string) => {
     router.push(`/partner-accounts/${accountId}/${meetingId}`);
@@ -98,14 +101,12 @@ export function MeetingTable({
           <PaginationItem>
             <PaginationPrevious
               className={
-                startIndex === 0
-                  ? "pointer-events-none opacity-50"
-                  : //     : "no-select"
-                    ""
+                firstPage ? "pointer-events-none opacity-50" : "no-select"
               }
               onClick={() => {
-                setStartIndex(startIndex - rowsPerPage);
-                setEndIndex(endIndex - rowsPerPage);
+                if (!firstPage) {
+                  setStartIndex(startIndex - rowsPerPage);
+                }
               }}
             />
           </PaginationItem>
@@ -115,14 +116,12 @@ export function MeetingTable({
           <PaginationItem>
             <PaginationNext
               className={
-                endIndex === transcripts?.length
-                  ? "pointer-events-none opacity-50"
-                  : //     : "no-select"
-                    ""
+                lastPage ? "pointer-events-none opacity-50" : "no-select"
               }
               onClick={() => {
-                setStartIndex(startIndex + rowsPerPage);
-                setEndIndex(endIndex + rowsPerPage);
+                if (!lastPage) {
+                  setStartIndex(startIndex + rowsPerPage);
+                }
               }}
             />
           </PaginationItem>

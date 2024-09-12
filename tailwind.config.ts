@@ -34,6 +34,14 @@ const config = {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
+        pswellPrimary: {
+          DEFAULT: "hsl(168, 48%, 60%)",
+          foreground: "hsl(168, 48%, 60%)",
+        },
+        pswellDestructive: {
+          DEFAULT: "hsl(354, 95%, 37%)",
+          foreground: "hsl(354, 95%, 37%)",
+        },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
