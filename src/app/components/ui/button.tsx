@@ -11,11 +11,11 @@ const buttonVariants = cva(
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
         pswellPrimary:
-          "bg-pswellPrimary text-primary-foreground hover:bg-primary/90",
+          "bg-pswellPrimary text-primary-foreground hover:bg-pswellPrimary-hover",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         pswellDestructive:
-          "bg-pswellDestructive text-destructive-foreground hover:bg-pswellDestructive/90",
+          "bg-pswellDestructive text-destructive-foreground hover:bg-pswellDestructive-hover",
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         secondary:

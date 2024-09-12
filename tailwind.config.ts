@@ -37,10 +37,12 @@ const config = {
         pswellPrimary: {
           DEFAULT: "hsl(168, 48%, 60%)",
           foreground: "hsl(168, 48%, 60%)",
+          hover: "hsl(168, 44%, 30%)",
         },
         pswellDestructive: {
           DEFAULT: "hsl(354, 95%, 37%)",
           foreground: "hsl(354, 95%, 37%)",
+          hover: "hsl(355, 96%, 28%)",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",

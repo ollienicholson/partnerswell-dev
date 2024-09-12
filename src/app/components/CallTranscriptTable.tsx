@@ -31,7 +31,6 @@ import { Button } from "~/app/components/ui/button";
 import { allTranscripts } from "~/lib/types";
 import { useRouter } from "next/navigation";
 
-// todo: remove contactName - no longer required
 type CallTranscriptsTableProps = {
   transcripts: allTranscripts[];
   partnerAccounts: { accountName: string }[];
@@ -66,14 +65,14 @@ export default function CallTranscriptsTable({
   const renderEmptyTranscripts = () => (
     <TableRow>
       <TableCell colSpan={5} className="text-center">
-        No transcripts found. Please import transcripts to display data.
+        No transcripts found.
       </TableCell>
     </TableRow>
   );
 
   return (
     <>
-      <Table>
+      <Table className="">
         <TableHeader>
           <TableRow className="hover:bg-white">
             <TableHead>Call Title</TableHead>
@@ -88,7 +87,7 @@ export default function CallTranscriptsTable({
             ? transcripts.map((transcript) => (
                 <TableRow
                   key={transcript.id}
-                  className={selectedRow === transcript.id ? "" : "opacity-50"}
+                  className={selectedRow === transcript.id ? "" : "opacity-60"}
                 >
                   <TableCell>{transcript.title}</TableCell>
                   <TableCell>
@@ -138,13 +137,13 @@ export default function CallTranscriptsTable({
       <div className="mt-4 flex justify-between p-4">
         <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <AlertDialogTrigger asChild>
-            <Button variant="default" disabled={!selectedAccount}>
+            <Button variant="pswellPrimary" disabled={!selectedAccount}>
               Import Transcript
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Import?</AlertDialogTitle>
+              <AlertDialogTitle>Import Transcript</AlertDialogTitle>
               <AlertDialogDescription>
                 Are you sure you want to import {selectedAccount}'s call
                 transcript?
@@ -155,6 +154,7 @@ export default function CallTranscriptsTable({
                 Cancel
               </AlertDialogCancel>
               <AlertDialogAction
+                className="bg-pswellPrimary text-white"
                 onClick={() => {
                   if (selectedRow && selectedAccount) {
                     handleRowClick(selectedRow, selectedAccount);

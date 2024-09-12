@@ -63,17 +63,21 @@ export default function TranscriptsPage() {
     <div>
       <div className="relative min-h-screen p-6">
         <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
-          Select a transcript to import
+          Call Transcripts
         </div>
         <div className="mb-6">
-          <Button onClick={fetchTranscripts} disabled={loading}>
-            {loading ? "Loading..." : "Fetch Transcripts"}
+          <Button
+            onClick={fetchTranscripts}
+            disabled={loading}
+            variant="pswellPrimary"
+          >
+            {loading ? "Loading..." : "Get Transcripts"}
           </Button>
         </div>
 
         {error && <div className="text-red-500">{error}</div>}
 
-        <div className="border-1 w-full rounded-xl shadow-md">
+        <div className="rounded-xl border shadow">
           <CallTranscriptsTable
             transcripts={transcripts}
             partnerAccounts={partnerAccounts}

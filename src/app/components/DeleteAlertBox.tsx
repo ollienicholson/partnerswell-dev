@@ -61,7 +61,7 @@ export function DeleteAlertBox({ children }: { children: React.ReactNode }) {
           <AlertDialogAction asChild>
             <Button
               type="button"
-              variant="pswellDestructive"
+              className="bg-pswellDestructive text-white"
               onClick={handleAccountDelete}
             >
               Delete

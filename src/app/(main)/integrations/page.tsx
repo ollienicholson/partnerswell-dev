@@ -31,7 +31,7 @@ export default function Integrations() {
         <Card className="h-[200] w-[350px]">
           <CardHeader>
             <CardTitle>Add Integration</CardTitle>
-            <CardDescription>Connect your favourite tools</CardDescription>
+            <CardDescription>Connect to your favourite tools</CardDescription>
           </CardHeader>
           <CardFooter className="mt-4 flex justify-between">
             <Button>Connect</Button>

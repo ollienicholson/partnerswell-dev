@@ -98,10 +98,6 @@ export function InputForm() {
                       https://api.fireflies.ai/graphql
                     </Link>
                   </div>
-                  <div style={{ marginBottom: "50px" }}>
-                    Copy your API key from Fireflies.ai and paste it in the
-                    authorisation box above before clicking connect.
-                  </div>
                 </div>
               </FormDescription>
               <FormMessage />
@@ -110,8 +106,10 @@ export function InputForm() {
           )}
         />
         <div className="flex justify-start gap-4">
-          <Button type="submit">Connect</Button>
-          <Button variant="secondary">Edit API key</Button>
+          <Button type="submit" variant="pswellPrimary">
+            Connect
+          </Button>
+          <Button variant="outline">Edit API key</Button>
         </div>
       </form>
     </Form>
@@ -129,8 +127,8 @@ export default function Fireflies() {
           <CardTitle>Fireflies</CardTitle>
           <div className="items-left">
             <CardDescription>
-              Connect your Fireflies account to get access to your call
-              transcription data.
+              Connect to your Fireflies.ai account to get access to your call
+              transcriptions.
             </CardDescription>
           </div>
         </CardHeader>
@@ -140,14 +138,14 @@ export default function Fireflies() {
         </div>
         <CardFooter className="mt-6 flex justify-between pt-6">
           <Link href="/integrations">
-            <Button>Back</Button>
+            <Button variant="default">Back</Button>
           </Link>
           <Link
             href="https://app.fireflies.ai/integrations/custom/fireflies"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Button>Get your API Key</Button>
+            <Button variant="outline">Get your API Key</Button>
           </Link>
         </CardFooter>
       </Card>

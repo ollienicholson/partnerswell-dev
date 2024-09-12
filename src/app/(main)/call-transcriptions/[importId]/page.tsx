@@ -215,7 +215,7 @@ export default function ImportedTranscriptPage() {
           </TableBody>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead>Get capability data based on your selection</TableHead>
+              <TableHead>Get insights based on capability</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -239,7 +239,7 @@ export default function ImportedTranscriptPage() {
                     : "cursor-not-allowed bg-gray-300 text-gray-500"
                 }`}
               >
-                Get capability data
+                Get Capability Data
               </Button>
               <Button
                 variant="outline"
@@ -281,12 +281,12 @@ export default function ImportedTranscriptPage() {
           </Table>
         ) : (
           <div className="flex min-h-[400px] items-center justify-center p-6 text-center text-xl text-gray-300">
-            Select your preference for Maturity Map or Influence Indicator
+            No data available.
           </div>
         )}
       </div>
-      <div className="py-4"></div>
-      <div className="mt-6 flex justify-between pt-12">
+      {/* <div className="py-4"></div> */}
+      <div className="mt-6 flex justify-between">
         <Link href="/call-transcriptions">
           <Button>Back</Button>
         </Link>
