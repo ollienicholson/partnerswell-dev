@@ -65,7 +65,7 @@ export default function TranscriptsPage() {
         <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
           Call Transcripts
         </div>
-        <div className="mb-6">
+        <div className="mb-6 flex justify-center rounded-xl border bg-slate-50 p-4">
           <Button
             onClick={fetchTranscripts}
             disabled={loading}
@@ -74,7 +74,6 @@ export default function TranscriptsPage() {
             {loading ? "Loading..." : "Get Transcripts"}
           </Button>
         </div>
-
         {error && <div className="text-red-500">{error}</div>}
 
         <div className="rounded-xl border shadow">
@@ -82,17 +81,6 @@ export default function TranscriptsPage() {
             transcripts={transcripts}
             partnerAccounts={partnerAccounts}
           />
-        </div>
-        <div className="pt-12">
-          <div className="flex justify-between">
-            <Button
-              onClick={() => {
-                router.back();
-              }}
-            >
-              Back
-            </Button>
-          </div>
         </div>
       </div>
     </div>

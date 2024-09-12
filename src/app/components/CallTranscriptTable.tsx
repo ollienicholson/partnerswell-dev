@@ -63,7 +63,7 @@ export default function CallTranscriptsTable({
   };
 
   const renderEmptyTranscripts = () => (
-    <TableRow>
+    <TableRow className="hover:bg-transparent">
       <TableCell colSpan={5} className="text-center">
         No transcripts found.
       </TableCell>
@@ -134,7 +134,7 @@ export default function CallTranscriptsTable({
             : renderEmptyTranscripts()}
         </TableBody>
       </Table>
-      <div className="mt-4 flex justify-between p-4">
+      <div className="mt-4 flex justify-center p-4">
         <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <AlertDialogTrigger asChild>
             <Button variant="pswellPrimary" disabled={!selectedAccount}>
@@ -149,22 +149,22 @@ export default function CallTranscriptsTable({
                 transcript?
               </AlertDialogDescription>
             </AlertDialogHeader>
-            <div className="mt-4 flex justify-between">
-              <AlertDialogCancel onClick={handleDialogClose}>
-                Cancel
-              </AlertDialogCancel>
-              <AlertDialogAction
-                className="bg-pswellPrimary text-white"
-                onClick={() => {
-                  if (selectedRow && selectedAccount) {
-                    handleRowClick(selectedRow, selectedAccount);
-                    handleDialogClose();
-                  }
-                }}
-              >
-                Import
-              </AlertDialogAction>
-            </div>
+            {/* <div className="mt-4 flex justify-between"> */}
+            <AlertDialogAction
+              className="bg-pswellPrimary text-white"
+              onClick={() => {
+                if (selectedRow && selectedAccount) {
+                  handleRowClick(selectedRow, selectedAccount);
+                  handleDialogClose();
+                }
+              }}
+            >
+              Import
+            </AlertDialogAction>
+            <AlertDialogCancel onClick={handleDialogClose}>
+              Cancel
+            </AlertDialogCancel>
+            {/* </div> */}
           </AlertDialogContent>
         </AlertDialog>
       </div>
