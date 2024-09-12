@@ -10,10 +10,11 @@ export default async function TranscriptsPage() {
   // TODO: catch error for rate limits
 
   // fetch all transcripts
-  const transcripts = await getTranscripts();
+  // const transcripts = await getTranscripts();
 
   // fetch all partner accounts
   const accounts = await server_api.partnerAccountRouter.getAll();
+  const transcripts = await server_api.transcriptRouter.getAll();
 
   const partnerAccounts = accounts.map((account) => ({
     accountName: account.accountName,
@@ -27,10 +28,12 @@ export default async function TranscriptsPage() {
           Select a transcript to import
         </div>
         <div className="border-1 w-full rounded-xl shadow-md">
-          <CallTranscriptsTable
-            transcripts={transcripts}
-            partnerAccounts={partnerAccounts}
-          />
+          {transcripts && (
+            <CallTranscriptsTable
+              transcripts={transcripts}
+              partnerAccounts={partnerAccounts}
+            />
+          )}
         </div>
         <div className="pt-12">
           <div className="flex justify-between">
