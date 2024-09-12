@@ -17,10 +17,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "~/app/components/ui/pagination";
-
-// TODO: remove callTranscriptHeader file
-// import { callTranscriptHeader } from "~/lib/call-transcript-header";
-
 import { useRouter } from "next/navigation";
 import { TGetTranscriptsByAccountId } from "~/lib/types";
 

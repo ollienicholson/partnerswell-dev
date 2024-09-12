@@ -33,8 +33,7 @@ Ollie:
       -- DONE Wednesday 10/09---
 
   [] schema changes for chatgpt integration
-  - Ollie: what else needs to be done apart from rendering the actual data?
-
+  [] more frontend changes for chatgpt integration - see .today tasks
 
 ChatGPT Integration  - in progress
 --------------------
@@ -56,7 +55,8 @@ TYPES:
 [] set types for all data objects - in progress
 [] check typesafety before moving to prod
 
-
+Deps:
+Move @tansctack react devtools to dev deps
 
 NITESH TICKETS
 -------

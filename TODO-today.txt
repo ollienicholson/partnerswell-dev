@@ -13,8 +13,11 @@ Daily TASKS
 Call Transcripts page:
 [x]  button to fetch transcripts from Fireflies - currently they are called automatically
 
-[] schema changes for chatgpt integration
- - what else needs to be done apart from rendering the actual data?
+ChatGPT output:
+[x] schema changes for chatgpt integration
+[] show phase and description in transcripts page
+[] show saved phase and description in partner accounts page as part of saved CallTranscript data
+[] run through testing & see what else needs to be done
 
 
 ChatGPT Integration  - in progress

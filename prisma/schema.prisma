@@ -46,7 +46,7 @@ model CallTranscriptData {
     speakers            Json // List of Speakers [{ name: String }]
     summary             Json
     sentences           Json // // List of Sentences [{ speaker_name: String, raw_text: String }]
-    // chatgpt?
+    chatgptOutput       Json? // Optional of ChatGPT Outputs [{ phase: String, details: String }]
     partnerAccount      PartnerAccount @relation(fields: [accountId], references: [partnerAccountId], onDelete: Cascade)
     accountId           Int // Partner Account FK
 

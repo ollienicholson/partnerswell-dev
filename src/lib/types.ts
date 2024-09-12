@@ -10,43 +10,8 @@ export type TPartnerAccount = {
   transcripts?: TGetOneTranscript[];
 };
 
-export type TGetOneTranscript = {
-  id: string;
-  title: string;
-  dateString: string;
-  duration: number;
-  speakers: {
-    name: string;
-  }[];
-  summary: {
-    overview: string;
-  };
-  sentences: {
-    speaker_name: string;
-    text: string;
-  }[];
-  // output: {
-  //   phase: string;
-  //   details: string;
-  // };
-};
-
-// export type chatgptOutput = {
-//   phase: string;
-//   details: string;
-// };
-
-export type TCallTranscriptHeader = {
-  callTranscriptId: string;
-  callTranscriptTitle: string;
-  callDuration: string;
-  callAttendees: {
-    speakers: string;
-  }[];
-  dateString: string;
-  createdBy: string;
-  updatedAt: string;
-  callSummary: string;
+export type allTranscriptData = {
+  transcripts: allTranscripts[];
 };
 
 export type allTranscripts = {
@@ -78,6 +43,40 @@ export type TGetTranscriptsByAccountId = {
   };
 };
 
-export type allTranscriptData = {
-  transcripts: allTranscripts[];
+export type TGetOneTranscript = {
+  id: string;
+  title: string;
+  dateString: string;
+  duration: number;
+  speakers: {
+    name: string;
+  }[];
+  summary: {
+    overview: string;
+  };
+  sentences: {
+    speaker_name: string;
+    text: string;
+  }[];
+  gptOutput: {
+    phase: string;
+    details: string;
+  }[];
+};
+
+export type TGraphQLTranscript = {
+  id: string;
+  title: string;
+  dateString: string;
+  duration: number;
+  speakers: {
+    name: string;
+  }[];
+  summary: {
+    overview: string;
+  };
+  sentences: {
+    speaker_name: string;
+    text: string;
+  }[];
 };
