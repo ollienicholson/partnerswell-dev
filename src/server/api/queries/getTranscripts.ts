@@ -8,8 +8,8 @@ import {
 
 // get all call transcripts
 const GET_TRANSCRIPTS = `
-  query Transcripts($limit: Int) {
-    transcripts(limit: $limit){
+  query Transcripts {
+    transcripts {
       id
       title
       duration
@@ -20,6 +20,19 @@ const GET_TRANSCRIPTS = `
     }
   }
 `;
+// const GET_TRANSCRIPTS = `
+//   query Transcripts($limit: Int) {
+//     transcripts(limit: $limit){
+//       id
+//       title
+//       duration
+//       dateString
+//       speakers {
+//         name
+//       }
+//     }
+//   }
+// `;
 
 // get call transcript by id
 const GET_ONE_TRANSCRIPT = `
@@ -79,19 +92,20 @@ export const getTranscriptById = async (
 
 let transcriptsCache: allTranscripts[] | null = null;
 
-export const getTranscripts = async (
-  limit: number = 4,
-): Promise<allTranscripts[]> => {
+export const getTranscripts = async () // limit: number = 4,
+: Promise<allTranscripts[]> => {
   if (transcriptsCache) {
     console.log("Returning cached transcripts...");
-    return transcriptsCache.slice(0, limit);
+    // return transcriptsCache.slice(0, limit);
+    return transcriptsCache;
   }
   console.log("Fetching fresh transcripts...");
 
   try {
     const data: allTranscriptData = await graphqlClient.request<{
       transcripts: allTranscripts[];
-    }>(GET_TRANSCRIPTS, { limit });
+      // }>(GET_TRANSCRIPTS, { limit });
+    }>(GET_TRANSCRIPTS);
     transcriptsCache = data.transcripts;
 
     return data.transcripts;
