@@ -71,7 +71,7 @@ export function MeetingTable({
                   <TableRow
                     key={call.id}
                     onClick={() => handleRowClick(call.callTranscriptId)}
-                    className="border-0"
+                    className="border-none "
                   >
                     <TableCell>{call.callTranscriptTitle}</TableCell>
                     <TableCell>
@@ -84,7 +84,7 @@ export function MeetingTable({
                       ))}
                     </TableCell>
                   </TableRow>
-                  <TableRow className="text-gray-300 hover:bg-transparent">
+                  <TableRow className="text-gray-400 hover:bg-transparent">
                     <TableCell colSpan={4} align="left">
                       {call.summary.overview.length > 340
                         ? `${call.summary.overview.substring(0, 340)}...`

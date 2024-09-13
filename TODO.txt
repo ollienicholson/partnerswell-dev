@@ -17,6 +17,10 @@ EPICS
 TASKS
 -----
 
+add open api key to vercel env vars
+change public to protected procedure - partnerAccountRouter
+follow fireflies trpc calls for refactor
+
 Nitesh:
 -------
   [] Fireflies Auth 

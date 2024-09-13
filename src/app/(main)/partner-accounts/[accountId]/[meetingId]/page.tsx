@@ -20,7 +20,8 @@ import Link from "next/link";
 import DeleteCallTranscriptButton from "~/app/components/deleteCallTranscriptButton";
 
 export default function MeetingPage() {
-  const [capabilityData, setCapabilityData] = useState(false);
+  // TODO: replace hardcoded capability data with dynamic data
+  const [capabilityData, setCapabilityData] = useState(true);
   const [selectedToggle, setSelectedToggle] = useState<string>("");
   const [meeting, setMeeting] = useState<TGetOneTranscript | undefined>(
     undefined,

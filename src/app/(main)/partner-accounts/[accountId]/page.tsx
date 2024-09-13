@@ -60,7 +60,7 @@ export default function AccountPage() {
       <AccountTable account={account} />
       <div className="py-4"></div>
       <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
-        {account.accountName} Meetings
+        Call Transcripts
       </div>
       <MeetingTable
         accountId={Number(accountId)}

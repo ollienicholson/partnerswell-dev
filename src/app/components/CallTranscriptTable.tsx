@@ -138,7 +138,7 @@ export default function CallTranscriptsTable({
         <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <AlertDialogTrigger asChild>
             <Button variant="pswellPrimary" disabled={!selectedAccount}>
-              Import Transcript
+              Import Selected Transcript
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>

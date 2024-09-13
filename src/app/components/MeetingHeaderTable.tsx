@@ -42,7 +42,7 @@ export default function MeetingHeaderTable({
     <div className="rounded-xl border shadow">
       <Table>
         <TableHeader>
-          <TableRow className="hover:bg-transparent">
+          <TableRow className="bg-slate-50">
             <TableHead>Account Name</TableHead>
             <TableHead>Title</TableHead>
             <TableHead>Duration</TableHead>
@@ -55,9 +55,8 @@ export default function MeetingHeaderTable({
             <TableCell>{transcript.duration} mins</TableCell>
           </TableRow>
         </TableBody>
-        {/* <div className="p-2" /> */}
         <TableHeader>
-          <TableRow className="hover:bg-transparent">
+          <TableRow className="bg-slate-50">
             <TableHead>Meeting Date</TableHead>
             <TableHead>Meeting Time</TableHead>
             <TableHead>Attendees</TableHead>
@@ -77,7 +76,7 @@ export default function MeetingHeaderTable({
       </Table>
       <Table>
         <TableHeader>
-          <TableRow className="hover:bg-transparent">
+          <TableRow className="bg-slate-50">
             <TableHead>Call Summary</TableHead>
           </TableRow>
         </TableHeader>
