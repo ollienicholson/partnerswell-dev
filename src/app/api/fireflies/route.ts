@@ -49,8 +49,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const limit = parseInt(searchParams.get("limit") || "4", 10); // Default limit to 4
-    const transcripts = await getTranscripts(limit);
+    // const limit = parseInt(searchParams.get("limit") || "4", 10); // Default limit to 4
+    // const transcripts = await getTranscripts(limit);
+    const transcripts = await getTranscripts();
     return NextResponse.json(transcripts);
   } catch (error: any) {
     console.error("Error in API:", error.message);
