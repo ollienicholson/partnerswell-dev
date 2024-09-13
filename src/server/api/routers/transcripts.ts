@@ -10,7 +10,7 @@ List of phases for influence indicator:
   Partner Lead Cultivating
   Partner Opportunity Alignment
   Prove Partner Value
-  Partner Opportunity Negoti ation
+  Partner Opportunity Negotiation
   Partner Opportunity Closed
 
 Return your response in .json format with the following key-value pairs:
@@ -155,7 +155,6 @@ export const transcriptRouter = createTRPCRouter({
       const { type, indicator } = input;
 
       const apikey = process.env.OPENAI_API_KEY;
-      console.log("API key:", apikey);
       const client = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
       });
