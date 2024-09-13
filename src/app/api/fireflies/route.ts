@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getTranscripts } from "~/server/api/queries/getTranscripts";
 
 export async function POST(req: NextRequest, res: NextResponse) {
   const { api_key } = await req.json();
@@ -45,4 +46,17 @@ export async function POST(req: NextRequest, res: NextResponse) {
 //   return NextResponse.json({ message: "This is a PUT request" }, { status: 200 });
 // }
 
-// etc etc
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const limit = parseInt(searchParams.get("limit") || "4", 10); // Default limit to 4
+    const transcripts = await getTranscripts(limit);
+    return NextResponse.json(transcripts);
+  } catch (error: any) {
+    console.error("Error in API:", error.message);
+    return NextResponse.json(
+      { error: "Failed to fetch transcripts" },
+      { status: 500 },
+    );
+  }
+}

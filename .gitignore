@@ -42,9 +42,10 @@ yarn-error.log*
 *.tsbuildinfo
 
 # TODOs
-*.txt
+# *.txt
 
 # testing
+/x-testing
 ollie-test.tsx
 ff-api-test.js
 chatgpt_output.json

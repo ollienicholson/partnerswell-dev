@@ -8,138 +8,146 @@ import {
   TableHeader,
   TableRow,
 } from "~/app/components/ui/table";
-import {
-  callTranscriptHeader,
-  CallTranscriptHeader,
-} from "~/lib/call-transcript-header";
-import { ToggleGroup, ToggleGroupItem } from "~/app/components/ui/toggle-group";
+import { TGetOneTranscript } from "~/lib/types";
 import { Button } from "~/app/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import {
-  maturityMapOutput,
-  MaturityMapOutput,
-} from "~/lib/maturity-map-output";
-import {
-  influenceIndicatorOutput,
-  InfluenceIndicatorOutput,
-} from "~/lib/influence-indicator-output";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "~/app/components/ui/select";
-import { influenceIndicators, InfluenceIndicator } from "~/lib/in-in-list";
+import { maMaOutput, TMaMaOutput } from "~/lib/maturity-map-output";
+import { inInOutput, TInInOutput } from "~/lib/influence-indicator-output";
+import { useParams } from "next/navigation";
+import { react_api } from "~/trpc/react";
+import Link from "next/link";
+import DeleteCallTranscriptButton from "~/app/components/deleteCallTranscriptButton";
 
 export default function MeetingPage() {
-  const [capabilityData, setCapabilityData] = useState(false);
+  // TODO: replace hardcoded capability data with dynamic data
+  const [capabilityData, setCapabilityData] = useState(true);
   const [selectedToggle, setSelectedToggle] = useState<string>("");
-  const [meetingId, setMeetingId] = useState<number | null>(null);
-  const [meeting, setMeeting] = useState<CallTranscriptHeader | null>(null);
-  const [capabilityButtonClicked, setCapabilityButtonClicked] = useState(false);
-
+  const [meeting, setMeeting] = useState<TGetOneTranscript | undefined>(
+    undefined,
+  );
   const router = useRouter();
+  const { meetingId } = useParams();
+
+  const {
+    data: transcriptData,
+    isLoading: transcriptLoading,
+    error: transcriptError,
+  } = react_api.transcriptRouter.getById.useQuery(
+    {
+      id: typeof meetingId === "string" ? meetingId : "",
+    },
+    {
+      enabled: !!meetingId,
+    },
+  );
 
   useEffect(() => {
-    const id = window.location.pathname.split("/").pop(); // Grab the last segment of the path
-    if (id && !isNaN(Number(id))) {
-      setMeetingId(Number(id));
+    if (transcriptData) {
+      setMeeting(transcriptData);
     }
-  }, []);
+  }, [transcriptData]);
 
-  useEffect(() => {
-    if (meetingId !== null) {
-      const foundMeeting = callTranscriptHeader.find(
-        (call) => call.callTranscriptId === meetingId,
-      );
-      setMeeting(foundMeeting || null);
-    }
-  }, [meetingId]);
+  console.log("useState -> MeetingId", meetingId);
 
-  const renderMaturityMapOutput = () => {
-    return maturityMapOutput.map((item: MaturityMapOutput, index: number) => (
+  const handleAfterDelete = () => {
+    console.log("handleAfterDelete: Transcript deleted");
+    router.push("/partner-accounts");
+  };
+
+  if (transcriptLoading) {
+    return (
+      <div className="loader-container">
+        <div className="loader"></div>
+      </div>
+    );
+  }
+
+  if (transcriptError) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-6">
+        <div className="text-red-500">{transcriptError?.message}</div>
+        <Link href="/partner-accounts">
+          <Button>Back</Button>
+        </Link>
+      </div>
+    );
+  }
+
+  const renderMaMaOutput = () => {
+    return maMaOutput.map((item: TMaMaOutput, index) => (
       <TableRow key={index} className="hover:bg-transparent">
-        <TableCell className="font-semibold">{item.title}</TableCell>
-        <TableCell>
-          {item.details.map((detail, subIndex) => (
-            <div key={subIndex} className="mb-2 flex flex-col gap-2">
-              <strong>{detail.subTitle}:</strong>
-              <ul>
-                {detail.description.map((desc, descIndex) => (
-                  <li key={descIndex}>{desc}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
+        <TableCell className="font-semibold">{item.phase_name}</TableCell>
+        <TableCell className="mb-2 flex flex-col gap-2">
+          {item.description}
         </TableCell>
       </TableRow>
     ));
   };
-  const renderInfluenceIndicatorOutput = () => {
-    return influenceIndicatorOutput.map(
-      (item: InfluenceIndicatorOutput, index: number) => (
-        <TableRow key={index} className="hover:bg-transparent">
-          <TableCell className="font-semibold">{item.title}</TableCell>
-          <TableCell>
-            {item.details.map((detail, subIndex) => (
-              <div key={subIndex} className="mb-2 flex flex-col gap-2">
-                <strong>{detail.subTitle}:</strong>
-                <ul>
-                  {detail.description.map((desc, descIndex) => (
-                    <li key={descIndex}>{desc}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+
+  const renderInInOutput = () => {
+    return inInOutput.map((item: TInInOutput, index) => (
+      <TableRow key={index} className="hover:bg-transparent">
+        <TableCell className="font-semibold">{item.phase_name}</TableCell>
+        <TableCell className="mb-2 flex flex-col gap-2">
+          {item.description}
+        </TableCell>
+      </TableRow>
+    ));
+  };
+
+  const renderEmptyOutputTable = () => (
+    <Table>
+      <TableHeader>
+        <TableRow className="bg-slate-50">
+          <TableHead>Phase</TableHead>
+          <TableHead>Details</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow>
+          <TableCell colSpan={2} className="text-center">
+            Display final output here
           </TableCell>
         </TableRow>
-      ),
-    );
-  };
+      </TableBody>
+    </Table>
+  );
 
   return (
     <div className="relative min-h-screen p-6">
       {meetingId ? (
         <>
           <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
-            Meeting: {meeting?.callTranscriptTitle}
+            Meeting: {meeting?.title}
           </div>
           <div className="rounded-xl border shadow">
             <Table>
               <TableHeader>
-                <TableRow className="hover:bg-transparent">
+                <TableRow className="bg-slate-50">
                   <TableHead>Account Name</TableHead>
                   <TableHead>Title</TableHead>
                   <TableHead>Duration</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow
-                  key={meeting?.callTranscriptId}
-                  className="hover:bg-transparent"
-                >
+                <TableRow key={meeting?.id} className="hover:bg-transparent">
                   {/* TODO: render account name based on id*/}
                   <TableCell>render account name</TableCell>
-                  <TableCell>{meeting?.callTranscriptTitle}</TableCell>
-                  <TableCell>{meeting?.callDuration} mins</TableCell>
+                  <TableCell>{meeting?.title}</TableCell>
+                  <TableCell>{meeting?.duration} mins</TableCell>
                 </TableRow>
               </TableBody>
               <div className="p-2" />
               <TableHeader>
-                <TableRow className="hover:bg-transparent">
+                <TableRow className="bg-slate-50">
                   <TableHead>Meeting Date</TableHead>
                   <TableHead>Meeting Time</TableHead>
                   <TableHead>Attendees</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow
-                  key={meeting?.callTranscriptId}
-                  className="hover:bg-transparent"
-                >
+                <TableRow key={meeting?.id} className="hover:bg-transparent ">
                   <TableCell>
                     {meeting?.dateString
                       ? new Date(meeting.dateString).toLocaleDateString()
@@ -151,8 +159,8 @@ export default function MeetingPage() {
                       : "Date not available"}
                   </TableCell>
                   <TableCell>
-                    {meeting?.callAttendees.map((attendee, index) => (
-                      <li key={index}>{attendee.speakers}</li>
+                    {meeting?.speakers.map((speaker, index) => (
+                      <li key={index}>{speaker.name}</li>
                     ))}
                   </TableCell>
                 </TableRow>
@@ -160,143 +168,53 @@ export default function MeetingPage() {
             </Table>
             <Table>
               <TableHeader>
-                <TableRow className="hover:bg-transparent">
+                <TableRow className=" bg-slate-50">
                   <TableHead>Call Summary</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 <TableRow className="hover:bg-transparent">
-                  <TableCell>{meeting?.callSummary}</TableCell>
+                  <TableCell>{meeting?.summary.overview}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </div>
           <div className="p-4"></div>
-          <div className="rounded-xl border shadow">
-            <Table>
-              <TableHeader>
-                <TableRow className="hover:bg-transparent">
-                  <TableHead>
-                    Select Maturtiy Map or Influence Indicator
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow className="flex justify-start p-2 py-4 hover:bg-transparent">
-                  <ToggleGroup
-                    className="gap-2 p-4"
-                    type="single"
-                    value={selectedToggle}
-                    onValueChange={(value) => setSelectedToggle(value)}
-                  >
-                    <ToggleGroupItem
-                      variant="outline"
-                      value="maturityMap"
-                      className={`rounded px-4 py-2 ${
-                        selectedToggle === "maturityMap"
-                          ? "border-2 border-green-300"
-                          : null
-                      }`}
-                    >
-                      Maturity Map
-                    </ToggleGroupItem>
-                    <ToggleGroupItem
-                      variant="outline"
-                      value="influenceIndicator"
-                      className={`rounded px-4 py-2 ${
-                        selectedToggle === "influenceIndicator"
-                          ? "border-2 border-green-300"
-                          : null
-                      }`}
-                    >
-                      Influence Indicator
-                    </ToggleGroupItem>
-                    {selectedToggle === "influenceIndicator" ? (
-                      <Select>
-                        <SelectTrigger className="w-[260px]">
-                          <SelectValue placeholder="Select an indicator" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            {influenceIndicators.map((indicator) => (
-                              <SelectItem
-                                key={indicator.id}
-                                value={indicator.name}
-                              >
-                                {indicator.name}
-                              </SelectItem>
-                            ))}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    ) : (
-                      <Select disabled>
-                        <SelectTrigger className="w-[260px]">
-                          <SelectValue placeholder="Select an indicator" />
-                        </SelectTrigger>
-                      </Select>
-                    )}
-                  </ToggleGroup>
-                </TableRow>
-              </TableBody>
-              <TableHeader>
-                <TableRow className="hover:bg-transparent">
-                  <TableHead>
-                    Get capability data based on your selection
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow className="flex justify-start p-6 hover:bg-transparent">
-                  <Button
-                    disabled={
-                      capabilityButtonClicked ||
-                      (selectedToggle !== "maturityMap" &&
-                        selectedToggle !== "influenceIndicator")
-                    }
-                    onClick={() => {
-                      setCapabilityData(true);
-                      setCapabilityButtonClicked(true);
-                    }}
-                    className={`${
-                      selectedToggle === "maturityMap" ||
-                      selectedToggle === "influenceIndicator"
-                        ? "bg-green-300 text-white"
-                        : "cursor-not-allowed bg-gray-300 text-gray-500"
-                    }`}
-                  >
-                    Get capability data
-                  </Button>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </div>
+          {/* this will form the final output table */}
+          {/* the empty table headings are correct for final output table */}
+          {/* [] Capability: Influence Indicator or MM - this should live in the header table */}
+          {/* [] Required Table headings
+                [] phase
+                [] description */}
           <div className="mt-6 rounded-xl border shadow">
             {capabilityData ? (
               <Table>
                 <TableHeader>
-                  <TableRow className="hover:bg-transparent">
-                    <TableHead>Capability</TableHead>
+                  <TableRow className="bg-slate-50">
+                    <TableHead>Phase</TableHead>
                     <TableHead>Details</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {selectedToggle === "maturityMap"
-                    ? renderMaturityMapOutput()
-                    : renderInfluenceIndicatorOutput()}
+                    ? renderMaMaOutput()
+                    : renderInInOutput()}
                 </TableBody>
               </Table>
             ) : (
-              <div className="flex min-h-[400px] items-center justify-center p-6 text-center text-xl text-gray-300">
-                Select your preference for Maturity Map or Influence Indicator
-              </div>
+              renderEmptyOutputTable()
             )}
           </div>
           <div className="py-4"></div>
-          <div className="flex py-6">
+          <div className="flex justify-between py-6">
             <Button onClick={() => router.back()} className="">
               Back
             </Button>
+            {/* TODO: add backend delete meeting functionality */}
+            <DeleteCallTranscriptButton
+              id={String(meetingId)}
+              onDelete={handleAfterDelete}
+            />
           </div>
         </>
       ) : (

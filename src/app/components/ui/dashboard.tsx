@@ -66,7 +66,7 @@ export function Dashboard() {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="flex flex-col">
-              <Image src="/favicon.png" alt="logo" width={40} height={40} />
+              <Image src="/icon.png" alt="logo" width={40} height={40} />
               <span className="sr-only">Partnerswell</span>
               <nav className="grid gap-2 text-lg font-medium">
                 <Link

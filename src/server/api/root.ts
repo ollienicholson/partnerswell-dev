@@ -1,6 +1,7 @@
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
-import { dbRouter } from "./routers/db";
 import { partnerAccountRouter } from "./routers/partner-accounts";
+import { integrationRouter } from "./routers/integration";
+import { transcriptRouter } from "./routers/transcripts";
 
 /**
  * This is the primary router for your server.
@@ -8,8 +9,9 @@ import { partnerAccountRouter } from "./routers/partner-accounts";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  dbRouter: dbRouter,
   partnerAccountRouter: partnerAccountRouter,
+  integrationRouter: integrationRouter,
+  transcriptRouter: transcriptRouter,
 });
 
 // export type definition of API

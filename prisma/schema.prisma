@@ -1,15 +1,12 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// use @@index[column] to sort by index 
 
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["driverAdapters"]
+    provider = "prisma-client-js"
 }
 
 datasource db {
-    provider  = "postgresql"
-    url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
-    directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+    provider = "postgresql"
+    url      = env("POSTGRES_PRISMA_URL") // uses connection pooling
 }
 
 enum Role {
@@ -18,113 +15,40 @@ enum Role {
 }
 
 model userRoles {
-    clerkId String @unique
-    role    Role
+    clerkId      String  @unique
+    role         Role
+    firefliesApi String?
 
     @@index([clerkId, role])
 }
 
-model User {
-    id        Int      @id @default(autoincrement())
-    firstName String
-    lastName  String
-    email     String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    role      Role     @default(GUEST)
-    contact   Contact? @relation(fields: [contactId], references: [contactId], onDelete: Cascade)
-    contactId Int? // Foriegn key to Contact
-
-    // CallTranscriptData CallTranscriptData[]
-}
-
+// need to implement soft delete before delivery
 model PartnerAccount {
-    partnerAccountId Int       @id @default(autoincrement())
+    partnerAccountId Int                  @id @default(autoincrement())
     accountName      String
-    createdAt        DateTime  @default(now())
-    updatedAt        DateTime  @updatedAt
-    contacts         Contact[]
+    contactName      String
+    createdBy        String
+    createdAt        DateTime             @default(now())
+    updatedAt        DateTime             @updatedAt
+    transcripts      CallTranscriptData[] // one-to-many
 
-    // CallTranscript   CallTranscriptData[]
-    // need to add createdById to this table
-    // then link to the USER table and retrieve the first name and last name
-    // change 'contacts' to 'contact'? check if this is a pain before changing -> should be singular
+    @@index([partnerAccountId])
 }
 
-model Contact {
-    contactId      Int            @id @default(autoincrement())
-    firstName      String
-    lastName       String
-    contactEmail   String
-    createdAt      DateTime       @default(now())
-    updatedAt      DateTime       @updatedAt
-    partnerAccount PartnerAccount @relation(fields: [accountId], references: [partnerAccountId], onDelete: Cascade, onUpdate: Cascade)
-    accountId      Int
-    // CallTranscript CallTranscriptData[]
-    User           User[]
+// need to implement soft delete before delivery
+model CallTranscriptData {
+    id                  Int            @id @default(autoincrement())
+    callTranscriptId    String         @unique
+    callTranscriptTitle String
+    createdAt           DateTime       @default(now())
+    duration            Int // in minutes
+    meetingDate         String
+    speakers            Json // List of Speakers [{ name: String }]
+    summary             Json
+    sentences           Json // // List of Sentences [{ speaker_name: String, raw_text: String }]
+    chatgptOutput       Json? // Optional of ChatGPT Outputs [{ phase: String, details: String }]
+    partnerAccount      PartnerAccount @relation(fields: [accountId], references: [partnerAccountId], onDelete: Cascade)
+    accountId           Int // Partner Account FK
+
+    @@index([id])
 }
-
-// will need to be able to assign a user to a CONTACT, and a contact to a PARTNER ACCOUNT, only then can we delete the USER
-// I believe this will be the case with other tables as well
-
-// model CallTranscriptData {
-//     callTranscriptId          Int                        @id @default(autoincrement())
-//     callTranscriptTitle       String
-//     createdAt                 DateTime                   @default(now())
-//     updatedAt                 DateTime                   @updatedAt
-//     createdBy                 User                       @relation(fields: [createdById], references: [id])
-//     createdById               Int                        @unique
-//     partnerAccount            PartnerAccount             @relation(fields: [accountId], references: [partnerAccountId])
-//     accountId                 Int                        @unique
-//     contact                   Contact                    @relation(fields: [contactId], references: [contactId])
-//     contactId                 Int                        @unique
-//     CallTranscriptDefaultText CallTranscriptDefaultText?
-//     CallTranscriptSnippet     CallTranscriptSnippet[]
-
-//     @@index([callTranscriptId])
-// }
-
-// model CallTranscriptDefaultText {
-//     callTranscriptDefaultTextId Int                @id @default(autoincrement())
-//     transcriptText              String
-//     callTranscript              CallTranscriptData @relation(fields: [callTranscriptId], references: [callTranscriptId])
-//     callTranscriptId            Int                @unique
-
-//     @@index([callTranscriptDefaultTextId])
-// }
-
-// // do they all need to be foreign keys or can they be relations?
-
-// model CallTranscriptSnippet {
-//     callTranscriptSnippetId Int                @id @default(autoincrement())
-//     callTranscript          CallTranscriptData @relation(fields: [callTranscriptId], references: [callTranscriptId])
-//     callTranscriptId        Int                @unique
-//     snippetText             String
-//     InInPhaseLabels         InInPhaseLabel[]
-//     MaMaPhaseLabels         MaMaPhaseLabel[]
-
-//     @@index([callTranscriptSnippetId])
-// }
-
-// model CallTranscriptCategory {
-//     callTranscriptCategoryId   Int    @id @default(autoincrement())
-//     callTranscriptCategoryName String
-// }
-
-// model InInPhaseLabel {
-//     inInPhaseLabelId Int                   @id @default(autoincrement())
-//     labelName        String
-//     callTranscript   CallTranscriptSnippet @relation(fields: [callTranscriptId], references: [callTranscriptSnippetId])
-//     callTranscriptId Int                   @unique
-
-//     @@index([inInPhaseLabelId])
-// }
-
-// model MaMaPhaseLabel {
-//     mamaPhaseLabelId Int                   @id @default(autoincrement())
-//     labelName        Int
-//     callTranscript   CallTranscriptSnippet @relation(fields: [callTranscriptId], references: [callTranscriptSnippetId])
-//     callTranscriptId Int                   @unique
-
-//     @@index([mamaPhaseLabelId])
-// }
