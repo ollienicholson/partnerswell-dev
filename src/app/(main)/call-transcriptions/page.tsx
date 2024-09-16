@@ -6,6 +6,8 @@ import CallTranscriptsTable from "../../components/CallTranscriptTable";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { allTranscripts } from "~/lib/types";
+import { server_api } from "~/trpc/server";
+import { react_api } from "~/trpc/react";
 
 type PartnerAccount = {
   accountName: string;
@@ -13,51 +15,18 @@ type PartnerAccount = {
 
 export default function TranscriptsPage() {
   // TODO: remove hardcoded transcripts limit
-  const [transcripts, setTranscripts] = useState<allTranscripts[]>([]);
-  const [partnerAccounts, setPartnerAccounts] = useState<PartnerAccount[]>([]);
+  const { data: transcripts, refetch } =
+    react_api.transcriptRouter.getAll.useQuery(undefined, { enabled: false });
+  react_api;
+
+  const { data: partnerAccounts, refetch: refetchAccounts } =
+    react_api.partnerAccountRouter.getAll.useQuery(undefined, {
+      enabled: false,
+    });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
-
-  const fetchTranscripts = async () => {
-    setLoading(true);
-    setError("");
-
-    try {
-      // Fetch transcripts from the API endpoint
-      const transcriptsResponse = await fetch("api/fireflies");
-      console.log("transcriptsResponse:", transcriptsResponse);
-      if (!transcriptsResponse.ok) {
-        if (transcriptsResponse.status === 429) {
-          setError("Too many requests, please try again later.");
-        } else {
-          throw new Error("Failed to fetch transcripts");
-        }
-        return;
-      }
-      const transcriptsData: allTranscripts[] =
-        await transcriptsResponse.json();
-
-      // Fetch list of partner accounts from the API endpoint
-      const accountsResponse = await fetch("/api/partner-accounts");
-      if (!accountsResponse.ok)
-        throw new Error("Failed to fetch partner accounts");
-
-      const accounts: PartnerAccount[] = await accountsResponse.json();
-
-      const partnerAccounts = accounts.map((account) => ({
-        accountName: account.accountName,
-      }));
-
-      setTranscripts(transcriptsData);
-      setPartnerAccounts(partnerAccounts);
-    } catch (error: any) {
-      setError("Failed to fetch data:");
-      console.error(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div>
@@ -67,7 +36,10 @@ export default function TranscriptsPage() {
         </div>
         <div className="mb-6 flex justify-center rounded-xl bg-slate-50 p-4">
           <Button
-            onClick={fetchTranscripts}
+            onClick={() => {
+              refetch();
+              refetchAccounts();
+            }}
             disabled={loading}
             variant="pswellPrimary"
           >
@@ -77,10 +49,12 @@ export default function TranscriptsPage() {
         {error && <div className="text-red-500">{error}</div>}
 
         <div className="rounded-xl border shadow">
-          <CallTranscriptsTable
-            transcripts={transcripts}
-            partnerAccounts={partnerAccounts}
-          />
+          {transcripts && partnerAccounts && (
+            <CallTranscriptsTable
+              transcripts={transcripts}
+              partnerAccounts={partnerAccounts}
+            />
+          )}
         </div>
       </div>
     </div>

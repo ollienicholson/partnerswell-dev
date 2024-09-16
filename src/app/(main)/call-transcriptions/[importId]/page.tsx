@@ -17,13 +17,13 @@ import {
 } from "~/app/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "~/app/components/ui/toggle-group";
 import { influenceIndicators } from "~/lib/in-in-list";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { react_api } from "~/trpc/react";
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 import MeetingHeaderTable from "~/app/components/MeetingHeaderTable";
-import { maMaOutput, TMaMaOutput } from "~/lib/maturity-map-output";
+import { TMaMaOutput } from "~/lib/maturity-map-output";
 import { inInOutput, TInInOutput } from "~/lib/influence-indicator-output";
 import CreateCallTranscriptButton from "~/app/components/createCallTranscriptButton";
 
@@ -32,9 +32,13 @@ export default function ImportedTranscriptPage() {
   const [capabilityButtonClicked, setCapabilityButtonClicked] = useState(false);
   const [resetButton, setResetButton] = useState(false);
   const [capabilityData, setCapabilityData] = useState(false);
-
+  const [mmOutput, setmmOutput] = useState<TMaMaOutput[]>([]);
+  
+  // working
   const { importId: importTranscriptId } = useParams();
-
+  // console.log("Imported Transcript ID: ", importTranscriptId);
+  
+  // working
   const {
     data: transcriptData,
     isLoading: transcriptLoading,
@@ -42,6 +46,27 @@ export default function ImportedTranscriptPage() {
   } = react_api.transcriptRouter.getById.useQuery({
     id: typeof importTranscriptId === "string" ? importTranscriptId : "",
   });
+  // transcriptData sentences is calling correct
+  console.log("src/app/(main)/call-transcriptions/[importId]/page.tsx >> transcriptData:", transcriptData?.id);
+
+  const {
+    data: getCapabilityData,
+    isLoading,
+    refetch,
+  } = react_api.transcriptRouter.getCapabilityData.useQuery(
+    {
+      type: selectedToggle,
+      // ONLY IF SELECTED: need to pass in the influence indicator - currently hardcoded
+      indicator: influenceIndicators[0]?.name,
+      id: typeof importTranscriptId === "string" ? importTranscriptId : "",
+    },
+    {
+      enabled: false,
+    },
+  );
+  // console.log("Selected Toggle: ", selectedToggle);
+  // console.log("Influence Indicator: ", influenceIndicators[0]?.name);
+  console.log("ChatgptData:", getCapabilityData);
 
   let accountName: string | null = "";
 
@@ -56,6 +81,22 @@ export default function ImportedTranscriptPage() {
   } = react_api.partnerAccountRouter.getAccountByName.useQuery({
     partnerAccountName: accountName || "",
   });
+
+  useEffect(() => {
+    if (getCapabilityData) {
+    try {
+          // Clean the string by removing unwanted backticks if present
+    const cleanedJsonString = getCapabilityData.replace(/`/g, "");
+      // remove backticks if any and parse json
+      const parsedData = JSON.parse(cleanedJsonString);
+      setmmOutput(parsedData);
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+    }
+    }
+  }, [getCapabilityData]);
+
+  // console.log("src/app/(main)/call-transcriptions/[importId]/page.tsx setmmOutput >> : ", setmmOutput);
 
   if (accountLoading || transcriptLoading) {
     return (
@@ -77,9 +118,8 @@ export default function ImportedTranscriptPage() {
       </div>
     );
   }
-
   const renderMaMaOutput = () => {
-    return maMaOutput.map((item: TMaMaOutput, index) => (
+    return mmOutput.map((item: TMaMaOutput, index) => (
       <TableRow key={index} className="hover:bg-transparent">
         <TableCell className="font-semibold">{item.phase_name}</TableCell>
         <TableCell className="mb-2 flex flex-col gap-2">
@@ -191,9 +231,11 @@ export default function ImportedTranscriptPage() {
                     selectedToggle !== "influenceIndicator")
                 }
                 onClick={() => {
-                  setCapabilityData(true);
-                  setCapabilityButtonClicked(true);
-                  setResetButton(true);
+                  refetch();
+
+                  // setCapabilityData(true);
+                  // setCapabilityButtonClicked(true);
+                  // setResetButton(true);
                 }}
                 className={`${
                   selectedToggle === "maturityMap" ||
@@ -221,14 +263,15 @@ export default function ImportedTranscriptPage() {
               {/* TODO: Hide this button until capability data has been rendered */}
               <CreateCallTranscriptButton
                 accountId={account?.partnerAccountId ?? 0}
-                transriptData={transcriptData}
+                transcriptData={transcriptData}
+                gptOutput={mmOutput}
               />
             </TableRow>
           </TableBody>
         </Table>
       </div>
       <div className="mt-6 rounded-xl border shadow">
-        {capabilityData ? (
+        {getCapabilityData ? (
           <Table>
             <TableHeader>
               <TableRow className="bg-slate-50">

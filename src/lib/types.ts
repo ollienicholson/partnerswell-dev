@@ -59,8 +59,8 @@ export type TGetOneTranscript = {
     text: string;
   }[];
   gptOutput: {
-    phase: string;
-    details: string;
+    phase_name: string;
+    description: string;
   }[];
 };
 

@@ -8,12 +8,11 @@ import {
   TableHeader,
   TableRow,
 } from "~/app/components/ui/table";
-import { TGetOneTranscript } from "~/lib/types";
+// import { TGetOneTranscript } from "~/lib/types";
 import { Button } from "~/app/components/ui/button";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { maMaOutput, TMaMaOutput } from "~/lib/maturity-map-output";
-import { inInOutput, TInInOutput } from "~/lib/influence-indicator-output";
+import { useState } from "react";
+import { TMaMaOutput } from "~/lib/maturity-map-output";
 import { useParams } from "next/navigation";
 import { react_api } from "~/trpc/react";
 import Link from "next/link";
@@ -23,9 +22,9 @@ export default function MeetingPage() {
   // TODO: replace hardcoded capability data with dynamic data
   const [capabilityData, setCapabilityData] = useState(true);
   const [selectedToggle, setSelectedToggle] = useState<string>("");
-  const [meeting, setMeeting] = useState<TGetOneTranscript | undefined>(
-    undefined,
-  );
+  // const [meeting, setMeeting] = useState<TGetOneTranscript | undefined>(
+  //   undefined,
+  // );
   const router = useRouter();
   const { meetingId } = useParams();
 
@@ -33,22 +32,20 @@ export default function MeetingPage() {
     data: transcriptData,
     isLoading: transcriptLoading,
     error: transcriptError,
-  } = react_api.transcriptRouter.getById.useQuery(
+  } = react_api.transcriptRouter.getByMeetingId.useQuery(
     {
-      id: typeof meetingId === "string" ? meetingId : "",
+      meetingId: typeof meetingId === "string" ? meetingId : "",
     },
     {
       enabled: !!meetingId,
     },
   );
 
-  useEffect(() => {
-    if (transcriptData) {
-      setMeeting(transcriptData);
-    }
-  }, [transcriptData]);
-
-  console.log("useState -> MeetingId", meetingId);
+  // useEffect(() => {
+  //   if (transcriptData) {
+  //     setMeeting(transcriptData);
+  //   }
+  // }, [transcriptData]);
 
   const handleAfterDelete = () => {
     console.log("handleAfterDelete: Transcript deleted");
@@ -75,18 +72,7 @@ export default function MeetingPage() {
   }
 
   const renderMaMaOutput = () => {
-    return maMaOutput.map((item: TMaMaOutput, index) => (
-      <TableRow key={index} className="hover:bg-transparent">
-        <TableCell className="font-semibold">{item.phase_name}</TableCell>
-        <TableCell className="mb-2 flex flex-col gap-2">
-          {item.description}
-        </TableCell>
-      </TableRow>
-    ));
-  };
-
-  const renderInInOutput = () => {
-    return inInOutput.map((item: TInInOutput, index) => (
+    return transcriptData?.chatgptOutput?.map((item: TMaMaOutput, index) => (
       <TableRow key={index} className="hover:bg-transparent">
         <TableCell className="font-semibold">{item.phase_name}</TableCell>
         <TableCell className="mb-2 flex flex-col gap-2">
@@ -119,7 +105,7 @@ export default function MeetingPage() {
       {meetingId ? (
         <>
           <div className="mb-4 w-full gap-4 border-b pb-2 text-lg font-semibold md:text-2xl">
-            Meeting: {meeting?.title}
+            Meeting: {transcriptData?.callTranscriptTitle}
           </div>
           <div className="rounded-xl border shadow">
             <Table>
@@ -131,11 +117,11 @@ export default function MeetingPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow key={meeting?.id} className="hover:bg-transparent">
+                <TableRow key={transcriptData?.id} className="hover:bg-transparent">
                   {/* TODO: render account name based on id*/}
                   <TableCell>render account name</TableCell>
-                  <TableCell>{meeting?.title}</TableCell>
-                  <TableCell>{meeting?.duration} mins</TableCell>
+                  <TableCell>{transcriptData?.callTranscriptTitle}</TableCell>
+                  <TableCell>{transcriptData?.duration} mins</TableCell>
                 </TableRow>
               </TableBody>
               <div className="p-2" />
@@ -147,19 +133,19 @@ export default function MeetingPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow key={meeting?.id} className="hover:bg-transparent ">
+                <TableRow key={transcriptData?.id} className="hover:bg-transparent ">
                   <TableCell>
-                    {meeting?.dateString
-                      ? new Date(meeting.dateString).toLocaleDateString()
+                    {transcriptData?.meetingDate
+                      ? new Date(transcriptData.meetingDate).toLocaleDateString()
                       : "Date not available"}
                   </TableCell>
                   <TableCell>
-                    {meeting?.dateString
-                      ? new Date(meeting.dateString).toLocaleTimeString()
+                    {transcriptData?.meetingDate
+                      ? new Date(transcriptData.meetingDate).toLocaleTimeString()
                       : "Date not available"}
                   </TableCell>
                   <TableCell>
-                    {meeting?.speakers.map((speaker, index) => (
+                    {transcriptData?.speakers?.map((speaker, index) => (
                       <li key={index}>{speaker.name}</li>
                     ))}
                   </TableCell>
@@ -174,18 +160,12 @@ export default function MeetingPage() {
               </TableHeader>
               <TableBody>
                 <TableRow className="hover:bg-transparent">
-                  <TableCell>{meeting?.summary.overview}</TableCell>
+                  <TableCell>{transcriptData?.summary?.overview}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </div>
           <div className="p-4"></div>
-          {/* this will form the final output table */}
-          {/* the empty table headings are correct for final output table */}
-          {/* [] Capability: Influence Indicator or MM - this should live in the header table */}
-          {/* [] Required Table headings
-                [] phase
-                [] description */}
           <div className="mt-6 rounded-xl border shadow">
             {capabilityData ? (
               <Table>
@@ -196,9 +176,7 @@ export default function MeetingPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {selectedToggle === "maturityMap"
-                    ? renderMaMaOutput()
-                    : renderInInOutput()}
+                    {renderMaMaOutput()}
                 </TableBody>
               </Table>
             ) : (

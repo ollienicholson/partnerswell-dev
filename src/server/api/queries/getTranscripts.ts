@@ -58,20 +58,25 @@ query Transcript($id: String!) {
 // TODO: improve caching
 // TODO: create refresh function for frontend user
 export const getTranscriptById = async (
+  firefliesApiKey: string,
   id: string,
 ): Promise<TGetOneTranscript | null> => {
-  console.log("Fetching transcript with ID:", id);
+  // id is correct
+  // console.log("Fetching transcript with ID:", id);
 
   try {
     // pass transcript id as variable to graphql query
-    const data = await graphqlClient.request<{
+    const client = graphqlClient(firefliesApiKey);
+    const data = await client.request<{
       transcript: TGetOneTranscript;
     }>(GET_ONE_TRANSCRIPT, { id });
-
+    // data.transcript is correct
+    // success getting sentences
+    // console.log("src/server/api/queries/getTranscripts.ts >>> Transcript Data:", data.transcript);
     return data.transcript;
   } catch (error: any) {
     console.error(
-      "Error fetching transcripts:",
+      "Error fetching one transcript:",
       error.response?.errors || error.message,
     );
 
@@ -92,17 +97,21 @@ export const getTranscriptById = async (
 
 let transcriptsCache: allTranscripts[] | null = null;
 
-export const getTranscripts = async () // limit: number = 4,
-: Promise<allTranscripts[]> => {
+export const getTranscripts = async (
+  firefliesApiKey: string,
+  // limit: number = 1,
+): Promise<allTranscripts[]> => {
   if (transcriptsCache) {
     console.log("Returning cached transcripts...");
     // return transcriptsCache.slice(0, limit);
     return transcriptsCache;
   }
-  console.log("Fetching fresh transcripts...");
+  console.log("\nFetching fresh transcripts...");
 
   try {
-    const data: allTranscriptData = await graphqlClient.request<{
+    const client = graphqlClient(firefliesApiKey);
+    console.log("Fetching transcripts with API key:", firefliesApiKey);
+    const data: allTranscriptData = await client.request<{
       transcripts: allTranscripts[];
       // }>(GET_TRANSCRIPTS, { limit });
     }>(GET_TRANSCRIPTS);
@@ -111,7 +120,7 @@ export const getTranscripts = async () // limit: number = 4,
     return data.transcripts;
   } catch (error: any) {
     console.error(
-      "Error fetching transcripts:",
+      "src/server/api/queries/getTranscripts.ts:\nError fetching all transcripts:",
       error.response?.errors || error.message,
     );
 
