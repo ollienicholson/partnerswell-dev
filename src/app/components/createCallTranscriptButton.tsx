@@ -13,16 +13,17 @@ type TranscriptData = {
   summary: { overview: string };
   sentences: { speaker_name: string; text: string }[];
   // TODO: add gpt output
+  gptOutput: { phase: string; details: string }[];
 };
 
 type Props = {
   accountId: number;
-  transriptData?: TranscriptData;
+  transcriptData?: TranscriptData;
 };
 
 export default function CreateCallTranscriptButton({
   accountId,
-  transriptData,
+  transcriptData,
 }: Props) {
   const { addCallTranscript, isLoading, error } = useAddCallTranscript();
   const router = useRouter();
@@ -34,14 +35,15 @@ export default function CreateCallTranscriptButton({
       // add call transcript to the db
       await addCallTranscript({
         partnerAccountId: accountId,
-        callTranscriptId: transriptData?.id ?? "",
-        callTranscriptTitle: transriptData?.title ?? "",
-        duration: transriptData?.duration ?? 0,
-        meetingDate: transriptData?.dateString ?? "",
-        speakers: transriptData?.speakers ?? [],
-        summary: transriptData?.summary ?? { overview: "" },
-        sentences: transriptData?.sentences ?? [],
+        callTranscriptId: transcriptData?.id ?? "",
+        callTranscriptTitle: transcriptData?.title ?? "",
+        duration: transcriptData?.duration ?? 0,
+        meetingDate: transcriptData?.dateString ?? "",
+        speakers: transcriptData?.speakers ?? [],
+        summary: transcriptData?.summary ?? { overview: "" },
+        sentences: transcriptData?.sentences ?? [],
         // TODO: add gpt output to addCallTranscript
+        gptOutput: transcriptData?.gptOutput ?? [],
       });
 
       // push user to the partner account page on success

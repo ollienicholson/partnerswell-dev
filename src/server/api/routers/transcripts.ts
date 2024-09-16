@@ -17,10 +17,9 @@ Return your response in .json format with the following key-value pairs:
   - phase_name: the phase of the sales deal
   - description: a description of what was discussed related to the specific phase`;
 
-const MMprompt = `You are a sales professional working in the B2B partnerships industry.
-Your task is to analyse this call transcript to identify success factors related to a specific phase of the partnership with {pass in Partner Account Name}.
+const MaMaprompt = `You are a sales professional working in the B2B partnerships industry.
+Your task is to analyse this call transcript to identify success factors related to a specific phase of the partnerships maturity map.
 Your analysis of this call transcript data must be categorised into the following phases:
-List of phases for Maturity Map:
     Partner Qualification
     Joint Discovery
     Build Go-To-Market
@@ -28,10 +27,36 @@ List of phases for Maturity Map:
     Delivery Readiness
     Partnership Launch
     Partnership Continous Improvement
+    Return your response in json format with the following key-value pairs:
+    - phase_name: the phase of the partnership.
+    - description: a description of what was discussed related to the specific phase.
+    Do not respond with anything other than json format, this is the expected response format example:
+    [{
+        phase_name: "text",
+        description: "text"
+      },
+    {
+        phase_name: "text",
+        description: "text"
+    }]`;
 
-Return your response in json format with the following key-value pairs:
-  - phase_name: the phase of the partnership
-  - description: a description of what was discussed related to the specific phase`;
+// function MMprompt(call_transcript: string[]) {
+//   return `You are a sales professional working in the B2B partnerships industry.
+// Your task is to analyse this call transcript to identify success factors related to a specific phase of the partnership with {pass in Partner Account Name}.
+// Here is the transcript: ${call_transcript}
+// Your analysis of this call transcript data must be categorised into the following phases:
+// List of phases for Maturity Map:
+//     Partner Qualification
+//     Joint Discovery
+//     Build Go-To-Market
+//     Sales Planning
+//     Delivery Readiness
+//     Partnership Launch
+//     Partnership Continous Improvement
+
+// Return your response in json format with the following key-value pairs:
+//   - phase_name: the phase of the partnership
+//   - description: a description of what was discussed related to the specific phase`;}
 
 export const transcriptRouter = createTRPCRouter({
   getById: protectedProcedure
@@ -47,13 +72,14 @@ export const transcriptRouter = createTRPCRouter({
           where: { clerkId: ctx?.user?.id },
         });
         if (!userData?.firefliesApi) return;
+        // input.id is correct
+        // console.log("Calling input.id: ", input.id);
         const transcript = await getTranscriptById(
           userData?.firefliesApi,
           input.id,
         );
-        // console.log("Fetched Transcript Data:", transcript); // log
         if (transcript) {
-          console.log("Transcript fetched successfully:");
+          console.log("transcriptRouter: getById: Transcript fetched successfully");
           return transcript;
         } else {
           console.log("Transcript not found.");
@@ -71,7 +97,7 @@ export const transcriptRouter = createTRPCRouter({
       if (!userData?.firefliesApi) return;
       const transcript = await getTranscripts(userData?.firefliesApi);
       if (transcript) {
-        console.log("Transcript fetched successfully:");
+        console.log("getAll Transcripts fetched successfully:");
         return transcript;
       } else {
         console.log("Transcript not found.");
@@ -124,6 +150,9 @@ export const transcriptRouter = createTRPCRouter({
           z.object({ speaker_name: z.string(), text: z.string() }),
         ), // array of objects with speaker_name and text fields
         // TODO: add gpt output as optional
+        gptOutput: z.array(
+          z.object({ phase: z.string(), details: z.string() }),
+        ),
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -139,9 +168,12 @@ export const transcriptRouter = createTRPCRouter({
           summary: input.summary,
           sentences: input.sentences,
           // TODO: add gpt output to mutation as optional
+          chatgptOutput: input.gptOutput,
         },
       });
     }),
+
+    // ChatGPT Procedure
   getCapabilityData: protectedProcedure
     .input(
       z.object({
@@ -158,38 +190,39 @@ export const transcriptRouter = createTRPCRouter({
           where: { clerkId: ctx?.user?.id },
         });
         if (!userData?.firefliesApi) return;
-        const transcript: {sentences: {speaker_name: string, text: string} []} | null = await getTranscriptById(
+        const transcript = await getTranscriptById(
           userData?.firefliesApi,
           input.id,
-        );
-        if (transcript) {
-          console.log("Transcript fetched successfully:");
-          return transcript;
-        } else {
-          console.log("Transcript not found.");
-        }
-
-      const apikey = process.env.OPENAI_API_KEY;
+        ); 
       const client = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
       });
-
       let prompt = "";
       if (type === "influenceIndicator") {
         prompt = IIprompt;
       } else if (type === "maturityMap") {
-        prompt = MMprompt;
+        prompt = MaMaprompt;
       }
+
       // get transcript sentences
       prompt += transcript?.sentences?.map((sentence) => sentence.text).join("\n");
       const response = await client.chat.completions.create({
         model: "gpt-4o",
         messages: [{ role: "user", content: prompt }],
       });
+      // success
       console.log(
-        "Response from OpenAI:\n\n",
-        response?.choices[0]?.message.content, "\n\n"
+        "Response from OpenAI:",
+        response?.choices[0]?.message.content,
       );
+      if (response?.choices[0]?.message.content) {
+        console.log("Retrieved ChatGPT Response successfully");
+        // success
+        return response?.choices[0]?.message.content;
+      } else {
+        console.log("No ChatGPT Response");
+      }
+      return null;
     }),
 
   deleteOne: protectedProcedure
@@ -199,10 +232,6 @@ export const transcriptRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      // Log frontend type and content of the speakers input
-      // console.log("Frontend: type:", typeof input);
-      // console.log("Frontend: Is an array:", Array.isArray(input));
-      // console.log("Frontend: content:", input);
       if (!ctx?.user?.id) return;
       return ctx.db.callTranscriptData.delete({
         where: { callTranscriptId: input.callTranscriptId },

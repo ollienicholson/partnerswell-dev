@@ -33,8 +33,11 @@ export default function ImportedTranscriptPage() {
   const [resetButton, setResetButton] = useState(false);
   const [capabilityData, setCapabilityData] = useState(false);
   
+  // working
   const { importId: importTranscriptId } = useParams();
+  // console.log("Imported Transcript ID: ", importTranscriptId);
   
+  // working
   const {
     data: transcriptData,
     isLoading: transcriptLoading,
@@ -42,6 +45,8 @@ export default function ImportedTranscriptPage() {
   } = react_api.transcriptRouter.getById.useQuery({
     id: typeof importTranscriptId === "string" ? importTranscriptId : "",
   });
+  // transcriptData sentences is calling correct
+  // console.log("src/app/(main)/call-transcriptions/[importId]/page.tsx >> transcriptData:", transcriptData);
 
   const {
     data: getCapabilityData,
@@ -50,6 +55,7 @@ export default function ImportedTranscriptPage() {
   } = react_api.transcriptRouter.getCapabilityData.useQuery(
     {
       type: selectedToggle,
+      // ONLY IF SELECTED: need to pass in the influence indicator - currently hardcoded
       indicator: influenceIndicators[0]?.name,
       id: typeof importTranscriptId === "string" ? importTranscriptId : "",
     },
@@ -57,7 +63,9 @@ export default function ImportedTranscriptPage() {
       enabled: false,
     },
   );
-  // console.log("ChatgptData:", getCapabilityData);
+  // console.log("Selected Toggle: ", selectedToggle);
+  // console.log("Influence Indicator: ", influenceIndicators[0]?.name);
+  console.log("ChatgptData:", getCapabilityData);
 
   let accountName: string | null = "";
 
@@ -239,7 +247,7 @@ export default function ImportedTranscriptPage() {
               {/* TODO: Hide this button until capability data has been rendered */}
               <CreateCallTranscriptButton
                 accountId={account?.partnerAccountId ?? 0}
-                transriptData={transcriptData}
+                transcriptData={transcriptData}
               />
             </TableRow>
           </TableBody>

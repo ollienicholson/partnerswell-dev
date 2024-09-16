@@ -61,7 +61,8 @@ export const getTranscriptById = async (
   firefliesApiKey: string,
   id: string,
 ): Promise<TGetOneTranscript | null> => {
-  console.log("Fetching transcript with ID:", id);
+  // id is correct
+  // console.log("Fetching transcript with ID:", id);
 
   try {
     // pass transcript id as variable to graphql query
@@ -69,7 +70,9 @@ export const getTranscriptById = async (
     const data = await client.request<{
       transcript: TGetOneTranscript;
     }>(GET_ONE_TRANSCRIPT, { id });
-
+    // data.transcript is correct
+    // success getting sentences
+    // console.log("src/server/api/queries/getTranscripts.ts >>> Transcript Data:", data.transcript);
     return data.transcript;
   } catch (error: any) {
     console.error(

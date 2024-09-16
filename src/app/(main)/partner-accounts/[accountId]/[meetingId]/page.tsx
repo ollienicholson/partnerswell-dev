@@ -48,7 +48,9 @@ export default function MeetingPage() {
     }
   }, [transcriptData]);
 
-  console.log("useState -> MeetingId", meetingId);
+  // console.log("transcriptData.sentences: ", transcriptData?.sentences);
+
+  // console.log("useState -> MeetingId", meetingId);
 
   const handleAfterDelete = () => {
     console.log("handleAfterDelete: Transcript deleted");
