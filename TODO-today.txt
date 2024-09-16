@@ -9,6 +9,7 @@ Daily TASKS
 
 [] merge capabilitydata branch with dev 
 [] test that everything works
+[] cache transcripts
 
 ChatGPT output:
 [] add gptoutput to callTranscript route
