@@ -73,7 +73,7 @@ export const getTranscriptById = async (
     return data.transcript;
   } catch (error: any) {
     console.error(
-      "Error fetching transcripts:",
+      "Error fetching one transcript:",
       error.response?.errors || error.message,
     );
 
@@ -96,7 +96,7 @@ let transcriptsCache: allTranscripts[] | null = null;
 
 export const getTranscripts = async (
   firefliesApiKey: string,
-  limit: number = 1,
+  // limit: number = 1,
 ): Promise<allTranscripts[]> => {
   if (transcriptsCache) {
     console.log("Returning cached transcripts...");
@@ -107,6 +107,7 @@ export const getTranscripts = async (
 
   try {
     const client = graphqlClient(firefliesApiKey);
+    console.log("Fetching transcripts with API key:", firefliesApiKey);
     const data: allTranscriptData = await client.request<{
       transcripts: allTranscripts[];
       // }>(GET_TRANSCRIPTS, { limit });
@@ -116,7 +117,7 @@ export const getTranscripts = async (
     return data.transcripts;
   } catch (error: any) {
     console.error(
-      "Error fetching transcripts:",
+      "src/server/api/queries/getTranscripts.ts:\nError fetching all transcripts:",
       error.response?.errors || error.message,
     );
 

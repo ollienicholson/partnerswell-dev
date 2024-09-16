@@ -45,6 +45,7 @@ export default function ImportedTranscriptPage() {
       enabled: false,
     },
   );
+  console.log("ChatgptData:", getCapabilityData);
 
   const { importId: importTranscriptId } = useParams();
 

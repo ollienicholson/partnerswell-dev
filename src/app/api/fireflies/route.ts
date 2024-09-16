@@ -3,7 +3,7 @@ import { getTranscripts } from "~/server/api/queries/getTranscripts";
 
 export async function POST(req: NextRequest, res: NextResponse) {
   const { api_key } = await req.json();
-  console.log("api>fireflies>route.ts");
+  console.log("api > fireflies > route.ts");
 
   try {
     const response = await fetch("https://api.fireflies.ai/graphql", {
@@ -45,6 +45,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
 // export async function PUT(req: NextRequest) {
 //   return NextResponse.json({ message: "This is a PUT request" }, { status: 200 });
 // }
+
+
+// const api_key = process.env.FIREFLIES_AUTH as string;
+// this works, but we need to pass the key from clerk user
 
 export async function GET(request: Request) {
   try {
