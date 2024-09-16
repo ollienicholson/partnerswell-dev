@@ -23,7 +23,7 @@ import { react_api } from "~/trpc/react";
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 import MeetingHeaderTable from "~/app/components/MeetingHeaderTable";
-import { maMaOutput, TMaMaOutput } from "~/lib/maturity-map-output";
+import { TMaMaOutput } from "~/lib/maturity-map-output";
 import { inInOutput, TInInOutput } from "~/lib/influence-indicator-output";
 import CreateCallTranscriptButton from "~/app/components/createCallTranscriptButton";
 
@@ -95,6 +95,8 @@ export default function ImportedTranscriptPage() {
     }
     }
   }, [getCapabilityData]);
+
+  // console.log("src/app/(main)/call-transcriptions/[importId]/page.tsx setmmOutput >> : ", setmmOutput);
 
   if (accountLoading || transcriptLoading) {
     return (
@@ -262,6 +264,7 @@ export default function ImportedTranscriptPage() {
               <CreateCallTranscriptButton
                 accountId={account?.partnerAccountId ?? 0}
                 transcriptData={transcriptData}
+                gptOutput={mmOutput}
               />
             </TableRow>
           </TableBody>

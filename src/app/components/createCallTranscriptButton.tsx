@@ -13,21 +13,25 @@ type TranscriptData = {
   summary: { overview: string };
   sentences: { speaker_name: string; text: string }[];
   // TODO: add gpt output
-  gptOutput?: { phase_name: string; description: string }[];
+  // gptOutput?: { phase_name: string; description: string }[];
 };
 
 type Props = {
   accountId: number;
   transcriptData?: TranscriptData;
+  gptOutput: { phase_name: string; description: string }[];
 };
 
 export default function CreateCallTranscriptButton({
   accountId,
   transcriptData,
+  gptOutput
 }: Props) {
   const { addCallTranscript, isLoading, error } = useAddCallTranscript();
   // testing
   console.log("src/app/components/createCallTranscriptButton.tsx callTranscriptId -->", transcriptData?.id);
+
+  console.log("\ngptOutput passed to CreateCallTranscriptButton:", gptOutput);
 
   const router = useRouter();
 
@@ -46,7 +50,7 @@ export default function CreateCallTranscriptButton({
         summary: transcriptData?.summary ?? { overview: "" },
         sentences: transcriptData?.sentences ?? [],
         // TODO: add gpt output to addCallTranscript
-        gptOutput: transcriptData?.gptOutput ?? [],
+        gptOutput: gptOutput,
       });
 
       // push user to the partner account page on success
