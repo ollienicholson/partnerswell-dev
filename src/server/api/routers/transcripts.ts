@@ -147,10 +147,27 @@ export const transcriptRouter = createTRPCRouter({
       z.object({
         type: z.string(),
         indicator: z.string().optional(),
+        id: z.string(),
       }),
     )
     .query(async ({ input, ctx }) => {
       const { type, indicator } = input;
+
+      if (!input.id) return;
+        const userData = await ctx.db.userRoles.findFirst({
+          where: { clerkId: ctx?.user?.id },
+        });
+        if (!userData?.firefliesApi) return;
+        const transcript: {sentences: {speaker_name: string, text: string} []} | null = await getTranscriptById(
+          userData?.firefliesApi,
+          input.id,
+        );
+        if (transcript) {
+          console.log("Transcript fetched successfully:");
+          return transcript;
+        } else {
+          console.log("Transcript not found.");
+        }
 
       const apikey = process.env.OPENAI_API_KEY;
       const client = new OpenAI({
@@ -163,13 +180,15 @@ export const transcriptRouter = createTRPCRouter({
       } else if (type === "maturityMap") {
         prompt = MMprompt;
       }
+      // get transcript sentences
+      prompt += transcript?.sentences?.map((sentence) => sentence.text).join("\n");
       const response = await client.chat.completions.create({
         model: "gpt-4o",
         messages: [{ role: "user", content: prompt }],
       });
       console.log(
-        "Response from OpenAI:",
-        response?.choices[0]?.message.content,
+        "Response from OpenAI:\n\n",
+        response?.choices[0]?.message.content, "\n\n"
       );
     }),
 

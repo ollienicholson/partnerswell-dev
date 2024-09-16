@@ -32,6 +32,17 @@ export default function ImportedTranscriptPage() {
   const [capabilityButtonClicked, setCapabilityButtonClicked] = useState(false);
   const [resetButton, setResetButton] = useState(false);
   const [capabilityData, setCapabilityData] = useState(false);
+  
+  const { importId: importTranscriptId } = useParams();
+  
+  const {
+    data: transcriptData,
+    isLoading: transcriptLoading,
+    error: transcriptError,
+  } = react_api.transcriptRouter.getById.useQuery({
+    id: typeof importTranscriptId === "string" ? importTranscriptId : "",
+  });
+
   const {
     data: getCapabilityData,
     isLoading,
@@ -40,22 +51,13 @@ export default function ImportedTranscriptPage() {
     {
       type: selectedToggle,
       indicator: influenceIndicators[0]?.name,
+      id: typeof importTranscriptId === "string" ? importTranscriptId : "",
     },
     {
       enabled: false,
     },
   );
-  console.log("ChatgptData:", getCapabilityData);
-
-  const { importId: importTranscriptId } = useParams();
-
-  const {
-    data: transcriptData,
-    isLoading: transcriptLoading,
-    error: transcriptError,
-  } = react_api.transcriptRouter.getById.useQuery({
-    id: typeof importTranscriptId === "string" ? importTranscriptId : "",
-  });
+  // console.log("ChatgptData:", getCapabilityData);
 
   let accountName: string | null = "";
 
