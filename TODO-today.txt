@@ -27,6 +27,7 @@ ChatGPT Integration  - in progress
 ------------------------------
 [] use saved fireflies auth token to fetch transcripts - in progress
 
+
 Styling:
   [] button shape
   [] table shape

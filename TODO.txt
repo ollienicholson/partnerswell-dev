@@ -31,6 +31,9 @@ ChatGPT Integration  - in progress
 [] change public to protected procedure - partnerAccountRouter
 [] follow fireflies trpc calls for other route refactors
 
+reach out to Oli Howden to review code
+
+
 Error handling:
 [] partner-account[accountId] - handle error UI for incorrect acccount id
 [] consider using Image instead of img for nextjs warnings
