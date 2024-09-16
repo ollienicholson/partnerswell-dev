@@ -32,6 +32,19 @@ export default function ImportedTranscriptPage() {
   const [capabilityButtonClicked, setCapabilityButtonClicked] = useState(false);
   const [resetButton, setResetButton] = useState(false);
   const [capabilityData, setCapabilityData] = useState(false);
+  const {
+    data: getCapabilityData,
+    isLoading,
+    refetch,
+  } = react_api.transcriptRouter.getCapabilityData.useQuery(
+    {
+      type: selectedToggle,
+      indicator: influenceIndicators[0]?.name,
+    },
+    {
+      enabled: false,
+    },
+  );
 
   const { importId: importTranscriptId } = useParams();
 
@@ -191,9 +204,11 @@ export default function ImportedTranscriptPage() {
                     selectedToggle !== "influenceIndicator")
                 }
                 onClick={() => {
-                  setCapabilityData(true);
-                  setCapabilityButtonClicked(true);
-                  setResetButton(true);
+                  refetch();
+
+                  // setCapabilityData(true);
+                  // setCapabilityButtonClicked(true);
+                  // setResetButton(true);
                 }}
                 className={`${
                   selectedToggle === "maturityMap" ||
@@ -228,7 +243,7 @@ export default function ImportedTranscriptPage() {
         </Table>
       </div>
       <div className="mt-6 rounded-xl border shadow">
-        {capabilityData ? (
+        {getCapabilityData ? (
           <Table>
             <TableHeader>
               <TableRow className="bg-slate-50">

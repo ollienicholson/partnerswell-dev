@@ -25,6 +25,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { react_api } from "~/trpc/react";
 import toast from "react-hot-toast";
+import { Loading } from "~/app/components/Loading";
 
 const FormSchema = z.object({
   api_key: z.string().min(30, {
@@ -34,7 +35,7 @@ const FormSchema = z.object({
 
 export function InputForm() {
   const [status, setStatus] = useState<string | null>(null);
-  const { data: firefliesApiKey } =
+  const { data: firefliesApiKey, isLoading } =
     react_api.integrationRouter.getFireFliesKey.useQuery();
   const upsertApiKey = react_api.integrationRouter.upsertApiKey.useMutation({});
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -61,7 +62,6 @@ export function InputForm() {
     );
   }
 
-  console.log(firefliesApiKey);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
@@ -72,10 +72,15 @@ export function InputForm() {
             <FormItem>
               <FormLabel>Enter your API Key</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                  {...field}
-                />
+                <div>
+                  {!isLoading && (
+                    <Input
+                      placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                      {...field}
+                    />
+                  )}
+                  {isLoading && <Loading />}
+                </div>
               </FormControl>
               <FormDescription>
                 <div className="items-left pt-2">

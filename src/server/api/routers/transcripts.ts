@@ -1,7 +1,37 @@
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { z } from "zod";
-import { getTranscriptById } from "../queries/getTranscripts";
-// import { TGetTranscriptsByAccountId } from "~/lib/types";
+import { getTranscriptById, getTranscripts } from "../queries/getTranscripts";
+import { OpenAI } from "openai";
+const IIprompt = `You are a sales professional working in the B2B partnerships industry.
+Your task is to analyse this call transcript to identify success factors related to a specific phase of the sales deal with  {pass in "influence indicator aka company name"}.
+Your analysis of this call transcript data must be categorised into the following phases:
+List of phases for influence indicator:
+  Partner Lead Researching
+  Partner Lead Cultivating
+  Partner Opportunity Alignment
+  Prove Partner Value
+  Partner Opportunity Negotiation
+  Partner Opportunity Closed
+
+Return your response in .json format with the following key-value pairs:
+  - phase_name: the phase of the sales deal
+  - description: a description of what was discussed related to the specific phase`;
+
+const MMprompt = `You are a sales professional working in the B2B partnerships industry.
+Your task is to analyse this call transcript to identify success factors related to a specific phase of the partnership with {pass in Partner Account Name}.
+Your analysis of this call transcript data must be categorised into the following phases:
+List of phases for Maturity Map:
+    Partner Qualification
+    Joint Discovery
+    Build Go-To-Market
+    Sales Planning
+    Delivery Readiness
+    Partnership Launch
+    Partnership Continous Improvement
+
+Return your response in json format with the following key-value pairs:
+  - phase_name: the phase of the partnership
+  - description: a description of what was discussed related to the specific phase`;
 
 export const transcriptRouter = createTRPCRouter({
   getById: protectedProcedure
@@ -13,7 +43,14 @@ export const transcriptRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       if (!input.id) return;
       try {
-        const transcript = await getTranscriptById(input.id);
+        const userData = await ctx.db.userRoles.findFirst({
+          where: { clerkId: ctx?.user?.id },
+        });
+        if (!userData?.firefliesApi) return;
+        const transcript = await getTranscriptById(
+          userData?.firefliesApi,
+          input.id,
+        );
         // console.log("Fetched Transcript Data:", transcript); // log
         if (transcript) {
           console.log("Transcript fetched successfully:");
@@ -26,8 +63,24 @@ export const transcriptRouter = createTRPCRouter({
       }
       return;
     }),
-
-  // get all transcripts by accountId
+  getAll: protectedProcedure.query(async ({ input, ctx }) => {
+    try {
+      const userData = await ctx.db.userRoles.findFirst({
+        where: { clerkId: ctx?.user?.id },
+      });
+      if (!userData?.firefliesApi) return;
+      const transcript = await getTranscripts(userData?.firefliesApi);
+      if (transcript) {
+        console.log("Transcript fetched successfully:");
+        return transcript;
+      } else {
+        console.log("Transcript not found.");
+      }
+    } catch (error) {
+      console.error("Error fetching transcript:", error);
+    }
+    return;
+  }),
   getByAccountId: protectedProcedure
     .input(
       z.object({
@@ -88,6 +141,36 @@ export const transcriptRouter = createTRPCRouter({
           // TODO: add gpt output to mutation as optional
         },
       });
+    }),
+  getCapabilityData: protectedProcedure
+    .input(
+      z.object({
+        type: z.string(),
+        indicator: z.string().optional(),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const { type, indicator } = input;
+
+      const apikey = process.env.OPENAI_API_KEY;
+      const client = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+      });
+
+      let prompt = "";
+      if (type === "influenceIndicator") {
+        prompt = IIprompt;
+      } else if (type === "maturityMap") {
+        prompt = MMprompt;
+      }
+      const response = await client.chat.completions.create({
+        model: "gpt-4o",
+        messages: [{ role: "user", content: prompt }],
+      });
+      console.log(
+        "Response from OpenAI:",
+        response?.choices[0]?.message.content,
+      );
     }),
 
   deleteOne: protectedProcedure

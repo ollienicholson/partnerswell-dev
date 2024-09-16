@@ -58,13 +58,15 @@ query Transcript($id: String!) {
 // TODO: improve caching
 // TODO: create refresh function for frontend user
 export const getTranscriptById = async (
+  firefliesApiKey: string,
   id: string,
 ): Promise<TGetOneTranscript | null> => {
   console.log("Fetching transcript with ID:", id);
 
   try {
     // pass transcript id as variable to graphql query
-    const data = await graphqlClient.request<{
+    const client = graphqlClient(firefliesApiKey);
+    const data = await client.request<{
       transcript: TGetOneTranscript;
     }>(GET_ONE_TRANSCRIPT, { id });
 
@@ -92,8 +94,10 @@ export const getTranscriptById = async (
 
 let transcriptsCache: allTranscripts[] | null = null;
 
-export const getTranscripts = async () // limit: number = 4,
-: Promise<allTranscripts[]> => {
+export const getTranscripts = async (
+  firefliesApiKey: string,
+  limit: number = 1,
+): Promise<allTranscripts[]> => {
   if (transcriptsCache) {
     console.log("Returning cached transcripts...");
     // return transcriptsCache.slice(0, limit);
@@ -102,7 +106,8 @@ export const getTranscripts = async () // limit: number = 4,
   console.log("Fetching fresh transcripts...");
 
   try {
-    const data: allTranscriptData = await graphqlClient.request<{
+    const client = graphqlClient(firefliesApiKey);
+    const data: allTranscriptData = await client.request<{
       transcripts: allTranscripts[];
       // }>(GET_TRANSCRIPTS, { limit });
     }>(GET_TRANSCRIPTS);

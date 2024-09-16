@@ -1,41 +1,32 @@
-// use @@index[column] to sort by index 
-
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("POSTGRES_PRISMA_URL") // uses connection pooling
-}
-
-enum Role {
-    ADMIN
-    GUEST
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL")
 }
 
 model userRoles {
-    clerkId      String  @unique
-    role         Role
-    firefliesApi String?
+  clerkId      String  @unique
+  role         Role
+  firefliesApi String?
 
-    @@index([clerkId, role])
+  @@index([clerkId, role])
 }
 
-// need to implement soft delete before delivery
 model PartnerAccount {
-    partnerAccountId Int                  @id @default(autoincrement())
-    accountName      String
-    contactName      String
-    createdBy        String
-    createdAt        DateTime             @default(now())
-    updatedAt        DateTime             @updatedAt
-    transcripts      CallTranscriptData[] // one-to-many
+  partnerAccountId Int                  @id @default(autoincrement())
+  accountName      String
+  contactName      String
+  createdBy        String
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+  transcripts      CallTranscriptData[]
 
-    @@index([partnerAccountId])
+  @@index([partnerAccountId])
 }
 
-// need to implement soft delete before delivery
 model CallTranscriptData {
     id                  Int            @id @default(autoincrement())
     callTranscriptId    String         @unique
@@ -50,5 +41,10 @@ model CallTranscriptData {
     partnerAccount      PartnerAccount @relation(fields: [accountId], references: [partnerAccountId], onDelete: Cascade)
     accountId           Int // Partner Account FK
 
-    @@index([id])
+  @@index([id])
+}
+
+enum Role {
+  ADMIN
+  GUEST
 }
