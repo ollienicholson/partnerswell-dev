@@ -1,4 +1,8 @@
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 import { z } from "zod";
 
 const idSchema = z.object({
@@ -23,7 +27,7 @@ const partnerAccountUpdateSchema = z.object({
 
 export const partnerAccountRouter = createTRPCRouter({
   // get all partner accounts
-  getAll: publicProcedure.query(({ ctx }) => {
+  getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.db.partnerAccount.findMany();
   }),
 
