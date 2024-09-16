@@ -7,13 +7,15 @@ See TODO.txt
 Daily TASKS
 -----
 
-check that caching works on prod
+[x] check that caching works on prod
 
 ChatGPT Integration  - in progress
 --------------------
 gpt output working for maturity map
-need to test for influence indicator
+  [] need to test for influence indicator
 
+
+[] render account name in meeting table
 
 
 Styling:
