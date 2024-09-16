@@ -10,34 +10,13 @@ EPICS
 
 [] all functionality working before moving forward
 
-[] styling touchups
-  - loaders
+[] styling
 
 
 TASKS
 -----
-
-add open api key to vercel env vars
-change public to protected procedure - partnerAccountRouter
-follow fireflies trpc calls for refactor
-
-Nitesh:
--------
-  [] Fireflies Auth 
-    [] auth key used to fetch transcripts
-  
-  [] chatgpt integration
-    [] you'll need the parse the inputs (see below) to the prompt for the API call
-
-
-Ollie:
-------
-  Call Transcripts page:
-  [x]  button to fetch transcripts from Fireflies - currently they are called automatically
-      -- DONE Wednesday 10/09---
-
-  [] schema changes for chatgpt integration
-  [] more frontend changes for chatgpt integration - see .today tasks
+[] Fireflies Auth 
+  [] auth key used to fetch transcripts
 
 ChatGPT Integration  - in progress
 --------------------
@@ -48,11 +27,13 @@ ChatGPT Integration  - in progress
 [] user will be able to save ChatGPT output data to partner account
 [] user to view transcript data in partner accounts page
 
+[] add open api key to vercel env vars
+[] change public to protected procedure - partnerAccountRouter
+[] follow fireflies trpc calls for other route refactors
 
 Error handling:
-- partner-account[accountId] - handle error UI for incorrect acccount id
-- consider using Image instead of img for nextjs warnings
-- fix "Next" pagination  in partner accounts page
+[] partner-account[accountId] - handle error UI for incorrect acccount id
+[] consider using Image instead of img for nextjs warnings
 
 
 TYPES:
@@ -60,10 +41,8 @@ TYPES:
 [] check typesafety before moving to prod
 
 Deps:
-Move @tansctack react devtools to dev deps
+[] Move @tansctack react devtools to dev deps
 
-NITESH TICKETS
--------
 
 Fireflies AUTH:
 ----------
