@@ -136,6 +136,34 @@ export const transcriptRouter = createTRPCRouter({
         throw new Error("Failed to fetch transcripts.");
       }
     }),
+  getByMeetingId: protectedProcedure
+    .input(
+      z.object({
+        meetingId: z.string(),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      if (!input.meetingId) {
+        console.log("Meeting ID is required.");
+        return null;
+      }
+      try {
+        const transcript = await ctx.db.callTranscriptData.findUnique({
+          where: { callTranscriptId: input.meetingId },
+        });
+
+        if (transcript?.accountId !== null) {
+          console.log("transcripts fetched successfully");
+          return transcript;
+        } else {
+          console.log("Transcripts not found.");
+          return;
+        }
+      } catch (error) {
+        console.error("Error fetching transcripts:", error);
+        throw new Error("Failed to fetch transcripts.");
+      }
+    }),
 
   create: protectedProcedure
     .input(

@@ -7,26 +7,13 @@ See TODO.txt
 Daily TASKS
 -----
 
-[] merge capabilitydata branch with dev 
-[] test that everything works
-[] cache transcripts
-
-ChatGPT output:
-[] add gptoutput to callTranscript route
+check that caching works on prod
 
 ChatGPT Integration  - in progress
 --------------------
-[] "Get capability data" button - will trigger response from OpenAI API
-  NOTE: need to send list of speakers to chatGPT along with transcript text
-  TESTING: return successful response from OpenAI in frontend
-[] ChatGPT output data should be listed based on associated phase
-[] user will be able to save ChatGPT output data to partner account
-[] user to view transcript data in partner accounts page 
+gpt output working for maturity map
+need to test for influence indicator
 
-
-[] Fireflies Auth - in progress
-------------------------------
-[] use saved fireflies auth token to fetch transcripts - in progress
 
 
 Styling:
