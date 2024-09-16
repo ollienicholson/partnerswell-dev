@@ -1,4 +1,4 @@
-Thurs 12/09
+Mon 16/09
 
 EPICS
 ------
@@ -6,41 +6,16 @@ See TODO.txt
 
 Daily TASKS
 -----
-[x] call transcript CRUD
-    [x] user to view final transcript data in partner accounts page - see ChatGPT Integration ticket
-    [x] delete transcript in partner accounts page
 
-Call Transcripts page:
-[x]  button to fetch transcripts from Fireflies - currently they are called automatically
--- DONE Wednesday 11/09 -- 
+[] merge capabilitydata branch with dev 
+[] test that everything works
 
 ChatGPT output:
-[x] schema changes for chatgpt integration
-[x] added updated static data for influence indicator and maturity map
-[x] updated static data rendering in frontend
-[x] show phase and description in transcripts page
-[x] show saved phase and description in partner accounts page as part of saved CallTranscript data
-
-[] add create route 
-  - add to callTranscript model
-
-Styling:
-[x] fix pagination
-[x] add pwell button colours
-[x] push user to partner account page on successfuul import
-[x] button styling & default props
-
-[] finish styling
-  [] button border
-  [] table border
-[] sort partner account table by most recently created
-[] fix date hydration error
-[] fix console errors
-
+[] add gptoutput to callTranscript route
 
 ChatGPT Integration  - in progress
 --------------------
-[] Create "get capability data" action - this will trigger response from OpenAI API
+[] "Get capability data" button - will trigger response from OpenAI API
   NOTE: need to send list of speakers to chatGPT along with transcript text
   TESTING: return successful response from OpenAI in frontend
 [] ChatGPT output data should be listed based on associated phase
@@ -51,3 +26,13 @@ ChatGPT Integration  - in progress
 [] Fireflies Auth - in progress
 ------------------------------
 [] use saved fireflies auth token to fetch transcripts - in progress
+
+
+Styling:
+  [] button shape
+  [] table shape
+
+
+[] sort partner account table by most recently created
+[] fix date hydration error
+[] fix console errors
