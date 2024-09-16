@@ -30,6 +30,7 @@ Your analysis of this call transcript data must be categorised into the followin
     Return your response in json format with the following key-value pairs:
     - phase_name: the phase of the partnership.
     - description: a description of what was discussed related to the specific phase.
+    Do not include the text "json" at the beginning of your response.
     Do not respond with anything other than json format, this is the expected response format example:
     [{
         phase_name: "text",
@@ -79,7 +80,7 @@ export const transcriptRouter = createTRPCRouter({
           input.id,
         );
         if (transcript) {
-          console.log("transcriptRouter: getById: Transcript fetched successfully");
+          console.log("\ntranscriptRouter: getById: Transcript fetched successfully");
           return transcript;
         } else {
           console.log("Transcript not found.");
@@ -124,7 +125,7 @@ export const transcriptRouter = createTRPCRouter({
         });
 
         if (transcripts.length > 0) {
-          console.log("transcripts fetched successfully", transcripts.keys);
+          console.log("transcripts fetched successfully");
           return transcripts;
         } else {
           console.log("Transcripts not found.");
@@ -172,6 +173,7 @@ export const transcriptRouter = createTRPCRouter({
         },
       });
     }),
+    
 
     // ChatGPT Procedure
   getCapabilityData: protectedProcedure
@@ -237,4 +239,4 @@ export const transcriptRouter = createTRPCRouter({
         where: { callTranscriptId: input.callTranscriptId },
       });
     }),
-});
+  });

@@ -106,7 +106,7 @@ export const getTranscripts = async (
     // return transcriptsCache.slice(0, limit);
     return transcriptsCache;
   }
-  console.log("Fetching fresh transcripts...");
+  console.log("\nFetching fresh transcripts...");
 
   try {
     const client = graphqlClient(firefliesApiKey);

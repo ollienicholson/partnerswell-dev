@@ -5,6 +5,8 @@ import { react_api } from "~/trpc/react";
 export function useAddCallTranscript() {
   // mutation hook for creating call transcript in db
   const mutateCallTranscript = react_api.transcriptRouter.create.useMutation();
+  // testing
+  console.log("src/app/hooks/useAddCallTranscript.ts callTranscriptId -->", mutateCallTranscript.data?.callTranscriptId);
 
   const addCallTranscript = async ({
     partnerAccountId,
@@ -44,7 +46,7 @@ export function useAddCallTranscript() {
         // TODO: add gpt output to addCallTranscript
         gptOutput: gptOutput,
       });
-
+      console.log("useAddCallTranscript --> callTranscriptId: ", callTranscriptId)
       alert("Call transcript created successfully!");
     } catch (error) {
       console.error("Error creating call transcript:", error);

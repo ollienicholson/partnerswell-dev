@@ -17,7 +17,7 @@ import {
 } from "~/app/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "~/app/components/ui/toggle-group";
 import { influenceIndicators } from "~/lib/in-in-list";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { react_api } from "~/trpc/react";
 import { Button } from "~/app/components/ui/button";
@@ -32,6 +32,7 @@ export default function ImportedTranscriptPage() {
   const [capabilityButtonClicked, setCapabilityButtonClicked] = useState(false);
   const [resetButton, setResetButton] = useState(false);
   const [capabilityData, setCapabilityData] = useState(false);
+  const [mmOutput, setmmOutput] = useState<TMaMaOutput[]>([]);
   
   // working
   const { importId: importTranscriptId } = useParams();
@@ -46,7 +47,7 @@ export default function ImportedTranscriptPage() {
     id: typeof importTranscriptId === "string" ? importTranscriptId : "",
   });
   // transcriptData sentences is calling correct
-  // console.log("src/app/(main)/call-transcriptions/[importId]/page.tsx >> transcriptData:", transcriptData);
+  console.log("src/app/(main)/call-transcriptions/[importId]/page.tsx >> transcriptData:", transcriptData?.id);
 
   const {
     data: getCapabilityData,
@@ -81,6 +82,20 @@ export default function ImportedTranscriptPage() {
     partnerAccountName: accountName || "",
   });
 
+  useEffect(() => {
+    if (getCapabilityData) {
+    try {
+          // Clean the string by removing unwanted backticks if present
+    const cleanedJsonString = getCapabilityData.replace(/`/g, "");
+      // remove backticks if any and parse json
+      const parsedData = JSON.parse(cleanedJsonString);
+      setmmOutput(parsedData);
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+    }
+    }
+  }, [getCapabilityData]);
+
   if (accountLoading || transcriptLoading) {
     return (
       <div className="loader-container">
@@ -101,9 +116,8 @@ export default function ImportedTranscriptPage() {
       </div>
     );
   }
-
   const renderMaMaOutput = () => {
-    return maMaOutput.map((item: TMaMaOutput, index) => (
+    return mmOutput.map((item: TMaMaOutput, index) => (
       <TableRow key={index} className="hover:bg-transparent">
         <TableCell className="font-semibold">{item.phase_name}</TableCell>
         <TableCell className="mb-2 flex flex-col gap-2">

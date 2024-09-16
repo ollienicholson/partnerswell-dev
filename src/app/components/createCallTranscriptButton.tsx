@@ -13,7 +13,7 @@ type TranscriptData = {
   summary: { overview: string };
   sentences: { speaker_name: string; text: string }[];
   // TODO: add gpt output
-  gptOutput: { phase_name: string; description: string }[];
+  gptOutput?: { phase_name: string; description: string }[];
 };
 
 type Props = {
@@ -26,6 +26,9 @@ export default function CreateCallTranscriptButton({
   transcriptData,
 }: Props) {
   const { addCallTranscript, isLoading, error } = useAddCallTranscript();
+  // testing
+  console.log("src/app/components/createCallTranscriptButton.tsx callTranscriptId -->", transcriptData?.id);
+
   const router = useRouter();
 
   if (isLoading) return <p>Saving data...</p>;
