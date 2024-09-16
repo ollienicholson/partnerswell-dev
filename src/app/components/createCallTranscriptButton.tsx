@@ -13,7 +13,7 @@ type TranscriptData = {
   summary: { overview: string };
   sentences: { speaker_name: string; text: string }[];
   // TODO: add gpt output
-  gptOutput: { phase: string; details: string }[];
+  gptOutput: { phase_name: string; description: string }[];
 };
 
 type Props = {

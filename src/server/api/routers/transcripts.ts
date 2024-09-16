@@ -151,7 +151,7 @@ export const transcriptRouter = createTRPCRouter({
         ), // array of objects with speaker_name and text fields
         // TODO: add gpt output as optional
         gptOutput: z.array(
-          z.object({ phase: z.string(), details: z.string() }),
+          z.object({ phase_name: z.string(), description: z.string() }),
         ),
       }),
     )

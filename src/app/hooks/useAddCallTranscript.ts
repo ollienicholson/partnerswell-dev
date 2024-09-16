@@ -26,7 +26,7 @@ export function useAddCallTranscript() {
     speakers: { name: string }[]; // accepts array of objects with name field
     summary: { overview: string };
     sentences: { speaker_name: string; text: string }[];
-    gptOutput: { phase: string; details: string }[];
+    gptOutput: { phase_name: string; description: string }[];
     // TODO: add gpt output as optional
   }) => {
     console.log("Running mutateCallTranscript");
