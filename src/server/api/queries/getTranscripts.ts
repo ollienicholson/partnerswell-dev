@@ -1,5 +1,4 @@
 import { graphqlClient } from "~/lib/graphqlClient";
-
 import {
   TGetOneTranscript,
   allTranscripts,
@@ -20,19 +19,6 @@ const GET_TRANSCRIPTS = `
     }
   }
 `;
-// const GET_TRANSCRIPTS = `
-//   query Transcripts($limit: Int) {
-//     transcripts(limit: $limit){
-//       id
-//       title
-//       duration
-//       dateString
-//       speakers {
-//         name
-//       }
-//     }
-//   }
-// `;
 
 // get call transcript by id
 const GET_ONE_TRANSCRIPT = `
@@ -55,15 +41,12 @@ query Transcript($id: String!) {
   }
 }`;
 
-// TODO: improve caching
-// TODO: create refresh function for frontend user
 export const getTranscriptById = async (
   firefliesApiKey: string,
   id: string,
 ): Promise<TGetOneTranscript | null> => {
   // id is correct
   // console.log("Fetching transcript with ID:", id);
-
   try {
     // pass transcript id as variable to graphql query
     const client = graphqlClient(firefliesApiKey);
@@ -90,7 +73,7 @@ export const getTranscriptById = async (
     } else if (error.message.includes("Network Error")) {
       console.error("Network error, please try again later.");
     }
-    // fallback: return an empty array
+    // fallback: return null
     return null;
   }
 };
@@ -99,11 +82,9 @@ let transcriptsCache: allTranscripts[] | null = null;
 
 export const getTranscripts = async (
   firefliesApiKey: string,
-  // limit: number = 1,
 ): Promise<allTranscripts[]> => {
   if (transcriptsCache) {
     console.log("Returning cached transcripts...");
-    // return transcriptsCache.slice(0, limit);
     return transcriptsCache;
   }
   console.log("\nFetching fresh transcripts...");
@@ -113,7 +94,6 @@ export const getTranscripts = async (
     console.log("Fetching transcripts with API key:", firefliesApiKey);
     const data: allTranscriptData = await client.request<{
       transcripts: allTranscripts[];
-      // }>(GET_TRANSCRIPTS, { limit });
     }>(GET_TRANSCRIPTS);
     transcriptsCache = data.transcripts;
 
@@ -124,7 +104,7 @@ export const getTranscripts = async (
       error.response?.errors || error.message,
     );
 
-    // robust error handling
+    // error handling
     if (error.response) {
       if (error.response.status === 500) {
         console.error("Server error, please try again later.");
@@ -134,7 +114,7 @@ export const getTranscripts = async (
     } else if (error.message.includes("Network Error")) {
       console.error("Network error, please try again later.");
     }
-    // fallback: return an empty array
+    // fallback: return empty array
     return [];
   }
 };
