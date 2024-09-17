@@ -29,6 +29,7 @@ import CreateCallTranscriptButton from "~/app/components/createCallTranscriptBut
 
 export default function ImportedTranscriptPage() {
   const [selectedToggle, setSelectedToggle] = useState<string>("");
+  // const [selectedInIn, setSelectedInIn] = useState<string>("");
   const [capabilityButtonClicked, setCapabilityButtonClicked] = useState(false);
   const [resetButton, setResetButton] = useState(false);
   const [capabilityData, setCapabilityData] = useState(false);
@@ -56,7 +57,7 @@ export default function ImportedTranscriptPage() {
   } = react_api.transcriptRouter.getCapabilityData.useQuery(
     {
       type: selectedToggle,
-      // ONLY IF SELECTED: need to pass in the influence indicator - currently hardcoded
+      // ONLY IF SELECTED: need to pass in the influence indicator - currently hardcoded to return the first one
       indicator: influenceIndicators[0]?.name,
       id: typeof importTranscriptId === "string" ? importTranscriptId : "",
     },
