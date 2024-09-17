@@ -13,7 +13,6 @@ gpt output working for maturity map
   [x] need to test for influence indicator
   [x] test passing indicator selected
 [x] loading state for rendering gpt data
-
-[] render empty table in call transcripts page
+[x] render empty table in call transcripts page
 
 [] render account name in meeting table

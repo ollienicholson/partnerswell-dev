@@ -8,11 +8,10 @@ import {
   TableHeader,
   TableRow,
 } from "~/app/components/ui/table";
-// import { TGetOneTranscript } from "~/lib/types";
 import { Button } from "~/app/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { TGPTOutput } from "~/lib/maturity-map-output";
+import { TGPTOutput } from "~/lib/types";
 import { useParams } from "next/navigation";
 import { react_api } from "~/trpc/react";
 import Link from "next/link";
@@ -20,12 +19,13 @@ import DeleteCallTranscriptButton from "~/app/components/deleteCallTranscriptBut
 
 export default function MeetingPage() {
   const [capabilityData, setCapabilityData] = useState(true);
-  const [selectedToggle, setSelectedToggle] = useState<string>("");
+  // const [selectedToggle, setSelectedToggle] = useState<string>("");
   // const [meeting, setMeeting] = useState<TGetOneTranscript | undefined>(
   //   undefined,
   // );
   const router = useRouter();
   const { meetingId } = useParams();
+  
 
   const {
     data: transcriptData,
@@ -92,7 +92,7 @@ export default function MeetingPage() {
       <TableBody>
         <TableRow>
           <TableCell colSpan={2} className="text-center">
-            Display final output here
+            No data available.
           </TableCell>
         </TableRow>
       </TableBody>
@@ -117,13 +117,11 @@ export default function MeetingPage() {
               </TableHeader>
               <TableBody>
                 <TableRow key={transcriptData?.id} className="hover:bg-transparent">
-                  {/* TODO: render account name based on id*/}
-                  <TableCell>render account name</TableCell>
+                  <TableCell></TableCell>
                   <TableCell>{transcriptData?.callTranscriptTitle}</TableCell>
                   <TableCell>{transcriptData?.duration} mins</TableCell>
                 </TableRow>
               </TableBody>
-              <div className="p-2" />
               <TableHeader>
                 <TableRow className="bg-slate-50">
                   <TableHead>Meeting Date</TableHead>
@@ -187,7 +185,6 @@ export default function MeetingPage() {
             <Button onClick={() => router.back()} className="">
               Back
             </Button>
-            {/* TODO: add backend delete meeting functionality */}
             <DeleteCallTranscriptButton
               id={String(meetingId)}
               onDelete={handleAfterDelete}
