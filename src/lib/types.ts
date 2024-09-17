@@ -80,3 +80,8 @@ export type TGraphQLTranscript = {
     text: string;
   }[];
 };
+
+export type TGPTOutput = {
+  phase_name: string;
+  description: string;
+};

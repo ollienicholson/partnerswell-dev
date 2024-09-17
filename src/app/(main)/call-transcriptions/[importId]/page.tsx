@@ -23,17 +23,16 @@ import { react_api } from "~/trpc/react";
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 import MeetingHeaderTable from "~/app/components/MeetingHeaderTable";
-import { TGPTOutput } from "~/lib/maturity-map-output";
-import { inInOutput, TInInOutput } from "~/lib/influence-indicator-output";
+import { TGPTOutput } from "~/lib/types";
 import CreateCallTranscriptButton from "~/app/components/createCallTranscriptButton";
 
 export default function ImportedTranscriptPage() {
   const [selectedToggle, setSelectedToggle] = useState<string>("");
-  // const [selectedInIn, setSelectedInIn] = useState<string>("");
+  const [selectedIndicator, setSelectedIndicator] = useState<string>("");
   const [capabilityButtonClicked, setCapabilityButtonClicked] = useState(false);
   const [resetButton, setResetButton] = useState(false);
   const [capabilityData, setCapabilityData] = useState(false);
-  const [mmOutput, setmmOutput] = useState<TGPTOutput[]>([]);
+  const [gPTOutput, setGPTOutput] = useState<TGPTOutput[]>([]);
   
   // working
   const { importId: importTranscriptId } = useParams();
@@ -48,7 +47,7 @@ export default function ImportedTranscriptPage() {
     id: typeof importTranscriptId === "string" ? importTranscriptId : "",
   });
   // transcriptData sentences is calling correct
-  console.log("src/app/(main)/call-transcriptions/[importId]/page.tsx >> transcriptData:", transcriptData?.id);
+  // console.log("src/app/(main)/call-transcriptions/[importId]/page.tsx >> transcriptData.id:", transcriptData?.id);
 
   const {
     data: getCapabilityData,
@@ -58,16 +57,16 @@ export default function ImportedTranscriptPage() {
     {
       type: selectedToggle,
       // ONLY IF SELECTED: need to pass in the influence indicator - currently hardcoded to return the first one
-      indicator: influenceIndicators[0]?.name,
+      indicator: selectedIndicator,
       id: typeof importTranscriptId === "string" ? importTranscriptId : "",
     },
     {
       enabled: false,
     },
   );
-  console.log("Selected Toggle: ", selectedToggle);
-  console.log("Influence Indicator: ", influenceIndicators[0]?.name);
-  console.log("ChatgptData:", getCapabilityData);
+  // console.log("Selected Toggle: ", selectedToggle);
+  // console.log("Selected Indicator: ", selectedIndicator);
+  // console.log("ChatgptData:", getCapabilityData);
 
   let accountName: string | null = "";
 
@@ -86,18 +85,35 @@ export default function ImportedTranscriptPage() {
   useEffect(() => {
     if (getCapabilityData) {
     try {
-    // Clean the string by removing unwanted backticks if present
+    // Clean the string by removing unwanted backticks
     const cleanedJsonString = getCapabilityData.replace(/`/g, "");
-      // remove backticks if any and parse json
+      // parse string as JSON
       const parsedData = JSON.parse(cleanedJsonString);
-      setmmOutput(parsedData);
+      setGPTOutput(parsedData);
     } catch (error) {
       console.error("Error parsing JSON:", error);
     }
     }
   }, [getCapabilityData]);
 
-  console.log("src/app/(main)/call-transcriptions/[importId]/page.tsx setmmOutput >> : ", mmOutput);
+  //handler for when toggle changes
+  const handleToggleChange = (value: string) => {
+    setSelectedToggle(value);
+
+    // reset selectedIndicator if the toggle is not influence indicator
+    if (value !== "influenceIndicator") {
+      setSelectedIndicator("");
+    }
+  };
+
+  // handler for when selected value changes
+  const handleIndicatorChange = (value: string) => {
+    setSelectedIndicator(value);
+    // pass the selected indicator to the API
+    console.log("Selected Influence Indicator: ", value);
+  }
+
+  // console.log("src/app/(main)/call-transcriptions/[importId]/page.tsx gPTOutput >> : ", gPTOutput);
 
   if (accountLoading || transcriptLoading || gptOutputLoading) {
     return (
@@ -120,7 +136,7 @@ export default function ImportedTranscriptPage() {
     );
   }
   const renderGPTOutput = () => {
-    return mmOutput.map((item: TGPTOutput, index) => (
+    return gPTOutput.map((item: TGPTOutput, index) => (
       <TableRow key={index} className="hover:bg-transparent">
         <TableCell className="font-semibold">{item.phase_name}</TableCell>
         <TableCell className="mb-2 flex flex-col gap-2">
@@ -131,7 +147,7 @@ export default function ImportedTranscriptPage() {
   };
 
   const renderInInOutput = () => {
-    return mmOutput.map((item: TGPTOutput, index) => (
+    return gPTOutput.map((item: TGPTOutput, index) => (
       <TableRow key={index} className="hover:bg-transparent">
         <TableCell className="font-semibold">{item.phase_name}</TableCell>
         <TableCell className="mb-2 flex flex-col gap-2">
@@ -165,7 +181,7 @@ export default function ImportedTranscriptPage() {
                 className="gap-2 p-4"
                 type="single"
                 value={selectedToggle}
-                onValueChange={(value) => setSelectedToggle(value)}
+                onValueChange={handleToggleChange}
               >
                 <ToggleGroupItem
                   variant="outline"
@@ -192,7 +208,11 @@ export default function ImportedTranscriptPage() {
                   Influence Indicator
                 </ToggleGroupItem>
                 {selectedToggle === "influenceIndicator" ? (
-                  <Select disabled={capabilityButtonClicked}>
+                  <Select 
+                  disabled={capabilityButtonClicked}
+                  value={selectedIndicator}
+                  onValueChange={handleIndicatorChange}
+                  >
                     <SelectTrigger className="w-[260px]">
                       <SelectValue placeholder="Select an indicator" />
                     </SelectTrigger>
@@ -265,7 +285,7 @@ export default function ImportedTranscriptPage() {
               <CreateCallTranscriptButton
                 accountId={account?.partnerAccountId ?? 0}
                 transcriptData={transcriptData}
-                gptOutput={mmOutput}
+                gptOutput={gPTOutput}
               />
             </TableRow>
           </TableBody>

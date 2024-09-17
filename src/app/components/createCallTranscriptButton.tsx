@@ -29,9 +29,9 @@ export default function CreateCallTranscriptButton({
 }: Props) {
   const { addCallTranscript, isLoading, error } = useAddCallTranscript();
   // testing
-  console.log("src/app/components/createCallTranscriptButton.tsx callTranscriptId -->", transcriptData?.id);
+  // console.log("src/app/components/createCallTranscriptButton.tsx callTranscriptId -->", transcriptData?.id);
 
-  console.log("\ngptOutput passed to CreateCallTranscriptButton:", gptOutput);
+  // console.log("\ngptOutput passed to CreateCallTranscriptButton:", gptOutput);
 
   const router = useRouter();
 

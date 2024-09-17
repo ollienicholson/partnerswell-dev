@@ -2,8 +2,9 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 import { getTranscriptById, getTranscripts } from "../queries/getTranscripts";
 import { OpenAI } from "openai";
-const InInprompt = `You are a sales professional working in the B2B partnerships industry.
-Your task is to analyse this call transcript to identify success factors related to a specific phase of the sales deal.
+function InInprompt({indicator} : {indicator: string}) {
+  return`You are a sales professional working in the B2B partnerships industry.
+Your task is to analyse this call transcript to identify success factors related to a specific phase of the sales deal for ${indicator}.
 Your analysis of this call transcript data must be categorised into the following phases, if applicable:
   Partner Lead Researching
   Partner Lead Cultivating
@@ -24,6 +25,7 @@ Return your response in .json format with the following key-value pairs:
         phase_name: "text",
         description: "text"
     }]`;
+} 
 
 const MaMaprompt = `You are a sales professional working in the B2B partnerships industry.
 Your task is to analyse this call transcript to identify success factors related to a specific phase of the partnerships maturity map.
@@ -222,11 +224,13 @@ export const transcriptRouter = createTRPCRouter({
       });
       let prompt = "";
       if (type === "influenceIndicator") {
-        prompt = InInprompt;
+        prompt = InInprompt({indicator: input?.indicator || ""});
+        // indicator successfully passed to prompt
+        // console.log("backend InIn prompt: ", prompt);
       } else if (type === "maturityMap") {
         prompt = MaMaprompt;
       }
-
+      
       // get transcript sentences
       prompt += transcript?.sentences?.map((sentence) => sentence.text).join("\n");
       const response = await client.chat.completions.create({

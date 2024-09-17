@@ -1,4 +1,5 @@
 // list of influence indicators
+// move to types file
 export type InfluenceIndicator = {
   id: number;
   name: string;
@@ -28,38 +29,6 @@ export const influenceIndicators = [
   },
   {
     id: 6,
-    name: "National Australia Back",
-  },
-];
-
-export type InfluenceIndicatorPhaseTypes = {
-  id: number;
-  phaseName: string;
-};
-
-export const influenceIndicatorPhaseList = [
-  {
-    id: 1,
-    name: "Partner Lead Researching",
-  },
-  {
-    id: 2,
-    name: "Partner Lead Cultivating",
-  },
-  {
-    id: 3,
-    name: "Partner Opportunity Alignment",
-  },
-  {
-    id: 4,
-    name: "Prove Partner Value",
-  },
-  {
-    id: 5,
-    name: "Partner Opportunity Negotiation",
-  },
-  {
-    id: 6,
-    name: "Partner Opportunity Closed",
+    name: "National Australia Bank",
   },
 ];

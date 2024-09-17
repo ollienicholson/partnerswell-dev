@@ -4,17 +4,10 @@ import * as React from "react";
 import { Button } from "~/app/components/ui/button";
 import CallTranscriptsTable from "../../components/CallTranscriptTable";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { allTranscripts } from "~/lib/types";
-import { server_api } from "~/trpc/server";
 import { react_api } from "~/trpc/react";
-
-type PartnerAccount = {
-  accountName: string;
-};
+import { TableRow, TableCell } from "~/app/components/ui/table";
 
 export default function TranscriptsPage() {
-  // TODO: remove hardcoded transcripts limit
   const { data: transcripts, refetch } =
     react_api.transcriptRouter.getAll.useQuery(undefined, { enabled: false });
   react_api;
@@ -23,10 +16,17 @@ export default function TranscriptsPage() {
     react_api.partnerAccountRouter.getAll.useQuery(undefined, {
       enabled: false,
     });
-
+    
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const router = useRouter();
+
+  const renderEmptyTranscripts = () => (
+    <TableRow className="flex hover:bg-transparent items-center justify-center">
+      <TableCell colSpan={5} className="text-center">
+        No transcripts found
+      </TableCell>
+    </TableRow>
+  );
 
   return (
     <div>
@@ -49,12 +49,12 @@ export default function TranscriptsPage() {
         {error && <div className="text-red-500">{error}</div>}
 
         <div className="rounded-xl border shadow">
-          {transcripts && partnerAccounts && (
+          {transcripts && partnerAccounts ? (
             <CallTranscriptsTable
               transcripts={transcripts}
               partnerAccounts={partnerAccounts}
             />
-          )}
+          ): renderEmptyTranscripts()}
         </div>
       </div>
     </div>
