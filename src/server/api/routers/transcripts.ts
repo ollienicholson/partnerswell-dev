@@ -2,20 +2,28 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 import { getTranscriptById, getTranscripts } from "../queries/getTranscripts";
 import { OpenAI } from "openai";
-const IIprompt = `You are a sales professional working in the B2B partnerships industry.
-Your task is to analyse this call transcript to identify success factors related to a specific phase of the sales deal with  {pass in "influence indicator aka company name"}.
-Your analysis of this call transcript data must be categorised into the following phases:
-List of phases for influence indicator:
+const InInprompt = `You are a sales professional working in the B2B partnerships industry.
+Your task is to analyse this call transcript to identify success factors related to a specific phase of the sales deal.
+Your analysis of this call transcript data must be categorised into the following phases, if applicable:
   Partner Lead Researching
   Partner Lead Cultivating
   Partner Opportunity Alignment
   Prove Partner Value
   Partner Opportunity Negotiation
   Partner Opportunity Closed
-
 Return your response in .json format with the following key-value pairs:
   - phase_name: the phase of the sales deal
-  - description: a description of what was discussed related to the specific phase`;
+  - description: a description of what was discussed related to the specific phase.
+  Do not include the text "json" at the beginning of your response.
+    Do not respond with anything other than json formatted data. This is the response format I expect from you:
+    [{
+        phase_name: "text",
+        description: "text"
+      },
+    {
+        phase_name: "text",
+        description: "text"
+    }]`;
 
 const MaMaprompt = `You are a sales professional working in the B2B partnerships industry.
 Your task is to analyse this call transcript to identify success factors related to a specific phase of the partnerships maturity map.
@@ -31,7 +39,7 @@ Your analysis of this call transcript data must be categorised into the followin
     - phase_name: the phase of the partnership.
     - description: a description of what was discussed related to the specific phase.
     Do not include the text "json" at the beginning of your response.
-    Do not respond with anything other than json format, this is the expected response format example:
+    Do not respond with anything other than json formatted data. This is the response format I expect from you:
     [{
         phase_name: "text",
         description: "text"
@@ -41,25 +49,8 @@ Your analysis of this call transcript data must be categorised into the followin
         description: "text"
     }]`;
 
-// function MMprompt(call_transcript: string[]) {
-//   return `You are a sales professional working in the B2B partnerships industry.
-// Your task is to analyse this call transcript to identify success factors related to a specific phase of the partnership with {pass in Partner Account Name}.
-// Here is the transcript: ${call_transcript}
-// Your analysis of this call transcript data must be categorised into the following phases:
-// List of phases for Maturity Map:
-//     Partner Qualification
-//     Joint Discovery
-//     Build Go-To-Market
-//     Sales Planning
-//     Delivery Readiness
-//     Partnership Launch
-//     Partnership Continous Improvement
-
-// Return your response in json format with the following key-value pairs:
-//   - phase_name: the phase of the partnership
-//   - description: a description of what was discussed related to the specific phase`;}
-
 export const transcriptRouter = createTRPCRouter({
+  // get transcript from fireflies API by transcript id
   getById: protectedProcedure
     .input(
       z.object({
@@ -90,6 +81,7 @@ export const transcriptRouter = createTRPCRouter({
       }
       return;
     }),
+    // get all transcripts from fireflies API
   getAll: protectedProcedure.query(async ({ input, ctx }) => {
     try {
       const userData = await ctx.db.userRoles.findFirst({
@@ -108,6 +100,7 @@ export const transcriptRouter = createTRPCRouter({
     }
     return;
   }),
+  // get transcript from db by partner account id
   getByAccountId: protectedProcedure
     .input(
       z.object({
@@ -136,6 +129,7 @@ export const transcriptRouter = createTRPCRouter({
         throw new Error("Failed to fetch transcripts.");
       }
     }),
+// get transcript from db by meeting id
   getByMeetingId: protectedProcedure
     .input(
       z.object({
@@ -165,6 +159,7 @@ export const transcriptRouter = createTRPCRouter({
       }
     }),
 
+    // create new transcript in db
   create: protectedProcedure
     .input(
       z.object({
@@ -178,10 +173,9 @@ export const transcriptRouter = createTRPCRouter({
         sentences: z.array(
           z.object({ speaker_name: z.string(), text: z.string() }),
         ), // array of objects with speaker_name and text fields
-        // TODO: add gpt output as optional
         gptOutput: z.array(
           z.object({ phase_name: z.string(), description: z.string() }),
-        ),
+        ), // array of objects with phase_name and description fields
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -196,14 +190,13 @@ export const transcriptRouter = createTRPCRouter({
           speakers: input.speakers,
           summary: input.summary,
           sentences: input.sentences,
-          // TODO: add gpt output to mutation as optional
           chatgptOutput: input.gptOutput,
         },
       });
     }),
     
 
-    // ChatGPT Procedure
+  // get capability data from ChatGPT
   getCapabilityData: protectedProcedure
     .input(
       z.object({
@@ -229,7 +222,7 @@ export const transcriptRouter = createTRPCRouter({
       });
       let prompt = "";
       if (type === "influenceIndicator") {
-        prompt = IIprompt;
+        prompt = InInprompt;
       } else if (type === "maturityMap") {
         prompt = MaMaprompt;
       }
@@ -255,6 +248,7 @@ export const transcriptRouter = createTRPCRouter({
       return null;
     }),
 
+    // delete transcript from db by transcript id
   deleteOne: protectedProcedure
     .input(
       z.object({

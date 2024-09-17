@@ -1,4 +1,4 @@
-Mon 16/09
+Tuesday 17/09
 
 EPICS
 ------
@@ -7,20 +7,15 @@ See TODO.txt
 Daily TASKS
 -----
 
-check that caching works on prod
-
 ChatGPT Integration  - in progress
 --------------------
 gpt output working for maturity map
-need to test for influence indicator
+  [x] need to test for influence indicator
+  [] test passing indicator selected
 
+[] render empty table in call transcripts page
 
+[x] loading state for rendering gpt data
 
-Styling:
-  [] button shape
-  [] table shape
+[] render account name in meeting table
 
-
-[] sort partner account table by most recently created
-[] fix date hydration error
-[] fix console errors

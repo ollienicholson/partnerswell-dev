@@ -23,16 +23,17 @@ import { react_api } from "~/trpc/react";
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 import MeetingHeaderTable from "~/app/components/MeetingHeaderTable";
-import { TMaMaOutput } from "~/lib/maturity-map-output";
+import { TGPTOutput } from "~/lib/maturity-map-output";
 import { inInOutput, TInInOutput } from "~/lib/influence-indicator-output";
 import CreateCallTranscriptButton from "~/app/components/createCallTranscriptButton";
 
 export default function ImportedTranscriptPage() {
   const [selectedToggle, setSelectedToggle] = useState<string>("");
+  // const [selectedInIn, setSelectedInIn] = useState<string>("");
   const [capabilityButtonClicked, setCapabilityButtonClicked] = useState(false);
   const [resetButton, setResetButton] = useState(false);
   const [capabilityData, setCapabilityData] = useState(false);
-  const [mmOutput, setmmOutput] = useState<TMaMaOutput[]>([]);
+  const [mmOutput, setmmOutput] = useState<TGPTOutput[]>([]);
   
   // working
   const { importId: importTranscriptId } = useParams();
@@ -51,12 +52,12 @@ export default function ImportedTranscriptPage() {
 
   const {
     data: getCapabilityData,
-    isLoading,
+    isLoading: gptOutputLoading,
     refetch,
   } = react_api.transcriptRouter.getCapabilityData.useQuery(
     {
       type: selectedToggle,
-      // ONLY IF SELECTED: need to pass in the influence indicator - currently hardcoded
+      // ONLY IF SELECTED: need to pass in the influence indicator - currently hardcoded to return the first one
       indicator: influenceIndicators[0]?.name,
       id: typeof importTranscriptId === "string" ? importTranscriptId : "",
     },
@@ -64,8 +65,8 @@ export default function ImportedTranscriptPage() {
       enabled: false,
     },
   );
-  // console.log("Selected Toggle: ", selectedToggle);
-  // console.log("Influence Indicator: ", influenceIndicators[0]?.name);
+  console.log("Selected Toggle: ", selectedToggle);
+  console.log("Influence Indicator: ", influenceIndicators[0]?.name);
   console.log("ChatgptData:", getCapabilityData);
 
   let accountName: string | null = "";
@@ -85,7 +86,7 @@ export default function ImportedTranscriptPage() {
   useEffect(() => {
     if (getCapabilityData) {
     try {
-          // Clean the string by removing unwanted backticks if present
+    // Clean the string by removing unwanted backticks if present
     const cleanedJsonString = getCapabilityData.replace(/`/g, "");
       // remove backticks if any and parse json
       const parsedData = JSON.parse(cleanedJsonString);
@@ -96,9 +97,9 @@ export default function ImportedTranscriptPage() {
     }
   }, [getCapabilityData]);
 
-  // console.log("src/app/(main)/call-transcriptions/[importId]/page.tsx setmmOutput >> : ", setmmOutput);
+  console.log("src/app/(main)/call-transcriptions/[importId]/page.tsx setmmOutput >> : ", mmOutput);
 
-  if (accountLoading || transcriptLoading) {
+  if (accountLoading || transcriptLoading || gptOutputLoading) {
     return (
       <div className="loader-container">
         <div className="loader"></div>
@@ -118,8 +119,8 @@ export default function ImportedTranscriptPage() {
       </div>
     );
   }
-  const renderMaMaOutput = () => {
-    return mmOutput.map((item: TMaMaOutput, index) => (
+  const renderGPTOutput = () => {
+    return mmOutput.map((item: TGPTOutput, index) => (
       <TableRow key={index} className="hover:bg-transparent">
         <TableCell className="font-semibold">{item.phase_name}</TableCell>
         <TableCell className="mb-2 flex flex-col gap-2">
@@ -130,7 +131,7 @@ export default function ImportedTranscriptPage() {
   };
 
   const renderInInOutput = () => {
-    return inInOutput.map((item: TInInOutput, index) => (
+    return mmOutput.map((item: TGPTOutput, index) => (
       <TableRow key={index} className="hover:bg-transparent">
         <TableCell className="font-semibold">{item.phase_name}</TableCell>
         <TableCell className="mb-2 flex flex-col gap-2">
@@ -281,7 +282,7 @@ export default function ImportedTranscriptPage() {
             </TableHeader>
             <TableBody>
               {selectedToggle === "maturityMap"
-                ? renderMaMaOutput()
+                ? renderGPTOutput()
                 : renderInInOutput()}
             </TableBody>
           </Table>

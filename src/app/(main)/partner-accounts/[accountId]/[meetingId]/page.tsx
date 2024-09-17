@@ -12,14 +12,13 @@ import {
 import { Button } from "~/app/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { TMaMaOutput } from "~/lib/maturity-map-output";
+import { TGPTOutput } from "~/lib/maturity-map-output";
 import { useParams } from "next/navigation";
 import { react_api } from "~/trpc/react";
 import Link from "next/link";
 import DeleteCallTranscriptButton from "~/app/components/deleteCallTranscriptButton";
 
 export default function MeetingPage() {
-  // TODO: replace hardcoded capability data with dynamic data
   const [capabilityData, setCapabilityData] = useState(true);
   const [selectedToggle, setSelectedToggle] = useState<string>("");
   // const [meeting, setMeeting] = useState<TGetOneTranscript | undefined>(
@@ -71,8 +70,8 @@ export default function MeetingPage() {
     );
   }
 
-  const renderMaMaOutput = () => {
-    return transcriptData?.chatgptOutput?.map((item: TMaMaOutput, index) => (
+  const renderGPTOutput = () => {
+    return transcriptData?.chatgptOutput?.map((item: TGPTOutput, index) => (
       <TableRow key={index} className="hover:bg-transparent">
         <TableCell className="font-semibold">{item.phase_name}</TableCell>
         <TableCell className="mb-2 flex flex-col gap-2">
@@ -176,7 +175,7 @@ export default function MeetingPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {renderMaMaOutput()}
+                    {renderGPTOutput()}
                 </TableBody>
               </Table>
             ) : (
