@@ -11,11 +11,9 @@ ChatGPT Integration  - in progress
 --------------------
 gpt output working for maturity map
   [x] need to test for influence indicator
-  [] test passing indicator selected
+  [x] test passing indicator selected
+[x] loading state for rendering gpt data
 
 [] render empty table in call transcripts page
 
-[x] loading state for rendering gpt data
-
 [] render account name in meeting table
-

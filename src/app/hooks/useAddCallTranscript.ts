@@ -6,7 +6,7 @@ export function useAddCallTranscript() {
   // mutation hook for creating call transcript in db
   const mutateCallTranscript = react_api.transcriptRouter.create.useMutation();
   // testing
-  console.log("src/app/hooks/useAddCallTranscript.ts callTranscriptId -->", mutateCallTranscript.data?.callTranscriptId);
+  // console.log("src/app/hooks/useAddCallTranscript.ts callTranscriptId -->", mutateCallTranscript.data?.callTranscriptId);
 
   const addCallTranscript = async ({
     partnerAccountId,
