@@ -20,9 +20,6 @@ export default function DeleteCallTranscriptButton({
     }
   };
 
-  // Handle loading and error states - maybe add a spinner instead of loading text?
-  // TODO: add toast notifications
-  // TODO: sort isLoading handling
   if (isLoading) return <p>Deleting meeting...</p>;
 
   if (error) return <p>Error deleting meeting: {error.message}</p>;

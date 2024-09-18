@@ -50,9 +50,7 @@ export function CreateAccountButton() {
     }
   };
 
-  // TODO: add toast to show create account success or error
-  // TODO: refetch accounts correctly
-  // TODO: sort list by most recently created
+
   return (
     <>
       <Button variant="pswellPrimary" onClick={openDialog}>

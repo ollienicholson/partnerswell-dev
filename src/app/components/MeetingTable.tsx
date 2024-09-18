@@ -20,7 +20,6 @@ import {
 import { useRouter } from "next/navigation";
 import { TGetTranscriptsByAccountId } from "~/lib/types";
 
-// TODO: handle error UI for incorrect acccount id
 export function MeetingTable({
   accountId,
   transcripts,

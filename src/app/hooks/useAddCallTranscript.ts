@@ -17,7 +17,6 @@ export function useAddCallTranscript() {
     speakers,
     summary,
     sentences,
-    // TODO: add gpt output
     gptOutput,
   }: {
     partnerAccountId: number;
@@ -29,7 +28,6 @@ export function useAddCallTranscript() {
     summary: { overview: string };
     sentences: { speaker_name: string; text: string }[];
     gptOutput: { phase_name: string; description: string }[];
-    // TODO: add gpt output as optional
   }) => {
     console.log("Running mutateCallTranscript");
     try {
@@ -43,7 +41,6 @@ export function useAddCallTranscript() {
         speakers: speakers,
         summary: summary,
         sentences: sentences,
-        // TODO: add gpt output to addCallTranscript
         gptOutput: gptOutput,
       });
       console.log("useAddCallTranscript --> callTranscriptId: ", callTranscriptId)

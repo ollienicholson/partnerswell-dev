@@ -281,7 +281,6 @@ export default function ImportedTranscriptPage() {
               >
                 Reset Data
               </Button>
-              {/* TODO: Hide this button until capability data has been rendered */}
               <CreateCallTranscriptButton
                 accountId={account?.partnerAccountId ?? 0}
                 transcriptData={transcriptData}
