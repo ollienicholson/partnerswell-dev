@@ -14,7 +14,9 @@ TASKS
 -----
 
 [] change public to protected procedure - partnerAccountRouter
-[] follow fireflies trpc calls for other route refactors
+
+[] refactor routing
+- follow fireflies trpc calls for other route refactors
 
 Error handling:
 src/app/components/MeetingTable.tsx
