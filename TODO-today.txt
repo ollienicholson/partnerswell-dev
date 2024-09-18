@@ -1,4 +1,4 @@
-Tuesday 17/09
+Wednesday 18/09
 
 EPICS
 ------
@@ -9,10 +9,11 @@ Daily TASKS
 
 ChatGPT Integration  - in progress
 --------------------
-gpt output working for maturity map
-  [x] need to test for influence indicator
-  [x] test passing indicator selected
-[x] loading state for rendering gpt data
-[x] render empty table in call transcripts page
+
+[] find and fix elliot rendering transcript in call transcript page
+- check postman first
+- get error message printing on frontend
+- handle error message
+
 
 [] render account name in meeting table

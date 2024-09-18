@@ -12,22 +12,16 @@ EPICS
 
 TASKS
 -----
-[x] check that caching works on prod
-
-[x] add open api key to vercel env vars
-
-ChatGPT Integration  - in progress
---------------------
-gpt output working for maturity map
-  [] need to test for influence indicator
-
 
 [] change public to protected procedure - partnerAccountRouter
 [] follow fireflies trpc calls for other route refactors
 
 Error handling:
+src/app/components/MeetingTable.tsx
+src/app/components/AccountTable.tsx
 [] partner-account[accountId] - handle error UI for incorrect acccount id
-[] consider using Image instead of img for nextjs warnings
+
+[] useImage instead of img for nextjs warnings
 
 [] sort partner account table by most recently created
 [] fix date hydration error
@@ -41,8 +35,27 @@ TYPES:
 [] set types for all data objects - in progress
 [] check typesafety before moving to prod
 
-Deps:
-[x] Move @tansctack react devtools to dev deps
-
 // TODO: improve caching
-// TODO: create refresh function for frontend user
+// TODO: create refresh get transcripts function for frontend user
+
+src/app/(main)/partner-accounts/[accountId]/page.tsx
+src/app/components/AccountTable.tsx
+// TODO: Fix type errors 
+
+src/app/components/CreateAccountButton.tsx
+  // TODO: add toast to show create account success or error
+  // TODO: refetch accounts correctly??
+  // TODO: sort list by most recently created
+
+
+src/app/components/deleteCallTranscriptButton.tsx
+  // Handle loading and error states - maybe add a spinner instead of loading text?
+  // TODO: add toast notifications
+  // TODO: sort isLoading handling
+
+src/app/components/PartnerAccountsTable.tsx
+// TODO: fix date hydration error
+// TODO: sort by most recently created
+
+src/server/api/routers/partner-accounts.ts
+  // TODO: may need to update to use findUnique on -> getAccountByName: publicProcedure
