@@ -84,15 +84,23 @@ export default function ImportedTranscriptPage() {
 
   useEffect(() => {
     if (getCapabilityData) {
-      console.log("parsing getCapabilityData");
+      console.log("Parsing getCapabilityData...");
       try {
-        // Clean the string by removing unwanted backticks
-        const cleanedJsonString = getCapabilityData.replace(/`/g, "");
+        // remove unwanted backticks
+        let cleanedJsonString = getCapabilityData.replace(/`/g, "");
+        // console.log("cleanedJsonString: ", cleanedJsonString);
+        // remove any leading "json" identifier that could be part of the string
+        if (cleanedJsonString.startsWith("json")) {
+          cleanedJsonString = cleanedJsonString.slice(4); // removes potential "json" prefix
+        }
+
         // parse string as JSON
         const parsedData = JSON.parse(cleanedJsonString);
+        // console.log("parsedData: ", parsedData);
         setGPTOutput(parsedData);
-      } catch (error) {
-        console.error("Error parsing JSON:", error);
+      } catch (error: any) {
+        console.error("Error parsing JSON:", error.message);
+        alert("Error parsing JSON: " + error.message);
       }
     }
   }, [getCapabilityData]);
@@ -113,8 +121,6 @@ export default function ImportedTranscriptPage() {
     // pass the selected indicator to the API
     console.log("Selected Influence Indicator: ", value);
   };
-
-  // console.log("src/app/(main)/call-transcriptions/[importId]/page.tsx gPTOutput >> : ", gPTOutput);
 
   if (accountLoading || transcriptLoading) {
     return (

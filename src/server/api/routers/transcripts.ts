@@ -258,10 +258,10 @@ export const transcriptRouter = createTRPCRouter({
         messages: [{ role: "user", content: prompt }],
       });
       // success
-      console.log(
-        "Response from OpenAI:",
-        response?.choices[0]?.message.content,
-      );
+      // console.log(
+      //   "Response from OpenAI:",
+      //   response?.choices[0]?.message.content,
+      // );
       if (response?.choices[0]?.message.content) {
         console.log("Retrieved ChatGPT Response successfully");
         // success
