@@ -38,6 +38,7 @@ export default function MeetingHeaderTable({
     },
   );
 
+  console.log("Rendering MeetingHeaderTable");
   return (
     <div className="rounded-xl border shadow">
       <Table>

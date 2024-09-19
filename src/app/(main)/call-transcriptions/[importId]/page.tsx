@@ -84,6 +84,7 @@ export default function ImportedTranscriptPage() {
 
   useEffect(() => {
     if (getCapabilityData) {
+      console.log("parsing getCapabilityData");
       try {
         // Clean the string by removing unwanted backticks
         const cleanedJsonString = getCapabilityData.replace(/`/g, "");

@@ -51,7 +51,7 @@ export function MeetingTable({
       </TableCell>
     </TableRow>
   );
-
+  console.log("Rendering MeetingTable");
   return (
     <div className="rounded-xl border shadow">
       <Table>

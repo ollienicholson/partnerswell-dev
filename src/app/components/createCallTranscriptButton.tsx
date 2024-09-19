@@ -69,7 +69,7 @@ export default function CreateCallTranscriptButton({
       console.error("Failed to add transcript:", error);
     }
   };
-
+  // console.log("Rendering CreateCallTranscriptButton");
   return (
     <Button variant="pswellPrimary" onClick={handleClick} disabled={isLoading}>
       Save Data to Partner Account

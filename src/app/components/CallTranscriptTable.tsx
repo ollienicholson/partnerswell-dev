@@ -127,8 +127,7 @@ export default function CallTranscriptsTable({
                       <ul>
                         {transcript.speakers.map((speaker, index) => (
                           <li key={index}>{speaker.name}</li>
-                        ))}{" "}
-                        :
+                        ))}
                       </ul>
                     ) : (
                       <div>No speakers available</div>
