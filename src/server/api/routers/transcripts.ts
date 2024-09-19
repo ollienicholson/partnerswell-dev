@@ -2,8 +2,10 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 import { getTranscriptById, getTranscripts } from "../queries/getTranscripts";
 import { OpenAI } from "openai";
-function InInprompt({indicator} : {indicator: string}) {
-  return`You are a sales professional working in the B2B partnerships industry.
+import { TRPCError } from "@trpc/server";
+
+function InInprompt({ indicator }: { indicator: string }) {
+  return `You are a sales professional working in the B2B partnerships industry.
 Your task is to analyse this call transcript to identify success factors related to a specific phase of the sales deal for ${indicator}.
 Your analysis of this call transcript data must be categorised into the following phases, if applicable:
   Partner Lead Researching
@@ -25,7 +27,7 @@ Return your response in .json format with the following key-value pairs:
         phase_name: "text",
         description: "text"
     }]`;
-} 
+}
 
 const MaMaprompt = `You are a sales professional working in the B2B partnerships industry.
 Your task is to analyse this call transcript to identify success factors related to a specific phase of the partnerships maturity map.
@@ -60,30 +62,68 @@ export const transcriptRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input, ctx }) => {
-      if (!input.id) return;
+      // if (!input.id) return;
+      if (!input.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Missing transcript ID",
+        });
+      }
       try {
         const userData = await ctx.db.userRoles.findFirst({
           where: { clerkId: ctx?.user?.id },
         });
-        if (!userData?.firefliesApi) return;
+        // if (!userData?.firefliesApi) return;
+        if (!userData?.firefliesApi) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "User does not have a valid API key",
+          });
+        }
         // input.id is correct
         // console.log("Calling input.id: ", input.id);
         const transcript = await getTranscriptById(
           userData?.firefliesApi,
           input.id,
         );
+
         if (transcript) {
-          console.log("\ntranscriptRouter: getById: Transcript fetched successfully");
+          console.log(
+            "\ntranscriptRouter > getById: Transcript fetched successfully",
+          );
           return transcript;
         } else {
           console.log("Transcript not found.");
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error("Error fetching transcript:", error);
+        // throw error based on http status code
+        if (error.extensions?.code === "too_many_requests") {
+          throw new TRPCError({
+            code: "TOO_MANY_REQUESTS",
+            message: error.message,
+          });
+        } else if (error.extensions?.code === "internal_server_error") {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: error.message,
+          });
+        } else {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: error.message || "An unexpected error occurred",
+          });
+        }
       }
-      return;
+      //     throw new TRPCError({
+      //       code: "INTERNAL_SERVER_ERROR",
+      //       message: error.message || "An unexpected error occurred",
+      //     });
+      //   }
+      //   return;
+      // }),
     }),
-    // get all transcripts from fireflies API
+  // get all transcripts from fireflies API
   getAll: protectedProcedure.query(async ({ input, ctx }) => {
     try {
       const userData = await ctx.db.userRoles.findFirst({
@@ -131,7 +171,7 @@ export const transcriptRouter = createTRPCRouter({
         throw new Error("Failed to fetch transcripts.");
       }
     }),
-// get transcript from db by meeting id
+  // get transcript from db by meeting id
   getByMeetingId: protectedProcedure
     .input(
       z.object({
@@ -161,7 +201,7 @@ export const transcriptRouter = createTRPCRouter({
       }
     }),
 
-    // create new transcript in db
+  // create new transcript in db
   create: protectedProcedure
     .input(
       z.object({
@@ -196,7 +236,6 @@ export const transcriptRouter = createTRPCRouter({
         },
       });
     }),
-    
 
   // get capability data from ChatGPT
   getCapabilityData: protectedProcedure
@@ -210,38 +249,51 @@ export const transcriptRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       const { type, indicator } = input;
 
-      if (!input.id) return;
-        const userData = await ctx.db.userRoles.findFirst({
-          where: { clerkId: ctx?.user?.id },
-        });
-        if (!userData?.firefliesApi) return;
-        const transcript = await getTranscriptById(
+      if (!input.id) {
+        console.error("input.id is:", input.id);
+        return;
+      }
+      const userData = await ctx.db.userRoles.findFirst({
+        where: { clerkId: ctx?.user?.id },
+      });
+      if (!userData?.firefliesApi) {
+        console.error(
+          "User:",
+          { userData },
+          "FirefliesApi:",
           userData?.firefliesApi,
-          input.id,
-        ); 
+        );
+        return;
+      }
+      const transcript = await getTranscriptById(
+        userData?.firefliesApi,
+        input.id,
+      );
       const client = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
       });
       let prompt = "";
       if (type === "influenceIndicator") {
-        prompt = InInprompt({indicator: input?.indicator || ""});
+        prompt = InInprompt({ indicator: input?.indicator || "" });
         // indicator successfully passed to prompt
         // console.log("backend InIn prompt: ", prompt);
       } else if (type === "maturityMap") {
         prompt = MaMaprompt;
       }
-      
+
       // get transcript sentences
-      prompt += transcript?.sentences?.map((sentence) => sentence.text).join("\n");
+      prompt += transcript?.sentences
+        ?.map((sentence) => sentence.text)
+        .join("\n");
       const response = await client.chat.completions.create({
         model: "gpt-4o",
         messages: [{ role: "user", content: prompt }],
       });
       // success
-      console.log(
-        "Response from OpenAI:",
-        response?.choices[0]?.message.content,
-      );
+      // console.log(
+      //   "Response from OpenAI:",
+      //   response?.choices[0]?.message.content,
+      // );
       if (response?.choices[0]?.message.content) {
         console.log("Retrieved ChatGPT Response successfully");
         // success
@@ -252,7 +304,7 @@ export const transcriptRouter = createTRPCRouter({
       return null;
     }),
 
-    // delete transcript from db by transcript id
+  // delete transcript from db by transcript id
   deleteOne: protectedProcedure
     .input(
       z.object({
@@ -265,4 +317,4 @@ export const transcriptRouter = createTRPCRouter({
         where: { callTranscriptId: input.callTranscriptId },
       });
     }),
-  });
+});

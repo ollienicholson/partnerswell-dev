@@ -9,10 +9,8 @@ import {
   TableRow,
 } from "~/app/components/ui/table";
 import { EditAccountButton } from "~/app/components/EditAccountButton";
-
 import { TPartnerAccount } from "~/lib/types";
 
-// TODO: handle error UI for incorrect acccount id
 export function AccountTable({ account }: { account: TPartnerAccount }) {
   return (
     <div className="rounded-xl border shadow">
@@ -37,7 +35,7 @@ export function AccountTable({ account }: { account: TPartnerAccount }) {
         </TableHeader>
         <TableBody>
           <TableRow key={account.partnerAccountId} className="hover:bg-white">
-            {/* Understand the new Date */}
+            {/* Understand the new Date function*/}
             <TableCell>
               {new Date(account.createdAt).toLocaleString("en-AU")}
             </TableCell>

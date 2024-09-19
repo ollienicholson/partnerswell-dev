@@ -69,7 +69,7 @@ export default function CallTranscriptsTable({
       </TableCell>
     </TableRow>
   );
-
+  console.log("Rendering CallTranscriptsTable");
   return (
     <>
       <Table className="">
@@ -94,7 +94,7 @@ export default function CallTranscriptsTable({
                     <Select
                       value={
                         selectedRow === transcript.id
-                          ? selectedAccount ?? ""
+                          ? (selectedAccount ?? "")
                           : ""
                       }
                       onValueChange={(value) =>
@@ -123,11 +123,15 @@ export default function CallTranscriptsTable({
                     {new Date(transcript.dateString).toLocaleDateString()}
                   </TableCell>
                   <TableCell>
-                    <ul>
-                      {transcript.speakers.map((speaker, index) => (
-                        <li key={index}>{speaker.name}</li>
-                      ))}
-                    </ul>
+                    {transcript.speakers && transcript.speakers.length > 0 ? (
+                      <ul>
+                        {transcript.speakers.map((speaker, index) => (
+                          <li key={index}>{speaker.name}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <div>No speakers available</div>
+                    )}
                   </TableCell>
                 </TableRow>
               ))
@@ -145,11 +149,16 @@ export default function CallTranscriptsTable({
             <AlertDialogHeader>
               <AlertDialogTitle>Import Transcript</AlertDialogTitle>
               <AlertDialogDescription>
-                Are you sure you want to import {selectedAccount}'s call
-                transcript?
+                Are you sure you want to import{" "}
+                {
+                  transcripts.find(
+                    (transcript) => transcript.id === selectedRow,
+                  )?.title
+                }{" "}
+                to {selectedAccount}?
               </AlertDialogDescription>
             </AlertDialogHeader>
-            {/* <div className="mt-4 flex justify-between"> */}
+            {/* <div className="mt-4 flex justify-between" > */}
             <AlertDialogAction
               className="bg-pswellPrimary text-white"
               onClick={() => {

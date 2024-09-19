@@ -33,11 +33,11 @@ export default function ImportedTranscriptPage() {
   const [resetButton, setResetButton] = useState(false);
   const [capabilityData, setCapabilityData] = useState(false);
   const [gPTOutput, setGPTOutput] = useState<TGPTOutput[]>([]);
-  
+
   // working
   const { importId: importTranscriptId } = useParams();
   // console.log("Imported Transcript ID: ", importTranscriptId);
-  
+
   // working
   const {
     data: transcriptData,
@@ -83,16 +83,31 @@ export default function ImportedTranscriptPage() {
   });
 
   useEffect(() => {
-    if (getCapabilityData) {
-    try {
-    // Clean the string by removing unwanted backticks
-    const cleanedJsonString = getCapabilityData.replace(/`/g, "");
-      // parse string as JSON
-      const parsedData = JSON.parse(cleanedJsonString);
-      setGPTOutput(parsedData);
-    } catch (error) {
-      console.error("Error parsing JSON:", error);
+    if (transcriptError) {
+      console.log("Transcript Error:", transcriptError);
     }
+  }, [transcriptError]);
+
+  useEffect(() => {
+    if (getCapabilityData) {
+      console.log("Parsing getCapabilityData...");
+      try {
+        // remove unwanted backticks
+        let cleanedJsonString = getCapabilityData.replace(/`/g, "");
+        // console.log("cleanedJsonString: ", cleanedJsonString);
+        // remove any leading "json" identifier that could be part of the string
+        if (cleanedJsonString.startsWith("json")) {
+          cleanedJsonString = cleanedJsonString.slice(4); // removes potential "json" prefix
+        }
+
+        // parse string as JSON
+        const parsedData = JSON.parse(cleanedJsonString);
+        // console.log("parsedData: ", parsedData);
+        setGPTOutput(parsedData);
+      } catch (error: any) {
+        console.error("Error parsing JSON:", error.message);
+        alert("Error parsing JSON: " + error.message);
+      }
     }
   }, [getCapabilityData]);
 
@@ -111,11 +126,9 @@ export default function ImportedTranscriptPage() {
     setSelectedIndicator(value);
     // pass the selected indicator to the API
     console.log("Selected Influence Indicator: ", value);
-  }
+  };
 
-  // console.log("src/app/(main)/call-transcriptions/[importId]/page.tsx gPTOutput >> : ", gPTOutput);
-
-  if (accountLoading || transcriptLoading || gptOutputLoading) {
+  if (accountLoading || transcriptLoading) {
     return (
       <div className="loader-container">
         <div className="loader"></div>
@@ -123,11 +136,12 @@ export default function ImportedTranscriptPage() {
     );
   }
 
-  if (accountError || transcriptError) {
+  if (accountError) {
     return (
       <div className="flex flex-col items-center justify-center gap-6">
         <div className="text-red-500">
-          {accountError?.message || transcriptError?.message}
+          Error Code {accountError.data?.code}
+          Error: {accountError?.message}
         </div>
         <Link href="/call-transcriptions">
           <Button>Back</Button>
@@ -135,6 +149,21 @@ export default function ImportedTranscriptPage() {
       </div>
     );
   }
+
+  if (transcriptError) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-6">
+        <div className=" text-red-500">
+          <p>Error getting call transcipts. Too many requests?</p>
+          Error Message: {transcriptError?.message}
+        </div>
+        <Link href="/call-transcriptions">
+          <Button>Back</Button>
+        </Link>
+      </div>
+    );
+  }
+
   const renderGPTOutput = () => {
     return gPTOutput.map((item: TGPTOutput, index) => (
       <TableRow key={index} className="hover:bg-transparent">
@@ -208,10 +237,10 @@ export default function ImportedTranscriptPage() {
                   Influence Indicator
                 </ToggleGroupItem>
                 {selectedToggle === "influenceIndicator" ? (
-                  <Select 
-                  disabled={capabilityButtonClicked}
-                  value={selectedIndicator}
-                  onValueChange={handleIndicatorChange}
+                  <Select
+                    disabled={capabilityButtonClicked}
+                    value={selectedIndicator}
+                    onValueChange={handleIndicatorChange}
                   >
                     <SelectTrigger className="w-[260px]">
                       <SelectValue placeholder="Select an indicator" />
@@ -281,7 +310,6 @@ export default function ImportedTranscriptPage() {
               >
                 Reset Data
               </Button>
-              {/* TODO: Hide this button until capability data has been rendered */}
               <CreateCallTranscriptButton
                 accountId={account?.partnerAccountId ?? 0}
                 transcriptData={transcriptData}
@@ -292,7 +320,11 @@ export default function ImportedTranscriptPage() {
         </Table>
       </div>
       <div className="mt-6 rounded-xl border shadow">
-        {getCapabilityData ? (
+        {gptOutputLoading ? (
+          <div className="loader-container">
+            <div className="loader"></div>
+          </div>
+        ) : getCapabilityData ? (
           <Table>
             <TableHeader>
               <TableRow className="bg-slate-50">

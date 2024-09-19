@@ -7,7 +7,6 @@ import { react_api } from "~/trpc/react";
 import { Button } from "~/app/components/ui/button";
 import Link from "next/link";
 
-// TODO: handle error UI for incorrect acccount id
 export default function AccountPage() {
   //get account id
   const { accountId } = useParams<{ accountId: string }>();
@@ -64,7 +63,6 @@ export default function AccountPage() {
       </div>
       <MeetingTable
         accountId={Number(accountId)}
-        // TODO: Fix type errors
         transcripts={transcripts ?? []}
       />
       <div className="mt-6 flex justify-between pt-12">

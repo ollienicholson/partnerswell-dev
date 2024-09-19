@@ -27,11 +27,9 @@ type TProps = {
   accounts: TPartnerAccount[];
 };
 
-// TODO: fix date
-// TODO: sort by most recently created
 
 export default function PartnerAccountsTable({ accounts }: TProps) {
-  // pagination
+  // pagination set at 10 rows per page
   const rowsPerPage = 10;
   const [startIndex, setStartIndex] = useState(0);
   const router = useRouter();

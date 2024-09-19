@@ -12,8 +12,6 @@ type TranscriptData = {
   speakers: { name: string }[];
   summary: { overview: string };
   sentences: { speaker_name: string; text: string }[];
-  // TODO: add gpt output
-  // gptOutput?: { phase_name: string; description: string }[];
 };
 
 type Props = {
@@ -25,7 +23,7 @@ type Props = {
 export default function CreateCallTranscriptButton({
   accountId,
   transcriptData,
-  gptOutput
+  gptOutput,
 }: Props) {
   const { addCallTranscript, isLoading, error } = useAddCallTranscript();
   // testing
@@ -35,7 +33,22 @@ export default function CreateCallTranscriptButton({
 
   const router = useRouter();
 
-  if (isLoading) return <p>Saving data...</p>;
+  if (isLoading) return <div>Saving data...</div>;
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-6">
+        <div className="text-red-500">
+          Error Code: {error.data?.code}
+          Error Status: {error.data?.httpStatus}
+          Error: {error?.message}
+        </div>
+        <Button onClick={() => router.push("/call-transcriptions")}>
+          Back to Call Transcriptions
+        </Button>
+      </div>
+    );
+  }
 
   const handleClick = async () => {
     try {
@@ -49,7 +62,6 @@ export default function CreateCallTranscriptButton({
         speakers: transcriptData?.speakers ?? [],
         summary: transcriptData?.summary ?? { overview: "" },
         sentences: transcriptData?.sentences ?? [],
-        // TODO: add gpt output to addCallTranscript
         gptOutput: gptOutput,
       });
 
@@ -59,7 +71,7 @@ export default function CreateCallTranscriptButton({
       console.error("Failed to add transcript:", error);
     }
   };
-
+  // console.log("Rendering CreateCallTranscriptButton");
   return (
     <Button variant="pswellPrimary" onClick={handleClick} disabled={isLoading}>
       Save Data to Partner Account

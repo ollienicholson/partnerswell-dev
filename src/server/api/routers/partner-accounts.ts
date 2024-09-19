@@ -39,7 +39,6 @@ export const partnerAccountRouter = createTRPCRouter({
   }),
 
   // get partner account by name
-  // TODO: may need to update to use findUnique
   getAccountByName: publicProcedure
     .input(acccountSchema)
     .query(({ input, ctx }) => {
