@@ -69,7 +69,7 @@ export default function CallTranscriptsTable({
       </TableCell>
     </TableRow>
   );
-
+  console.log("Rendering CallTranscriptsTable");
   return (
     <>
       <Table className="">
@@ -123,11 +123,16 @@ export default function CallTranscriptsTable({
                     {new Date(transcript.dateString).toLocaleDateString()}
                   </TableCell>
                   <TableCell>
-                    <ul>
-                      {transcript.speakers.map((speaker, index) => (
-                        <li key={index}>{speaker.name}</li>
-                      ))}
-                    </ul>
+                    {transcript.speakers && transcript.speakers.length > 0 ? (
+                      <ul>
+                        {transcript.speakers.map((speaker, index) => (
+                          <li key={index}>{speaker.name}</li>
+                        ))}{" "}
+                        :
+                      </ul>
+                    ) : (
+                      <div>No speakers available</div>
+                    )}
                   </TableCell>
                 </TableRow>
               ))
