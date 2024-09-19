@@ -24,8 +24,7 @@ export default function MeetingPage() {
   //   undefined,
   // );
   const router = useRouter();
-  const { meetingId } = useParams();
-  
+  const { accountId, meetingId } = useParams();
 
   const {
     data: transcriptData,
@@ -39,6 +38,10 @@ export default function MeetingPage() {
       enabled: !!meetingId,
     },
   );
+
+  const { data: account } = react_api.partnerAccountRouter.getOne.useQuery({
+    partnerAccountId: Number(accountId),
+  });
 
   // useEffect(() => {
   //   if (transcriptData) {
@@ -116,8 +119,11 @@ export default function MeetingPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow key={transcriptData?.id} className="hover:bg-transparent">
-                  <TableCell></TableCell>
+                <TableRow
+                  key={transcriptData?.id}
+                  className="hover:bg-transparent"
+                >
+                  <TableCell>{account?.accountName}</TableCell>
                   <TableCell>{transcriptData?.callTranscriptTitle}</TableCell>
                   <TableCell>{transcriptData?.duration} mins</TableCell>
                 </TableRow>
@@ -130,15 +136,22 @@ export default function MeetingPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow key={transcriptData?.id} className="hover:bg-transparent ">
+                <TableRow
+                  key={transcriptData?.id}
+                  className="hover:bg-transparent "
+                >
                   <TableCell>
                     {transcriptData?.meetingDate
-                      ? new Date(transcriptData.meetingDate).toLocaleDateString()
+                      ? new Date(
+                          transcriptData.meetingDate,
+                        ).toLocaleDateString()
                       : "Date not available"}
                   </TableCell>
                   <TableCell>
                     {transcriptData?.meetingDate
-                      ? new Date(transcriptData.meetingDate).toLocaleTimeString()
+                      ? new Date(
+                          transcriptData.meetingDate,
+                        ).toLocaleTimeString()
                       : "Date not available"}
                   </TableCell>
                   <TableCell>
@@ -172,9 +185,7 @@ export default function MeetingPage() {
                     <TableHead>Details</TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody>
-                    {renderGPTOutput()}
-                </TableBody>
+                <TableBody>{renderGPTOutput()}</TableBody>
               </Table>
             ) : (
               renderEmptyOutputTable()
