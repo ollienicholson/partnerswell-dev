@@ -1,5 +1,5 @@
 import { react_api } from "~/trpc/react";
-
+import { TRPCError } from "@trpc/server";
 // import types and pass as props
 
 export function useAddCallTranscript() {
@@ -43,11 +43,18 @@ export function useAddCallTranscript() {
         sentences: sentences,
         gptOutput: gptOutput,
       });
-      console.log("useAddCallTranscript --> callTranscriptId: ", callTranscriptId)
+      console.log(
+        "useAddCallTranscript --> callTranscriptId: ",
+        callTranscriptId,
+      );
       alert("Call transcript created successfully!");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating call transcript:", error);
       alert("Failed to save transcript.");
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: error.message || "An unexpected error occurred",
+      });
     }
   };
   return {

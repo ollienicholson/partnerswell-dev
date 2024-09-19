@@ -23,7 +23,7 @@ type Props = {
 export default function CreateCallTranscriptButton({
   accountId,
   transcriptData,
-  gptOutput
+  gptOutput,
 }: Props) {
   const { addCallTranscript, isLoading, error } = useAddCallTranscript();
   // testing
@@ -33,7 +33,20 @@ export default function CreateCallTranscriptButton({
 
   const router = useRouter();
 
-  if (isLoading) return <p>Saving data...</p>;
+  if (isLoading) return <div>Saving data...</div>;
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-6">
+        <div className="text-red-500">
+          Error Code {error.data?.code} Error: {error?.message}
+        </div>
+        <Button onClick={() => router.push("/call-transcriptions")}>
+          Back to Call Transcriptions
+        </Button>
+      </div>
+    );
+  }
 
   const handleClick = async () => {
     try {

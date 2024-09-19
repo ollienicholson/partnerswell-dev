@@ -94,7 +94,7 @@ export default function CallTranscriptsTable({
                     <Select
                       value={
                         selectedRow === transcript.id
-                          ? selectedAccount ?? ""
+                          ? (selectedAccount ?? "")
                           : ""
                       }
                       onValueChange={(value) =>
@@ -145,11 +145,16 @@ export default function CallTranscriptsTable({
             <AlertDialogHeader>
               <AlertDialogTitle>Import Transcript</AlertDialogTitle>
               <AlertDialogDescription>
-                Are you sure you want to import {selectedAccount}'s call
-                transcript?
+                Are you sure you want to import{" "}
+                {
+                  transcripts.find(
+                    (transcript) => transcript.id === selectedRow,
+                  )?.title
+                }{" "}
+                to {selectedAccount}?
               </AlertDialogDescription>
             </AlertDialogHeader>
-            {/* <div className="mt-4 flex justify-between"> */}
+            {/* <div className="mt-4 flex justify-between" > */}
             <AlertDialogAction
               className="bg-pswellPrimary text-white"
               onClick={() => {
