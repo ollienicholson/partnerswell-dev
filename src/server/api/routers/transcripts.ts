@@ -62,18 +62,31 @@ export const transcriptRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input, ctx }) => {
-      if (!input.id) return;
+      // if (!input.id) return;
+      if (!input.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Missing transcript ID",
+        });
+      }
       try {
         const userData = await ctx.db.userRoles.findFirst({
           where: { clerkId: ctx?.user?.id },
         });
-        if (!userData?.firefliesApi) return;
+        // if (!userData?.firefliesApi) return;
+        if (!userData?.firefliesApi) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "User does not have a valid API key",
+          });
+        }
         // input.id is correct
         // console.log("Calling input.id: ", input.id);
         const transcript = await getTranscriptById(
           userData?.firefliesApi,
           input.id,
         );
+
         if (transcript) {
           console.log(
             "\ntranscriptRouter > getById: Transcript fetched successfully",
@@ -84,12 +97,31 @@ export const transcriptRouter = createTRPCRouter({
         }
       } catch (error: any) {
         console.error("Error fetching transcript:", error);
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: error.message || "An unexpected error occurred",
-        });
+        // throw error based on http status code
+        if (error.extensions?.code === "too_many_requests") {
+          throw new TRPCError({
+            code: "TOO_MANY_REQUESTS",
+            message: error.message,
+          });
+        } else if (error.extensions?.code === "internal_server_error") {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: error.message,
+          });
+        } else {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: error.message || "An unexpected error occurred",
+          });
+        }
       }
-      return;
+      //     throw new TRPCError({
+      //       code: "INTERNAL_SERVER_ERROR",
+      //       message: error.message || "An unexpected error occurred",
+      //     });
+      //   }
+      //   return;
+      // }),
     }),
   // get all transcripts from fireflies API
   getAll: protectedProcedure.query(async ({ input, ctx }) => {

@@ -83,6 +83,12 @@ export default function ImportedTranscriptPage() {
   });
 
   useEffect(() => {
+    if (transcriptError) {
+      console.log("Transcript Error:", transcriptError);
+    }
+  }, [transcriptError]);
+
+  useEffect(() => {
     if (getCapabilityData) {
       console.log("Parsing getCapabilityData...");
       try {
@@ -147,9 +153,9 @@ export default function ImportedTranscriptPage() {
   if (transcriptError) {
     return (
       <div className="flex flex-col items-center justify-center gap-6">
-        <div className="text-red-500">
-          Error Code {transcriptError.data?.code}
-          Error: {transcriptError?.message}
+        <div className=" text-red-500">
+          <p>Error getting call transcipts. Too many requests?</p>
+          Error Message: {transcriptError?.message}
         </div>
         <Link href="/call-transcriptions">
           <Button>Back</Button>

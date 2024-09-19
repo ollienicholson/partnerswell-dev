@@ -39,7 +39,9 @@ export default function CreateCallTranscriptButton({
     return (
       <div className="flex flex-col items-center justify-center gap-6">
         <div className="text-red-500">
-          Error Code {error.data?.code} Error: {error?.message}
+          Error Code: {error.data?.code}
+          Error Status: {error.data?.httpStatus}
+          Error: {error?.message}
         </div>
         <Button onClick={() => router.push("/call-transcriptions")}>
           Back to Call Transcriptions

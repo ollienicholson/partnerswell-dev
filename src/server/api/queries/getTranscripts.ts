@@ -56,10 +56,15 @@ export const getTranscriptById = async (
     // data.transcript is correct
     // success getting sentences
     // console.log("src/server/api/queries/getTranscripts.ts >>> Transcript Data:", data.transcript);
+    if (!data.transcript) {
+      throw new Error("Transcript data is missing in the response.");
+    }
     return data.transcript;
   } catch (error: any) {
     console.error(
       "Error fetching one transcript:",
+      error.response?.status,
+      error.code,
       error.response?.errors || error.message,
     );
 
@@ -73,7 +78,6 @@ export const getTranscriptById = async (
     } else if (error.message.includes("Network Error")) {
       console.error("Network error, please try again later.");
     }
-    // fallback: return null
     return null;
   }
 };
